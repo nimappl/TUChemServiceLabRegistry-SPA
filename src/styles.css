@@ -1,0 +1,107 @@
+/* You can add global styles to this file, and also import other style files */
+@import './assets/fonts/Roboto/Roboto.css';
+@import './assets/fonts/Vazir/Vazir.css';
+
+html, body { height: 100%; direction: rtl; text-align: right; }
+body {font-family: Vazir, Roboto, "DejaVu Serif", serif; }
+
+* {
+    font-family: Vazir, Roboto, "DejaVu Serif", serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+body {
+    direction: rtl;
+}
+
+.card-header { font-size: 1.30rem; font-weight: bold;}
+.card { box-shadow: 3px 0 20px 8px #ccc; }
+
+.input-field {
+    width: 500px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: 20px;
+}
+label {
+    background-color: #fff;
+    color: #666;
+    font-size: 14px;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 8px;
+    right: 16px;
+    transition: font-size 0.1s, top 0.1s, font-weight 0.1s;
+    padding: 0 5px;
+}
+.txt {
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    padding: 7px 20px;
+    border: 1px solid #aaa;
+    color: #666;
+}
+.txt:focus {
+    outline: none;
+    border-color: forestgreen;
+}
+
+.txt:focus ~ label {
+    top: -12px;
+    font-size: 12px;
+    /*font-weight: bold;*/
+    color: forestgreen;
+}
+.txt:not(:placeholder-shown) ~ label {
+    top: -12px;
+    font-size: 12px;
+    /*font-weight: bold;*/
+}
+.txt::placeholder {
+    color: transparent;
+}
+.invalid {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    padding-left: 44px;
+    border-color: #e16767;
+    background-repeat: no-repeat;
+    background-position: left 25px center;
+    background-size: 16px 16px;
+}
+.invalid ~ label {
+    color: #e16767;
+}
+select.txt {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    padding: 7px 20px;
+    background-repeat: no-repeat;
+    background-position: left 15px center;
+    background-size: 16px 16px;
+}
+select.txt::before, select.txt::before {
+    content: '';
+}
+.form-status {
+    position: absolute;
+    display: block;
+    padding: 0 12px;
+    top: -8px;
+    left: 20px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 16px 16px;
+}
+.status-valid {
+    background-color: #fff;
+    background-image: url("./assets/svg/tick.svg");
+}
+.status-invalid {
+    background-color: #fff;
+    background-image: url("./assets/svg/cross.svg");
+}

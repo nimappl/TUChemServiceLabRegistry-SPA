@@ -1,0 +1,17 @@
+.nav-link {
+    color: #ddd !important;
+    font-size: 1rem;
+}
+
+.nav-link:hover { background-color: #000; }
+
+.logo { padding: 1.2rem 0; }
+
+h1 {
+    font-size: 1.1rem;
+    padding: 3px 0;
+}
+
+img {
+    width: 50px;
+}

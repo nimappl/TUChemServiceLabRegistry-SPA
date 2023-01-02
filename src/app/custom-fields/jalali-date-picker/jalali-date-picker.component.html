@@ -1,0 +1,29 @@
+<div class="select-wrapper">
+    <div class="select-box" (click)="openOptions($event)" [ngClass]="{'open': showOptions}">
+        <p class="selected">{{ data.selectedValue === null ? '' : data.options[data.selectedValue].label }}</p>
+        <span class="calendar"></span>
+        <span class="label" [ngClass]="{'small': data.selectedValue !== null}">انتخاب کنید</span>
+    </div>
+    <div class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
+<!--        <li class="option" *ngFor="let opt of data.options; let i = index" (click)="select(i)">{{ opt.label }}</li>-->
+        <div>
+            <select id="month">
+
+            </select>
+            <select id="year">
+
+            </select>
+        </div>
+        <div>
+            <table>
+                <tr>
+
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+            </table>
+        </div>
+    </div>
+</div>

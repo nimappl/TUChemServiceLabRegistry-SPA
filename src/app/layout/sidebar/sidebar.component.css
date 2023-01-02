@@ -1,0 +1,35 @@
+.sidebar {
+    height: calc(100vh - 65px);
+    border-left: 1px solid #ccc;
+}
+
+.nav-menu {
+    padding-right: 0;
+    list-style: none;
+}
+
+.nav-link {
+    font-size: 1.05rem;
+    display: block;
+    padding: .5rem 1rem;
+    width: 100%;
+    color: #333;
+}
+
+.nav-link:hover {
+    background-color: #eee;
+    text-decoration: none;
+}
+
+.active {
+    background-color: rgba(20, 108, 67, 0.15);
+    border-left: 4px solid #228B22;
+}
+
+.drp-menu {
+    background-color: #eee;
+    box-shadow: inset -1px 0 15px 2px rgb(209, 209, 209);
+    display: none;
+}
+
+.drp-menu li a { padding-right: 30px; }

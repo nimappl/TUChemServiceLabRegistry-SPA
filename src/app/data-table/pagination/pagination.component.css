@@ -1,0 +1,15 @@
+ul, p { margin-bottom: 0; }
+a { cursor: pointer; user-select: none;}
+li.active > a {
+    background-color: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+
+li.active > a:hover {
+    background-color: #157347;
+}
+
+li > a { color: #198754 }
+li.disabled > a { color: #999 }
+
