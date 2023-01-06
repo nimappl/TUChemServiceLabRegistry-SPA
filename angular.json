@@ -52,6 +52,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.rtl.min.css",
               "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.css"
@@ -105,5 +106,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "16d60e29-3c8a-46bc-8e57-958947b6f332"
   }
 }

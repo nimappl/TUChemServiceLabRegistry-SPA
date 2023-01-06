@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { Filter } from '../types/filter';
-import { Data, SortType } from '../types/data';
+import * as Model from '../model';
+import { SortType } from '../model/data';
 
 @Component({
   selector: 'app-data-table',
@@ -8,7 +8,7 @@ import { Data, SortType } from '../types/data';
   styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent implements OnInit {
-  @Input() data: Data<any>;
+  @Input() data: Model.Data<any>;
   @Input() columns: Array<{name: string, title: string}>;
   @Input() searchField: boolean;
   @Input() loading: boolean;
@@ -69,7 +69,7 @@ export class DataTableComponent implements OnInit {
   recordFields(record: object) {
     const fields = []
     for (let field in record)
-      if (!field.includes('Id') && !this.fieldsToAvoidOnTable.includes(field))
+      if (!this.fieldsToAvoidOnTable.includes(field))
         fields.push(record[field]);
 
     return fields;
@@ -79,16 +79,16 @@ export class DataTableComponent implements OnInit {
     let value = e.target.value;
     this.data.pageNumber = 1;
     if (!this.data.filters) {
-      this.data.filters = new Array<Filter>();
-      this.data.filters.push(new Filter(column, value));
+      this.data.filters = new Array<Model.Filter>();
+      this.data.filters.push(new Model.Filter(column, value));
     } else if (this.data.filters.length === 0) {
-      this.data.filters.push(new Filter(column, value));
+      this.data.filters.push(new Model.Filter(column, value));
     } else {
       let filter = this.data.filters.find(f => f.key === column);
       let index = this.data.filters.indexOf(filter);
 
       if (!filter) {
-        this.data.filters.push(new Filter(column, value));
+        this.data.filters.push(new Model.Filter(column, value));
       } else {
         if (value !== '') {
           filter.value = value;

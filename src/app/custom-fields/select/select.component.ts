@@ -7,7 +7,8 @@ import {Component, OnInit, ViewChild, Output, Input, EventEmitter} from '@angula
 })
 export class SelectComponent implements OnInit {
   showOptions: Boolean = false;
-  @Input() data: {selectedValue: number, options: {value: number, label: string}[]};
+  @Input() options: {selectedValue: number, options: {value: number, label: string}[]};
+  @Input() label: string;
 
   ngOnInit() {}
   openOptions(e: any) {
@@ -15,7 +16,7 @@ export class SelectComponent implements OnInit {
   }
 
   select(index: number) {
-    this.data.selectedValue = index;
+    this.options.selectedValue = index;
     this.showOptions = false;
   }
 }

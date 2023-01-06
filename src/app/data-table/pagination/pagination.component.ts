@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Data } from 'src/app/types/data';
+import { default as Data } from 'src/app/model/data';
 
 @Component({
   selector: 'app-pagination',

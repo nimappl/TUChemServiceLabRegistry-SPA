@@ -18,3 +18,4 @@ table { font-size: .85rem; }
 
 .btn-info { background-color: #4d94ff; }
 .btn-info:hover { background-color: #0052cc; }
+td, th { white-space: nowrap }

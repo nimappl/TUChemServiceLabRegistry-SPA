@@ -1,12 +1,12 @@
-import { Filter } from "./filter";
+import { default as Filter } from "./filter";
 
-export class Data<T> {
+export default class Data<T> {
     data: T[];
     filters: Filter[];
     sortBy: string;
     sortType: SortType;
-    pageSize: number;
-    pageNumber: number;
+    pageSize: number = 5;
+    pageNumber: number = 1;
     count: number;
 }
 

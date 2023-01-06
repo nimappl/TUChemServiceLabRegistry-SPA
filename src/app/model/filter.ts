@@ -1,4 +1,4 @@
-export class Filter {
+export default class Filter {
     constructor(
         public key: string,
         public value: string
