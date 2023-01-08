@@ -1,10 +1,20 @@
-<div class="select-wrapper">
-    <div class="select-box" (click)="openOptions($event)" [ngClass]="{'open': showOptions}">
-        <p class="selected">{{ options.selectedValue === null ? '' : options.options[options.selectedValue].label }}</p>
-        <span class="arrow"></span>
-        <span class="label" [ngClass]="{'small': options.selectedValue !== null}">{{ label }}</span>
-    </div>
-    <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
-        <li class="option" *ngFor="let opt of options.options; let i = index" (click)="select(i)">{{ opt.label }}</li>
-    </ul>
+<div class="select-wrapper" tabindex="-5" (blur)="focusout()">
+  <div class="select-box"
+       (click)="openOptions($event)"
+       [ngClass]="{'open': showOptions, 'invalid': invalid}">
+    <p class="selected" style="">
+      {{ options.selectedValue === null ? '' : options.options[options.selectedValue].label }}
+    </p>
+    <span class="arrow"></span>
+    <span class="label" [ngClass]="{'small': options.selectedValue !== null}">{{ label }}</span>
+  </div>
+  <input type="hidden" ngModel [name]="name" value="">
+  <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
+    <li class="option"
+        *ngFor="let opt of options.options; let i = index"
+        title="{{ opt.label }}"
+        (click)="select(i)">
+      {{ opt.label }}
+    </li>
+  </ul>
 </div>

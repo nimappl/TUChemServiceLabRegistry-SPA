@@ -1,3 +1,11 @@
+.txt { padding-left: 40px }
+
+.invalid ~ em { background-image: url("../../../assets/svg/magnifier-glass-icon-red.svg") }
+.invalid {
+    padding-left: 44px;
+    background-position: left 25px center;
+}
+
 em {
     display: block;
     width: 14px;
@@ -17,6 +25,7 @@ em {
     color: #666;
     user-select: none;
     font-size: 14px;
+    margin-top: 18px;
 }
 .arrow {
     width: 16px;
@@ -44,11 +53,16 @@ em {
     background-color: #fff;
     z-index: 100;
     min-width: 100%;
+    max-width: 400px;
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
     box-shadow: 0 2px 10px 0 #aaa;
 }
 .option {
     padding: 4px 15px;
     white-space: nowrap;
+    color: #999;
 }
 .option:hover {
     background-color: #eee;

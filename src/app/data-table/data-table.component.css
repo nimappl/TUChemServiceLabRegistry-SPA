@@ -12,10 +12,12 @@ table { font-size: .85rem; }
   font-size: .95rem;
 }
 
-.edit { width: 14rem; }
-.status { width: 110px; }
+.edit { width: 6rem; }
+.status { width: 6rem; }
 /*.btn { border: none; }*/
 
 .btn-info { background-color: #4d94ff; }
 .btn-info:hover { background-color: #0052cc; }
 td, th { white-space: nowrap }
+th { user-select: none; }
+.form-control-sm { padding: .1rem .3rem; font-size: .75rem;}

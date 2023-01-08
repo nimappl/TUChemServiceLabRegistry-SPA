@@ -2,32 +2,38 @@
 <app-progress *ngIf="reachingOut"></app-progress>
 <div class="container-fluid">
   <form id="form" #f=ngForm (ngSubmit)="submit()">
-  <div class="row">
-    <div class="col-6">
-      <div class="input-field">
-          <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
-          <label for="name">نام دستگاه</label>
+    <div class="row">
+      <div class="col-6">
+        <div class="input-field">
+            <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
+            <label for="name">نام دستگاه</label>
+        </div>
+        <div class="input-field">
+          <input type="text" id="model" name="model" class="txt invalid" placeholder="pox" [(ngModel)]="data.model" autocomplete="off">
+          <label for="model">مدل دستگاه</label>
+        </div>
+        <div class="input-field">
+          <input type="text" id="serial" name="serial" class="txt" placeholder="pox" [(ngModel)]="data.serial" autocomplete="off">
+          <label for="serial">شماره سریال</label>
+        </div>
+        <div class="input-field">
+          <input type="text" id="pox" name="pox" class="txt" placeholder="pox" [(ngModel)]="data.serial" autocomplete="off">
+          <label for="serial">شماره سریال</label>
+        </div>
       </div>
-      <div class="input-field">
-        <input type="text" id="model" name="model" class="txt" placeholder="pox" [(ngModel)]="data.model" autocomplete="off">
-        <label for="model">مدل دستگاه</label>
-      </div>
-      <div class="input-field">
-        <input type="text" id="serial" name="serial" class="txt" placeholder="pox" [(ngModel)]="data.serial" autocomplete="off">
-        <label for="serial">شماره سریال</label>
+      <div class="col-6">
+        <div class="input-field">
+          <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [(ngModel)]="data.manufacturer" autocomplete="off">
+          <label for="manufacturer">شرکت سازنده</label>
+        </div>
+        <div class="input-field">
+          <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [(ngModel)]="data.madeIn" autocomplete="off">
+          <label for="madeIn">کشور سازنده</label>
+        </div>
+        <app-select [options]="slctOptions" [invalid]="false" label="سلکت کیری"></app-select>
+        <app-search-select [data]="slctOptions" [invalid]="false" label="سرچ کیری"></app-search-select>
       </div>
     </div>
-    <div class="col-6">
-      <div class="input-field">
-        <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [(ngModel)]="data.manufacturer" autocomplete="off">
-        <label for="manufacturer">شرکت سازنده</label>
-      </div>
-      <div class="input-field">
-        <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [(ngModel)]="data.madeIn" autocomplete="off">
-        <label for="madeIn">کشور سازنده</label>
-      </div>
-    </div>
-  </div>
   </form>
 </div>
 <div mat-dialog-actions style="direction: ltr;">

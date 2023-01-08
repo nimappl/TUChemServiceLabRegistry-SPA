@@ -21,8 +21,8 @@ body {
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background-color: inherit }
-::-webkit-scrollbar-thumb { background-color: #18815078; border-radius: 2px }
-::-webkit-scrollbar-thumb:hover { background-color: #188150be }
+::-webkit-scrollbar-thumb { background-color: #188150aa; border-radius: 2px }
+::-webkit-scrollbar-thumb:hover { background-color: #188150d2 }
 
 .slide-toggle {
     position: relative;
@@ -73,13 +73,14 @@ label {
     right: 16px;
     transition: font-size 0.1s, top 0.1s, font-weight 0.1s;
     padding: 0 5px;
+    user-select: none;
 }
 .txt {
     font-size: 14px;
     display: block;
     width: 100%;
     padding: 7px 20px;
-    border: 1px solid #aaa;
+    border: 1px solid #999;
     color: #666;
 }
 .txt:focus {
@@ -103,15 +104,19 @@ label {
 }
 .invalid {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    padding-left: 44px;
-    border-color: #e16767;
+    padding-left: 30px;
+    border-color: #e16767 !important;
     background-repeat: no-repeat;
-    background-position: left 25px center;
+    background-position: left 10px center;
     background-size: 16px 16px;
 }
 .invalid ~ label {
-    color: #e16767;
+    color: #e16767 !important;
 }
+
+.invalid > .arrow { background-image: url("./assets/svg/chevron-down-red.svg") !important; }
+.invalid > .label { color: #e16767 !important; }
+
 select.txt {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
     padding: 7px 20px;

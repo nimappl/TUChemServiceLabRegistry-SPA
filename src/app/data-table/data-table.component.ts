@@ -1,47 +1,30 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
 import * as Model from '../model';
 import { SortType } from '../model/data';
+import {TableConfig} from "./table-config";
 
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css']
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent {
   @Input() data: Model.Data<any>;
-  @Input() columns: Array<{name: string, title: string}>;
-  @Input() searchField: boolean;
-  @Input() loading: boolean;
-  @Input() sorting: boolean;
-  @Input() loadingFailed: boolean;
-  @Input() hasLinksField: number;
-  @Input() fieldsToAvoidOnTable: string[];
-
+  @Input() config: TableConfig;
   @Output() editItem = new EventEmitter();
   @Output() removeItem = new EventEmitter();
   @Output() activeChanged = new EventEmitter();
   @Output() paramsChanged = new EventEmitter();
   @Output() navigateTo = new EventEmitter();
+  @Output() buttonClicked = new EventEmitter();
 
-  activeDeactive(): boolean {
-    if (!this.loading && !this.loadingFailed) {
-      return this.data.data.length > 0 && this.data.data[0].hasOwnProperty('active');
-    } else
-      return false
-  }
-
-  ngOnInit(): void {}
-
-  openLink(id: number) {
-    this.navigateTo.emit(id);
-  }
-
-  toggleSortFor(column: string) {
-    if (column !== 'link') {
+  toggleSortFor(colIndex: number) {
+    let col = this.config.columns[colIndex];
+    if (col.hasSearch) {
       this.data.pageNumber = 1;
-      if (this.data.sortBy !== column) {
+      if (this.data.sortBy !== col.for) {
         this.data.sortType = SortType.Asc;
-        this.data.sortBy = column;
+        this.data.sortBy = col.for;
       } else {
         if (this.data.sortType === SortType.Desc) {
           this.data.sortType = SortType.Asc;
@@ -55,7 +38,7 @@ export class DataTableComponent implements OnInit {
   }
 
   edit(index: number) {
-    this.editItem.emit(this.data.data[index]);
+    this.editItem.emit(this.data.records[index]);
   }
 
   remove(index: number) {
@@ -66,29 +49,20 @@ export class DataTableComponent implements OnInit {
     this.activeChanged.emit(index);
   }
 
-  recordFields(record: object) {
-    const fields = []
-    for (let field in record)
-      if (!this.fieldsToAvoidOnTable.includes(field))
-        fields.push(record[field]);
-
-    return fields;
-  }
-
-  search(column: string, e: any) {
+  search(property: string, e: any) {
     let value = e.target.value;
     this.data.pageNumber = 1;
     if (!this.data.filters) {
       this.data.filters = new Array<Model.Filter>();
-      this.data.filters.push(new Model.Filter(column, value));
+      this.data.filters.push(new Model.Filter(property, value));
     } else if (this.data.filters.length === 0) {
-      this.data.filters.push(new Model.Filter(column, value));
+      this.data.filters.push(new Model.Filter(property, value));
     } else {
-      let filter = this.data.filters.find(f => f.key === column);
+      let filter = this.data.filters.find(f => f.key === property);
       let index = this.data.filters.indexOf(filter);
 
       if (!filter) {
-        this.data.filters.push(new Model.Filter(column, value));
+        this.data.filters.push(new Model.Filter(property, value));
       } else {
         if (value !== '') {
           filter.value = value;
@@ -99,6 +73,10 @@ export class DataTableComponent implements OnInit {
     }
 
     this.paramsChanged.emit();
+  }
+
+  btnClick(btnId: number, record: any) {
+    this.buttonClicked.emit({btnId, record});
   }
 
   pagingChanged() {

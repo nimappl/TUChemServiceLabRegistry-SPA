@@ -1,14 +1,22 @@
-<div class="select-wrapper">
+<div tabindex="-59" id="master" class="select-wrapper" (click)="clicked()" (blur)="focusout()">
     <span class="form-status" #formStatus></span>
-    <em></em>
     <input id="search" type="text" class="txt"
+           [ngClass]="{'invalid': invalid}"
            #searchField
            [(ngModel)]="searchText"
            (focus)="onInteract()"
            (input)="onInteract()"
+           (focusin)="clicked()"
+           (focusout)="focusout()"
            placeholder="df" autocomplete="off">
-    <label for="search" class="label">متقاضی</label>
-    <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
-        <li class="option" *ngFor="let opt of data.options; let i = index" (click)="select(i)">{{ opt.label }}</li>
+    <label for="search" class="label">{{ label }}</label>
+    <em></em>
+    <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}" (mousedown)="clicked()" (blur)="focusout()">
+        <li tabindex="-33" class="option"
+            *ngFor="let opt of data.options; let i = index"
+            title="{{ opt.label }}"
+            (click)="select(i)">
+            {{ opt.label }}
+        </li>
     </ul>
 </div>

@@ -4,9 +4,14 @@ export class TableConfig {
   hasEdit: boolean;
   hasActivationCol: boolean;
   activationColTitle: string;
-  activeStatusKeyProperty: string;
-  hasPagination: boolean;
-  columns: Array<{name: string, title: string, sortable: boolean, hasSearch: boolean}>;
-  buttons: Array<{title: string, id: number}>;
-  fieldsToAvoidOnTable: Array<string>;
+  activeStatusKey: string;
+  hasSearch: boolean;
+  showSearch: boolean = false;
+  hasPagination: boolean = true;
+  columns: Array<{for: string, title: string, sortable: boolean, hasSearch: boolean, transform?: (value: any) => any}>;
+  buttons: Array<{title: string, id: number, altText: string}>;
+  buttonTitles: Array<string>;
+  sorting: boolean = false;
+  loading: boolean = false;
+  loadingFailed: boolean = false;
 }

@@ -6,11 +6,14 @@ import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@an
   styleUrls: ['./search-select.component.css']
 })
 export class SearchSelectComponent {
-  showOptions: Boolean = false;
+  showOptions: boolean = false;
+  focusFlag: boolean = false;
   @ViewChild('formStatus') formStatus: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
+  @Input() name: string;
+  @Input() label: string;
   @Input() data: {selectedValue: number, options: {value: number, label: string}[]};
-
+  @Input() invalid: boolean = false;
   searchText: string = '';
 
   select(index: number) {
@@ -35,5 +38,19 @@ export class SearchSelectComponent {
     statusMarkClass.remove('status-valid');
     if (status == 1) statusMarkClass.add('status-invalid');
     else if (status == 2) statusMarkClass.add('status-valid');
+  }
+
+  focusout() {
+    this.focusFlag = false;
+    setTimeout(() => {
+      if (!this.focusFlag) {
+        this.showOptions = false;
+        this.focusFlag = false;
+      }
+    }, 50);
+  }
+
+  clicked() {
+    setTimeout(() =>  this.focusFlag = true, 10 );
   }
 }

@@ -14,6 +14,8 @@ export class InstrumentFormComponent {
   title: string;
   reachingOut: boolean = false;
   submitted: boolean = false;
+  slctOptions = {selectedValue: null, options: []};
+
   constructor(
     private dialogRef: MatDialogRef<InstrumentFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Instrument,
@@ -23,6 +25,9 @@ export class InstrumentFormComponent {
   ngOnInit() {
     this.mode = (this.data.instrumentId == undefined) ? 0 : 1;
     this.title = (this.data.instrumentId == undefined) ? 'دستگاه جدید' : 'ویرایش';
+    for(let i = 30; i < 50; i++) {
+      this.slctOptions.options.push({value: i, label: `گزینهههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههههه ${i}`});
+    }
   }
 
   submit() {

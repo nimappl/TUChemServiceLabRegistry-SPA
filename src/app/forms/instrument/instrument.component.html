@@ -1,7 +1,5 @@
 <div class="card">
-    <div class="card-header py-1">
-        دستگاه
-    </div>
+    <div class="card-header py-1">دستگاه</div>
     <div class="card-body">
         <div class="mb-3">
             <button class="btn btn-sm btn-success me-2 px-3" (click)="openForm()">
@@ -15,17 +13,12 @@
         </div>
         <app-data-table
                 [data]="instruments"
-                [columns]="columns"
-                [searchField]="showSearchField"
-                [loading]="loading"
-                [sorting]="sorting"
-                [loadingFailed]="loadingFailed"
-                [fieldsToAvoidOnTable]="fieldsNotToShow"
+                [config]="table"
                 (editItem)="openForm($event)"
                 (removeItem)="onRemoveItem($event)"
                 (activeChanged)="onToggleStatus($event)"
-                (paramsChanged)="paramsChanged()">
+                (paramsChanged)="fetch()">
         </app-data-table>
     </div>
-    <app-progress *ngIf="loading"></app-progress>
+    <app-progress *ngIf="table.loading"></app-progress>
 </div>

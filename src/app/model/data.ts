@@ -1,7 +1,7 @@
 import { default as Filter } from "./filter";
 
 export default class Data<T> {
-    data: T[];
+    records: T[];
     filters: Filter[];
     sortBy: string;
     sortType: SortType;
