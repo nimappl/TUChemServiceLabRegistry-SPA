@@ -1,29 +1,68 @@
-<div class="select-wrapper">
-    <div class="select-box" (click)="openOptions($event)" [ngClass]="{'open': showOptions}">
-        <p class="selected">{{ data.selectedValue === null ? '' : data.options[data.selectedValue].label }}</p>
-        <span class="calendar"></span>
-        <span class="label" [ngClass]="{'small': data.selectedValue !== null}">انتخاب کنید</span>
+<div tabindex="34" class="select-wrapper" (blur)="focusout()" (mousedown)="clicked()">
+  <div class="select-box" (click)="openOptions($event)" [ngClass]="{'open': showCalendar}">
+    <p class="selected">{{ data.selectedValue === null ? '' : dateToString() }}</p>
+    <span class="icon"></span>
+    <span class="label" [ngClass]="{'small': data.selectedValue !== null}">{{ data.label }}</span>
+  </div>
+  <div class="options px-1" [ngStyle]="{'display': showCalendar ? 'block' : 'none'}">
+    <div class="d-flex justify-content-center py-1">
+      <select id="month" [(ngModel)]="pendingDate.month" (change)="onSelectMonth()" class="me-2" (blur)="focusout()" (focusin)="clicked()">
+        <option *ngFor="let month of monthName; let i = index" [value]="(i+1)*1">{{ month }}</option>
+      </select>
+      <select id="year" [(ngModel)]="pendingDate.year" (change)="onSelectYear()" (blur)="focusout()" (focusin)="clicked()">
+        <option *ngFor="let year of dateList" [value]="(year.yearNumber)*1">{{ year.yearNumber }}</option>
+      </select>
     </div>
-    <div class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
-<!--        <li class="option" *ngFor="let opt of data.options; let i = index" (click)="select(i)">{{ opt.label }}</li>-->
-        <div>
-            <select id="month">
-
-            </select>
-            <select id="year">
-
-            </select>
-        </div>
-        <div>
-            <table>
-                <tr>
-
-                </tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-            </table>
-        </div>
-    </div>
+    <table class="w-100">
+      <tr><th>ش</th><th>ی</th><th>د</th><th>س</th><th>چ</th><th>پ</th><th>ج</th></tr>
+      <tr>
+        <td *ngFor="let day of weeks[0]">
+          <div *ngIf="day !== null" (click)="onSelectDay(day)"
+               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}">
+            {{ day }}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td *ngFor="let day of weeks[1]">
+          <div *ngIf="day !== null" (click)="onSelectDay(day)"
+               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}">
+            {{ day }}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td *ngFor="let day of weeks[2]">
+          <div *ngIf="day !== null" (click)="onSelectDay(day)"
+               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}">
+            {{ day }}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td *ngFor="let day of weeks[3]">
+          <div *ngIf="day !== null" (click)="onSelectDay(day)"
+               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}">
+            {{ day }}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td *ngFor="let day of weeks[4]">
+          <div *ngIf="day !== null" (click)="onSelectDay(day)"
+               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}">
+            {{ day }}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td *ngFor="let day of weeks[5]">
+          <div *ngIf="day !== null" (click)="onSelectDay(day)"
+               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}">
+            {{ day }}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>

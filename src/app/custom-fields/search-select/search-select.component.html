@@ -1,22 +1,42 @@
-<div tabindex="-59" id="master" class="select-wrapper" (click)="clicked()" (blur)="focusout()">
-    <span class="form-status" #formStatus></span>
-    <input id="search" type="text" class="txt"
-           [ngClass]="{'invalid': invalid}"
-           #searchField
-           [(ngModel)]="searchText"
-           (focus)="onInteract()"
-           (input)="onInteract()"
-           (focusin)="clicked()"
-           (focusout)="focusout()"
-           placeholder="df" autocomplete="off">
-    <label for="search" class="label">{{ label }}</label>
-    <em></em>
-    <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}" (mousedown)="clicked()" (blur)="focusout()">
-        <li tabindex="-33" class="option"
-            *ngFor="let opt of data.options; let i = index"
-            title="{{ opt.label }}"
-            (click)="select(i)">
-            {{ opt.label }}
-        </li>
-    </ul>
+<div tabindex="-59" id="master" class="select-wrapper" (blur)="focusout()">
+  <span class="form-status" #formStatus></span>
+  <input id="search" type="text" class="txt"
+         [ngClass]="{'invalid': data.invalid && touched}"
+         #searchField
+         [disabled]="disabled"
+         [(ngModel)]="searchText"
+         (focus)="onInteract()"
+         (input)="onInteract()"
+         (focusin)="clicked()"
+         (focusout)="focusout()"
+         placeholder="df" autocomplete="off">
+  <label for="search" class="label">{{ data.label }}</label>
+  <em></em>
+  <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}" (mousedown)="clicked()">
+    <ng-template [ngIf]="!loading && !loadingFailed && data.options.length > 0">
+      <li tabindex="-33" class="option"
+          *ngFor="let opt of data.options"
+          title="{{ opt.title }}"
+          (click)="select(opt.value)">
+        {{ opt.title }}
+      </li>
+    </ng-template>
+    <ng-template [ngIf]="!loading && !loadingFailed && data.options.length === 0">
+      <div class="ms-2 py-1">
+        <span class="message text-muted font-weight-bold">موردی یافت نشد.</span>
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="!loading && loadingFailed">
+      <div class="ms-2 text-danger py-1">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span class="message ms-1 font-weight-bold">خطا در برقراری ارتباط با سرور</span>
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="loading">
+      <div class="d-flex">
+        <p class="loading mx-2 my-1"></p>
+        <p class="message my-1 fst-italic text-muted">در حال بارگذاری</p>
+      </div>
+    </ng-template>
+  </ul>
 </div>
