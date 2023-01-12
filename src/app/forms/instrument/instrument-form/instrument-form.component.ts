@@ -35,8 +35,8 @@ export class InstrumentFormComponent implements OnInit{
         {value: 0, title: 'غیرقابل استفاده'},
         {value: 1, title: 'آماده سرویس'}
     ];
-    if (this.mode === 1) this.statusOptions.selectedValue = this.data.active ? 1 : 0;
-
+    // if (this.mode === 1) this.statusOptions.selectedValue = this.data.active ? 1 : 0;
+    // this.statusOptions.selectedValue = new Date('2015-06-16');
   }
 
   onSubmit(form: NgForm) {

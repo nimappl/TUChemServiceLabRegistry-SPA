@@ -63,13 +63,12 @@ export class JalaliDatePickerComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
-    let start: Date;
+    let start: Date = new Date('2023-03-20');
     if (this.data.selectedValue !== null) {
-      start = this.data.selectedValue;
-      this.selectedDate = this.georgianToJalali(start.getFullYear(), start.getMonth() + 1, start.getDate());
-      this.pendingDate = this.georgianToJalali(start.getFullYear(), start.getMonth() + 1, start.getDate());
+      let selected = this.data.selectedValue;
+      this.selectedDate = this.georgianToJalali(selected.getFullYear(), selected.getMonth() + 1, selected.getDate());
+      this.pendingDate = this.georgianToJalali(selected.getFullYear(), selected.getMonth() + 1, selected.getDate());
     } else {
-      start = new Date('2023-03-20');
       let today = new Date();
       this.pendingDate = this.georgianToJalali(today.getFullYear(), today.getMonth() + 1, today.getDate());
       this.pendingDate.day = null;

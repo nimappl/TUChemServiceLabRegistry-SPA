@@ -26,7 +26,8 @@
           <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" ngModel autocomplete="off">
           <label for="madeIn">کشور سازنده</label>
         </div>
-        <app-select [data]="statusOptions" name="active" ngModel></app-select>
+<!--        <app-select [data]="statusOptions" name="active" ngModel></app-select>-->
+        <app-jalali-date-picker [data]="statusOptions" name="pox" ngModel></app-jalali-date-picker>
       </div>
     </div>
   </form>
