@@ -1,0 +1,4 @@
+h1:before { display: none; }
+h1 { font-family: Vazir, sans-serif !important; }
+textarea { resize: none }
+.txt { padding: 5px 20px; }

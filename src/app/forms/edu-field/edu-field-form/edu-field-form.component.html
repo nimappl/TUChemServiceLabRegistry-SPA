@@ -1,0 +1,30 @@
+<h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div class="container-fluid">
+  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-6">
+        <div class="input-field">
+          <input type="text" id="name" name="name" class="txt" placeholder="pox" [ngModel]="data.name" autocomplete="off">
+          <label for="name">نام رشته</label>
+        </div>
+        <app-search-select [data]="groupOptions" (onSearch)="getEduGroupOptions($event)" name="eduGroup" ngModel></app-search-select>
+      </div>
+      <div class="col-6">
+        <app-select [data]="levelOptions" name="fieldLevel" [ngModel]="data.fieldLevel"></app-select>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions style="direction: ltr;">
+  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+    <app-loading-spinner-bars
+            color="white"
+            [size]="16"
+            class="ms-2"
+            *ngIf="reachingOut">
+    </app-loading-spinner-bars>
+    <div>ثبت</div>
+  </button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+</div>

@@ -1,16 +1,15 @@
 <div tabindex="-59" id="master" class="select-wrapper" (blur)="focusout()">
   <span class="form-status" #formStatus></span>
-  <input id="search" type="text" class="txt"
+  <input [id]="inputId" type="text" class="txt"
          [ngClass]="{'invalid': data.invalid && touched}"
          #searchField
          [disabled]="disabled"
          [(ngModel)]="searchText"
-         (focus)="onInteract()"
          (input)="onInteract()"
          (focusin)="clicked()"
          (focusout)="focusout()"
          placeholder="df" autocomplete="off">
-  <label for="search" class="label">{{ data.label }}</label>
+  <label [for]="inputId" class="label">{{ data.label }}</label>
   <em></em>
   <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}" (mousedown)="clicked()">
     <ng-template [ngIf]="!loading && !loadingFailed && data.options.length > 0">
@@ -20,6 +19,7 @@
           (click)="select(opt.value)">
         {{ opt.title }}
       </li>
+      {{ setTitleOfSelectedValue() }}
     </ng-template>
     <ng-template [ngIf]="!loading && !loadingFailed && data.options.length === 0">
       <div class="ms-2 py-1">

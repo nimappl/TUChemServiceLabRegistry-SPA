@@ -1,5 +1,7 @@
 <div tabindex="34" class="select-wrapper" (blur)="focusout()" (mousedown)="clicked()">
-  <div class="select-box" (click)="openOptions($event)" [ngClass]="{'open': showCalendar}">
+  <div class="select-box"
+       (click)="openOptions($event)"
+       [ngClass]="{'open': showCalendar, 'invalid': data.invalid && this.touched, 'disabled': disabled}">
     <p class="selected">{{ selectedDate === null ? '' : dateToString() }}</p>
     <span class="icon"></span>
     <span class="label" [ngClass]="{'small': selectedDate !== null}">{{ data.label }}</span>

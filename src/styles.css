@@ -69,7 +69,7 @@ label {
     display: block;
     position: absolute;
     z-index: 1;
-    top: 8px;
+    top: 7px;
     right: 16px;
     transition: font-size 0.1s, top 0.1s, font-weight 0.1s;
     padding: 0 5px;
@@ -89,18 +89,43 @@ label {
 }
 
 .txt:focus ~ label {
-    top: -12px;
+    top: -13px;
     font-size: 12px;
-    /*font-weight: bold;*/
     color: forestgreen;
 }
+.txt[disabled] {
+    border-color: #bbb;
+    color: #999;
+    background-color: #f7f7f7;
+}
+.txt[disabled] ~ label {
+    color: #999;
+}
 .txt:not(:placeholder-shown) ~ label {
-    top: -12px;
+    top: -13px;
     font-size: 12px;
     /*font-weight: bold;*/
 }
 .txt::placeholder {
     color: transparent;
+}
+.form-hr {
+    margin-top: 18px;
+    position: relative;
+    box-sizing: border-box;
+}
+.form-hr > div {
+    height: 7px;
+    width: 100%;
+    background-color: #18815066;
+    margin-top: 9px;
+}
+.form-hr > span {
+    color: #999;
+    position: absolute;
+    padding: 0 10px;
+    background-color: #ffffff;
+    margin-right: 25px;
 }
 .invalid {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");

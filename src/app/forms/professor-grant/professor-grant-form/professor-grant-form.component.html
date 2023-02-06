@@ -1,0 +1,38 @@
+<h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div class="container-fluid">
+  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-6">
+        <app-search-select
+                [data]="peopleOptions"
+                (onSearch)="getPeopleOptions($event)"
+                (onSelectionChange)="onPersonSelect()"
+                name="id"
+                [disabled]="mode == 1"
+                [(ngModel)]="data.id">
+        </app-search-select>
+        <app-jalali-date-picker [data]="issueDateField" name="grantIssueDate" [(ngModel)]="data.grantIssueDate" [disabled]="mode == 0 && data.id == null"></app-jalali-date-picker>
+      </div>
+      <div class="col-6">
+        <div class="input-field">
+          <input type="number" id="grantAmount" name="grantAmount" class="txt" placeholder="pox" [(ngModel)]="data.grantAmount" autocomplete="off"  [disabled]="mode == 0 && data.id == null">
+          <label for="grantAmount">مبلغ اعتبار</label>
+        </div>
+        <app-jalali-date-picker [data]="expiryDateField" name="grantCredibleUntil" [(ngModel)]="data.grantCredibleUntil" [disabled]="mode == 0 && data.id == null"></app-jalali-date-picker>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions style="direction: ltr;">
+  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+    <app-loading-spinner-bars
+            color="white"
+            [size]="16"
+            class="ms-2"
+            *ngIf="reachingOut">
+    </app-loading-spinner-bars>
+    <div>ثبت</div>
+  </button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+</div>

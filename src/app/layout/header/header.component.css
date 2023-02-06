@@ -12,6 +12,6 @@ h1 {
     padding: 3px 0;
 }
 
-img {
-    width: 50px;
-}
+img { width: 50px; }
+
+.navbar { user-select: none; }

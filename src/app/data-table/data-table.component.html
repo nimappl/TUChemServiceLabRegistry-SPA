@@ -7,7 +7,7 @@
           <th *ngIf="config.sortable; else nonSortable"
               (click)="toggleSortFor(i)" [ngStyle]="{'cursor': col.sortable ? 'pointer' : 'unset'}">
             {{ col.title }}
-            <span *ngIf="col.for === data.sortBy && col.sortable">
+            <span *ngIf="col.dbName === data.sortBy && col.sortable">
               <i class="fas fa-sort-amount-down-alt mr-2" *ngIf="data.sortType === 0"></i>
               <i class="fas fa-sort-amount-down mr-2" *ngIf="data.sortType === 1"></i>
             </span>
@@ -33,7 +33,7 @@
             type="text" class="form-control form-control-sm"
             placeholder="جستجو" autocomplete="off"
             [name]="col.for"
-            (input)="search(col.for, $event)">
+            (input)="search(col.dbName, $event)">
         </td>
         <td *ngFor="let e of config.buttonTitles"></td>
         <td *ngIf="config.hasEdit"></td>

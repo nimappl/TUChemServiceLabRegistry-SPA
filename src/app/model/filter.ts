@@ -1,6 +1,6 @@
 export default class Filter {
     constructor(
         public key: string,
-        public value: string
+        public value: any
     ) {}
 }

@@ -1,6 +1,4 @@
-import {Observable} from "rxjs";
 import {Data} from "../model";
-import {InstrumentService} from "../services/instrument.service";
 
 export class CustomFieldData {
     label: string;

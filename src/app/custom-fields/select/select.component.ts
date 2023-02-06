@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, ElementRef, Input} from '@angular/core';
 import { CustomFieldData } from "../custom-field-data";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
@@ -17,6 +17,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 export class SelectComponent implements ControlValueAccessor {
   showOptions: Boolean = false;
   @Input() data: CustomFieldData = new CustomFieldData();
+  selectedValueTitle: string = '';
 
   onChange = (selectedValue) => {};
   onTouched = () => {};
@@ -36,7 +37,11 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    this.data.selectedValue = value === "" ? null : value;
+    if (value === null || value === undefined || value === "") {
+      this.data.selectedValue = null;
+    } else {
+      this.data.selectedValue = value;
+    }
   }
 
   markAsTouched() {
@@ -57,6 +62,14 @@ export class SelectComponent implements ControlValueAccessor {
     this.data.selectedValue = value;
     this.onChange(this.data.selectedValue);
     this.showOptions = false;
+  }
+
+  setTitleOfSelectedValue(title: any) {
+    this.data.options.forEach(opt => {
+      if (opt.value == this.data.selectedValue) {
+        title.innerText = opt.title;
+      }
+    });
   }
 
   focusout() {

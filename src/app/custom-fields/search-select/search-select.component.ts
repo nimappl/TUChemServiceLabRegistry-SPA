@@ -20,7 +20,10 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   @ViewChild('formStatus') formStatus: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
   @Input() data: CustomFieldData;
+  @Output() onSearch: EventEmitter<string> = new EventEmitter();
+  @Output() onSelectionChange: EventEmitter<any> = new EventEmitter();
   searchText: string = '';
+  inputId = Math.floor(Math.random() * 100);
 
   onChange = (selectedValue) => {};
   onTouched = () => {};
@@ -46,7 +49,11 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any): void {
-    this.data.selectedValue = value === "" ? null : value;
+    if (value === null || value === undefined || value === "") {
+      this.data.selectedValue = null;
+    } else {
+      this.data.selectedValue = value;
+    }
   }
 
   markAsTouched() {
@@ -58,22 +65,25 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
 
   select(value: number) {
     this.data.selectedValue = value;
+    this.onSelectionChange.emit();
     this.showOptions = false;
-    this.searchText = this.data.options[this.data.selectedValue].title;
     this.changeFormStatus(2);
     this.onChange(this.data.selectedValue);
   }
 
+  setTitleOfSelectedValue() {
+    this.data.options.forEach(opt => {
+      if (opt.value === this.data.selectedValue)
+        this.searchText = opt.title;
+    });
+  }
+
   onInteract() {
     if (!this.disabled) {
-      this.markAsTouched();
-      this.showOptions = this.searchText !== '';
-      if (this.data.selectedValue == null && this.searchText !== '') this.changeFormStatus(1);
-      else if (this.data.selectedValue !== null && this.searchText !== this.data.options[this.data.selectedValue].title) {
-        this.data.selectedValue = null;
-        this.onChange(this.data.selectedValue);
-        this.changeFormStatus(1);
-      } else if (this.searchText === '') this.changeFormStatus(0);
+      this.data.selectedValue = null;
+      if (this.searchText === '') this.changeFormStatus(0);
+      else this.changeFormStatus(1);
+      this.onSearch.emit(this.searchText);
     }
   }
 
@@ -86,6 +96,8 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   clicked() {
+    this.markAsTouched();
+    this.showOptions = true;
     setTimeout(() =>  this.focusFlag = true, 10 );
   }
 

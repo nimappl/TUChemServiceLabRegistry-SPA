@@ -13,6 +13,15 @@
     border: 1px solid #999;
     background-position: left 28px center !important;
 }
+.disabled {
+    border-color: #bbb;
+    color: #999;
+    background-color: #f7f7f7;
+    cursor: default;
+}
+.disabled > .label {
+    color: #999;
+}
 .icon {
     width: 15px;
     height: 15px;

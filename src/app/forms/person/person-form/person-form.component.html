@@ -1,0 +1,45 @@
+<h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div class="container-fluid">
+  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-6">
+        <div class="input-field">
+          <input type="text" id="firstName" name="firstName" class="txt" placeholder="pox" [ngModel]="data.firstName" autocomplete="off">
+          <label for="firstName">نام</label>
+        </div>
+        <div class="input-field">
+          <input type="text" id="phoneNumber" name="phoneNumber" class="txt" placeholder="pox" [ngModel]="data.phoneNumber" autocomplete="off">
+          <label for="phoneNumber">شماره موبایل</label>
+        </div>
+        <div class="input-field">
+          <input type="text" id="nationalNumber" name="nationalNumber" class="txt" placeholder="pox" [ngModel]="data.nationalNumber" autocomplete="off">
+          <label for="nationalNumber">کد ملی</label>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="input-field">
+          <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [ngModel]="data.lastName" autocomplete="off">
+          <label for="lastName">نام خانوادگی</label>
+        </div>
+        <div class="input-field">
+          <input type="text" id="email" name="email" class="txt" placeholder="pox" [ngModel]="data.email" autocomplete="off">
+          <label for="email">ایمیل</label>
+        </div>
+        <app-select [data]="genderOptions" name="gender" [ngModel]="data.gender"></app-select>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions style="direction: ltr;">
+  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+    <app-loading-spinner-bars
+            color="white"
+            [size]="16"
+            class="ms-2"
+            *ngIf="reachingOut">
+    </app-loading-spinner-bars>
+    <div>ثبت</div>
+  </button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+</div>

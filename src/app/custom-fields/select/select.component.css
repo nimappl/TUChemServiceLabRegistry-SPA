@@ -12,6 +12,15 @@
     padding: 7px 20px 7px 44px;
     border: 1px solid #999;
 }
+.disabled {
+    border-color: #bbb;
+    color: #999;
+    background-color: #f7f7f7;
+    cursor: default;
+}
+.disabled > .label {
+    color: #999;
+}
 
 .invalid {
     padding-left: 44px;

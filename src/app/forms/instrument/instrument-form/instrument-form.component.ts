@@ -18,7 +18,6 @@ export class InstrumentFormComponent implements OnInit{
   submitted: boolean = false;
   statusOptions: CustomFieldData = new CustomFieldData();
   @ViewChild('f') form: NgForm;
-  date: Date;
 
   constructor(
     private dialogRef: MatDialogRef<InstrumentFormComponent>,
@@ -27,25 +26,29 @@ export class InstrumentFormComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.mode = (this.data.instrumentId == undefined) ? 0 : 1;
-    this.title = (this.data.instrumentId == undefined) ? 'دستگاه جدید' : 'ویرایش';
+    this.mode = (this.data.id == undefined) ? 0 : 1;
+    this.title = (this.data.id == undefined) ? 'جدید' : 'ویرایش';
 
-    this.statusOptions.label = 'تاریخ کیری';
+    this.statusOptions.label = 'وضعیت سرویس دهی';
     this.statusOptions.options = [
         {value: 0, title: 'غیرقابل استفاده'},
         {value: 1, title: 'آماده سرویس'}
     ];
     // if (this.mode === 1) this.statusOptions.selectedValue = this.data.active ? 1 : 0;
-    // this.statusOptions.selectedValue = new Date('2015-06-16');
   }
 
-  onSubmit(form: NgForm) {
-    console.log(form);
+  onSubmit() {
+    this.data.name = this.form.value.name;
+    this.data.model = this.form.value.model;
+    this.data.serial = this.form.value.serial;
+    this.data.manufacturer = this.form.value.manufacturer;
+    this.data.madeIn = this.form.value.madeIn;
+    this.data.serviceable = this.form.value.serviceable;
+    this.submit();
   }
 
   submit() {
     this.reachingOut = true;
-    this.data.active = this.statusOptions.selectedValue !== 0;
     if (this.mode === 0) {
       this.apiService.create(this.data).subscribe(res => {
         this.reachingOut = false;

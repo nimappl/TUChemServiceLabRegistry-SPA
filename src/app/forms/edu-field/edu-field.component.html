@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-header py-1">رشته تحصیلی</div>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-sm btn-success me-2 px-3" (click)="openForm()">
+        جدید
+        <i class="fas fa-plus ms-2"></i>
+      </button>
+      <button class="btn btn-sm btn-secondary px-3" (click)="toggleSearch()">
+        جستجو
+        <i class="fas fa-search ms-2"></i>
+      </button>
+    </div>
+    <app-data-table
+            [data]="eduFields"
+            [config]="table"
+            (editItem)="openForm($event)"
+            (removeItem)="onRemoveItem($event)"
+            (paramsChanged)="fetch()">
+    </app-data-table>
+  </div>
+  <app-progress *ngIf="table.loading"></app-progress>
+</div>

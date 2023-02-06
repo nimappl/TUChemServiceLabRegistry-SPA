@@ -22,9 +22,9 @@ export class DataTableComponent {
     let col = this.config.columns[colIndex];
     if (col.hasSearch) {
       this.data.pageNumber = 1;
-      if (this.data.sortBy !== col.for) {
+      if (this.data.sortBy !== col.dbName) {
         this.data.sortType = SortType.Asc;
-        this.data.sortBy = col.for;
+        this.data.sortBy = col.dbName;
       } else {
         if (this.data.sortType === SortType.Desc) {
           this.data.sortType = SortType.Asc;

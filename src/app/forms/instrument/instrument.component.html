@@ -16,9 +16,25 @@
             [config]="table"
             (editItem)="openForm($event)"
             (removeItem)="onRemoveItem($event)"
-            (activeChanged)="onToggleStatus($event)"
-            (paramsChanged)="fetch()">
+            (paramsChanged)="fetch()"
+            (buttonClicked)="buttonClicked($event)">
     </app-data-table>
   </div>
   <app-progress *ngIf="table.loading"></app-progress>
+  <div class="details mx-3 py-3" *ngIf="selectedItem !== null">
+    <h5 class="fw-bold">جزئیات دستگاه</h5>
+    <div class="row mb-2">
+      <div class="col">
+        <div><strong>نام دستگاه:</strong>&nbsp;<span>{{ selectedItem.name }}</span></div>
+        <div><strong>مدل دستگاه:</strong>&nbsp;<span>{{ selectedItem.model }}</span></div>
+        <div><strong>شماره سریال:</strong>&nbsp;<span>{{ selectedItem.serial }}</span></div>
+      </div>
+      <div class="col">
+        <div><strong>شرکت سازنده:</strong>&nbsp;<span>{{ selectedItem.manufacturer }}</span></div>
+        <div><strong>کشور سازنده:</strong>&nbsp;<span>{{ selectedItem.madeIn }}</span></div>
+        <div><strong>وضعیت سرویس دهی:</strong>&nbsp;<span>{{ table.columns[4].transform(selectedItem.serviceable) }}</span></div>
+      </div>
+      <h5 class="fw-bold">اپراتور های دستگاه</h5>
+    </div>
+  </div>
 </div>

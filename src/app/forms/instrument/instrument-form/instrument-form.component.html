@@ -1,33 +1,32 @@
-<h1 mat-dialog-title class="pt-2 pb-0">ثبت دستگاه</h1>
+<h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
 <app-progress *ngIf="reachingOut"></app-progress>
 <div class="container-fluid">
-  <form id="form" #f=ngForm (ngSubmit)="onSubmit(f)">
+  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-6">
         <div class="input-field">
-            <input type="text" id="name" name="name" class="txt" placeholder="pox" ngModel autocomplete="off">
+            <input type="text" id="name" name="name" class="txt" placeholder="pox" [ngModel]="data.name" autocomplete="off">
             <label for="name">نام دستگاه</label>
         </div>
         <div class="input-field">
-          <input type="text" id="model" name="model" class="txt" placeholder="pox" ngModel autocomplete="off">
+          <input type="text" id="model" name="model" class="txt" placeholder="pox" [ngModel]="data.model" autocomplete="off">
           <label for="model">مدل دستگاه</label>
         </div>
         <div class="input-field">
-          <input type="text" id="serial" name="serial" class="txt" placeholder="pox" ngModel autocomplete="off">
+          <input type="text" id="serial" name="serial" class="txt" placeholder="pox" [ngModel]="data.serial" autocomplete="off">
           <label for="serial">شماره سریال</label>
         </div>
       </div>
       <div class="col-6">
         <div class="input-field">
-          <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" ngModel autocomplete="off">
+          <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [ngModel]="data.manufacturer" autocomplete="off">
           <label for="manufacturer">شرکت سازنده</label>
         </div>
         <div class="input-field">
-          <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" ngModel autocomplete="off">
+          <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [ngModel]="data.madeIn" autocomplete="off">
           <label for="madeIn">کشور سازنده</label>
         </div>
-<!--        <app-select [data]="statusOptions" name="active" ngModel></app-select>-->
-        <app-jalali-date-picker [data]="statusOptions" name="pox" ngModel></app-jalali-date-picker>
+        <app-select [data]="statusOptions" name="serviceable" [ngModel]="data.serviceable"></app-select>
       </div>
     </div>
   </form>

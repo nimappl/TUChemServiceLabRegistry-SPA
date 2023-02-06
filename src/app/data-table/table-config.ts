@@ -8,7 +8,7 @@ export class TableConfig {
   hasSearch: boolean;
   showSearch: boolean = false;
   hasPagination: boolean = true;
-  columns: Array<{for: string, title: string, sortable: boolean, hasSearch: boolean, transform?: (value: any) => any}>;
+  columns: Array<{for: string, dbName: string, title: string, sortable: boolean, hasSearch: boolean, transform?: (value: any) => any}>;
   buttons: Array<{title: string, id: number, altText: string}>;
   buttonTitles: Array<string>;
   sorting: boolean = false;

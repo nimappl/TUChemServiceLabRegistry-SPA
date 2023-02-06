@@ -1,6 +1,7 @@
 .sidebar {
     height: calc(100vh - 65px);
     border-left: 1px solid #ccc;
+    user-select: none;
 }
 
 .nav-menu {

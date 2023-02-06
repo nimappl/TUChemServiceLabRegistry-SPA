@@ -1,9 +1,12 @@
+import InstrumentOperator from "./instrument-operator";
+
 export default class Instrument {
-  instrumentId: number;
+  id: number;
   name: string;
   model: string;
   serial: string;
   manufacturer: string;
   madeIn: string;
-  active: boolean;
+  serviceable: any;
+  operators: Array<InstrumentOperator>
 }
