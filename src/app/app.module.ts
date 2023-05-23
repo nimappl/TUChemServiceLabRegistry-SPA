@@ -40,6 +40,11 @@ import { ProfessorComponent } from './forms/professor/professor.component';
 import { ProfessorFormComponent } from './forms/professor/professor-form/professor-form.component';
 import { ProfessorGrantComponent } from './forms/professor-grant/professor-grant.component';
 import { ProfessorGrantFormComponent } from './forms/professor-grant/professor-grant-form/professor-grant-form.component';
+import { UsedMaterialComponent } from './forms/used-material/used-material.component';
+import { UsedMaterialFormComponent } from './forms/used-material/used-material-form/used-material-form.component';
+import { OrganizationComponent } from './forms/organization/organization.component';
+import { OrganizationFormComponent } from './forms/organization/organization-form/organization-form.component';
+import { InstrumentMaintenanceFormComponent } from './forms/instrument/instrument-maintenance-form/instrument-maintenance-form.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +79,12 @@ import { ProfessorGrantFormComponent } from './forms/professor-grant/professor-g
     ProfessorComponent,
     ProfessorFormComponent,
     ProfessorGrantComponent,
-    ProfessorGrantFormComponent
+    ProfessorGrantFormComponent,
+    UsedMaterialComponent,
+    UsedMaterialFormComponent,
+    OrganizationComponent,
+    OrganizationFormComponent,
+    InstrumentMaintenanceFormComponent
   ],
   imports: [
     BrowserModule,

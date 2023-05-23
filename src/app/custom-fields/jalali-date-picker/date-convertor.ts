@@ -54,7 +54,9 @@ export class DateConvertor {
   }
 
   public static dateStringToJalali(date: string) {
-    let jalali = this.georgianToJalali(date);
-    return `${jalali.year}/${jalali.month}/${jalali.day}`;
+    if (date) {
+      let jalali = this.georgianToJalali(date);
+      return `${jalali.year}/${jalali.month}/${jalali.day}`;
+    }
   }
 }

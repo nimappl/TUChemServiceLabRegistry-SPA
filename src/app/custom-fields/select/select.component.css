@@ -5,7 +5,7 @@
     color: #666;
     user-select: none;
     font-size: 14px;
-    margin-top: 18px;
+    background-color: #fff;
 }
 .select-box {
     height: 37px;
@@ -96,12 +96,4 @@
 }
 .open > .arrow {
     background-image: url("src/assets/svg/chevron-down-green.svg");
-}
-
-.loading {
-    background-image: url("../../../assets/svg/spinner-0.5s-50px.svg");
-    background-repeat: no-repeat;
-    background-size: 20px;
-    width: 20px;
-    height: 20px;
 }

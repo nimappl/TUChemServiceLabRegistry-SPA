@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import * as Model from '../../model'
+import {Instrument, Data, InstrumentMaintenance, InstrumentOperator, IMUsedMaterial, OrgPhoneNumber} from '../../model'
 import { MatDialog } from "@angular/material/dialog";
 import { InstrumentFormComponent } from "./instrument-form/instrument-form.component";
 import { InstrumentService } from "../../services/instrument.service";
 import swal from "sweetalert";
 import {TableConfig} from "../../data-table/table-config";
-import {Instrument} from "../../model";
+import {InstrumentMaintenanceFormComponent} from "./instrument-maintenance-form/instrument-maintenance-form.component";
+import {InstrumentMaintenanceService} from "../../services/instrument-maintenance.service";
+import {SortType} from "../../model/data";
+import {DateConvertor} from "../../custom-fields/jalali-date-picker/date-convertor";
 
 @Component({
   selector: 'app-instrument',
@@ -13,88 +16,173 @@ import {Instrument} from "../../model";
   styleUrls: ['./instrument.component.css']
 })
 export class InstrumentComponent {
-  instruments: Model.Data<Model.Instrument> = new Model.Data<Model.Instrument>;
-  table: TableConfig = new TableConfig();
-  selectedItem: Instrument = null;
+  instruments: Data<Instrument> = new Data<Instrument>();
+  instrumentTableConfig: TableConfig = new TableConfig(1);
+  maintenanceTableConfig: TableConfig = new TableConfig(1);
+  operatorsTableConfig: TableConfig = new TableConfig(0);
+  usedMaterialTableConfig: TableConfig = new TableConfig(0);
+  orgPhoneNumberTableConfig: TableConfig = new TableConfig(0);
+  orgPhoneNumberData: Data<OrgPhoneNumber> = new Data<OrgPhoneNumber>();
+  maintenanceData: Data<InstrumentMaintenance>;
+  operatorsData: Data<InstrumentOperator> = new Data<InstrumentOperator>();
+  usedMaterialData: Data<IMUsedMaterial> = new Data<IMUsedMaterial>();
+  selectedInstrument: Instrument = null;
+  selectedMaintenance: InstrumentMaintenance = null;
 
-  constructor(private apiService: InstrumentService,
+  constructor(private instrumentService: InstrumentService,
+              private maintenanceService: InstrumentMaintenanceService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.activationColTitle = 'وضعیت سرویس دهی';
-    this.table.activeStatusKey = 'serviceable';
-    this.table.hasSearch = true;
-    this.table.columns = [
+    this.instrumentTableConfig.columns = [
       {for: 'name', dbName: 'IName', title: 'نام دستگاه', sortable: true, hasSearch: true},
       {for: 'model', dbName: 'IModel', title: 'مدل', sortable: true, hasSearch: true},
-      // {for: 'serial', dbName: 'ISerialNo', title: 'شماره سریال', sortable: true, hasSearch: true},
       {for: 'manufacturer', dbName: 'IManufacturer', title: 'شرکت سازنده', sortable: true, hasSearch: true},
       {for: 'madeIn', dbName: 'IMadeIn', title: 'کشور سازنده', sortable: true, hasSearch: true},
-      {
-        for: 'serviceable',
-        dbName: 'IServiceable',
-        title: 'وضعیت سرویس دهی',
-        sortable: false,
-        hasSearch: false,
-        transform: (item) => item == 1 ? 'آماده سرویس دهی' : 'غیرقابل استفاده'
-      }
+      {for: 'serviceable', dbName: 'IServiceable', title: 'وضعیت سرویس دهی', sortable: false, hasSearch: false, transform: value => Instrument.getServiceability(value)}
     ];
-    this.table.buttonTitles = ['جزئیات'];
-    this.table.buttons = [{title: 'مشاهده جزئیات', id: 1, altText: ''}];
-
-    this.fetch(true);
+    this.fetchInstrument(true);
   }
 
-  fetch(tableLoading:boolean = false): void {
+  formatDescription(val:string):string {
+    return val.replace(/(\r\n|\r|\n)/g, '<br>');
+  }
+
+  fetchInstrument(tableLoading:boolean = false): void {
     let options = JSON.parse(JSON.stringify(this.instruments));
     options.records = [];
-    this.table.loading = true;
-    this.table.sorting = tableLoading;
-    this.apiService.get(options).subscribe(res => {
-      this.table.loading = false;
-      this.table.sorting = false;
+    this.instrumentTableConfig.loading = true;
+    this.instrumentTableConfig.sorting = tableLoading;
+    this.instrumentService.get(options).subscribe(res => {
+      this.instrumentTableConfig.loading = false;
+      this.instrumentTableConfig.sorting = false;
       this.instruments = res;
     }, err => {
-      this.table.loading = false;
-      this.table.sorting = false;
-      this.table.loadingFailed = true;
+      this.instrumentTableConfig.loading = false;
+      this.instrumentTableConfig.sorting = false;
+      this.instrumentTableConfig.loadingFailed = true;
     });
   }
 
-  openForm(item?: any): void {
-    let data: Model.Instrument;
-    if (item) data = item; else data = new Model.Instrument();
+  fetchMaintenance(tableLoading:boolean = false): void {
+    let options = JSON.parse(JSON.stringify(this.maintenanceData));
+    options.records = [];
+    this.maintenanceTableConfig.loading = true;
+    this.maintenanceTableConfig.sorting = tableLoading;
+    this.maintenanceService.get(options).subscribe(res => {
+      this.maintenanceTableConfig.loading = false;
+      this.maintenanceTableConfig.sorting = false;
+      this.maintenanceData = res;
+    }, err => {
+      this.maintenanceTableConfig.loading = false;
+      this.maintenanceTableConfig.sorting = false;
+      this.maintenanceTableConfig.loadingFailed = true;
+    });
+  }
+
+  openInstrumentForm(item?: any): void {
+    let data: Instrument;
+    if (item) data = item; else data = new Instrument();
 
     const dialogRef = this.dialog.open(InstrumentFormComponent, {
       width: '850px',
+      maxHeight: '95vh',
       direction: 'rtl',
       disableClose: true,
       data: data
     });
 
     dialogRef.afterClosed().subscribe(submitted => {
-      if(submitted) this.fetch(true);
+      if(submitted) {
+        this.fetchInstrument(true);
+        this.selectedInstrument = null;
+        this.selectedMaintenance = null;
+      }
     });
   }
 
-  toggleSearch() {
-    if (this.table.showSearch) {
-      this.instruments.filters = [];
-      this.fetch();
+  openMaintenanceForm(item?: any): void {
+    let data: InstrumentMaintenance;
+    if (item) data = item;
+    else {
+      data = new InstrumentMaintenance();
+      data.instrumentId = this.selectedInstrument.id;
     }
 
-    this.table.showSearch = !this.table.showSearch;
+    const dialogRef = this.dialog.open(InstrumentMaintenanceFormComponent, {
+      width: '900px',
+      maxHeight: '95vh',
+      direction: 'rtl',
+      disableClose: true,
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(submitted => {
+      if(submitted) {
+        this.fetchMaintenance(true);
+        this.selectedMaintenance = null;
+      }
+    });
   }
 
-  buttonClicked(item: {btnId: number, record: Instrument}) {
-    this.selectedItem = item.record;
+  toggleInstrumentSearch() {
+    if (this.instrumentTableConfig.showSearch) {
+      this.instruments.filters = [];
+      this.fetchInstrument();
+    }
+
+    this.instrumentTableConfig.showSearch = !this.instrumentTableConfig.showSearch;
   }
 
-  onRemoveItem(index: number) {
+  toggleMaintenanceSearch() {
+    if (this.maintenanceTableConfig.showSearch) {
+      this.instruments.filters = [];
+      this.fetchMaintenance();
+    }
+    this.maintenanceTableConfig.showSearch = !this.maintenanceTableConfig.showSearch;
+  }
+
+  showInstrumentDetails(item: {btnId: number, record: Instrument}) {
+    this.selectedInstrument = item.record;
+    this.operatorsData.records = item.record.operators;
+    this.operatorsTableConfig.columns = [
+      {for: 'nationalNumber', title: 'کد ملی', dbName: 'PNationalNumber', hasSearch: false, sortable: false},
+      {for: 'firstName', title: 'نام', dbName: 'PFirstName', hasSearch: false, sortable: false},
+      {for: 'lastName', title: 'نام خانوادگی', dbName: 'PLastName', hasSearch: false, sortable: false},
+      {for: 'designationDate', title: 'اپراتوری دستگاه از تاریخ', dbName: 'DesignationDate', hasSearch: false, sortable: false, transform: d => DateConvertor.dateStringToJalali(d)},
+      {for: 'type', title: 'نوع همکاری', dbName: 'IOperatorType', hasSearch: false, sortable: false, transform: t => InstrumentOperator.getType(t)}
+    ];
+    this.maintenanceData = new Data<InstrumentMaintenance>();
+    this.maintenanceData.filters.push({key: 'InstrumentID', value: this.selectedInstrument.id});
+    this.maintenanceData.sortBy = 'IMDate';
+    this.maintenanceData.sortType = SortType.Desc;
+    this.maintenanceTableConfig.columns = [
+      {for: 'title', title: 'عنوان', dbName: 'IMTitle', hasSearch: true, sortable: true},
+      {for: 'date', title: 'تاریخ', dbName: 'IMDate', hasSearch: true, sortable: true, transform: d => DateConvertor.dateStringToJalali(d)},
+      {for: 'totalCost', title: 'هزینه کل اقدامات', dbName: 'IMCost', hasSearch: true, sortable: true},
+      {for: 'invoiceNo', title: 'شماره فاکتور', dbName: 'IMInvoiceNo', hasSearch: true, sortable: true}
+    ];
+    this.fetchMaintenance(true);
+  }
+
+  showMaintenanceDetails(item: {btnId: number, record: InstrumentMaintenance}) {
+    this.selectedMaintenance = item.record;
+    this.usedMaterialData.records = item.record.usedMaterialList;
+    this.usedMaterialTableConfig.columns = [
+      {for: 'name', dbName: '', title: 'نام قطعه/ماده', sortable: false, hasSearch: false},
+      {for: 'type', dbName: '', title: 'نوع', sortable: false, hasSearch: false, transform: m => IMUsedMaterial.getType(m)},
+      {for: 'price', dbName: '', title: 'قیمت هر واحد', sortable: false, hasSearch: false},
+      {for: 'quantity', dbName: '', title: 'تعداد/مقدار', sortable: false, hasSearch: false},
+      {for: 'manufacturer', dbName: '', title: 'تولید کننده', sortable: false, hasSearch: false}
+    ];
+    this.orgPhoneNumberData.records = item.record.servicingCompany.phoneNumbers;
+    this.orgPhoneNumberTableConfig.columns = [
+      {for: 'number', dbName: 'OrgPhoneNumber', title: 'شماره تلفن', sortable: false, hasSearch: false},
+      {for: 'section', dbName: 'OrgPNSection', title: 'توضیحات', sortable: false, hasSearch: false}
+    ];
+  }
+
+  onRemoveInstrument(index: number) {
     swal({
       title: 'حذف',
       text: `آیا از حذف "${this.instruments.records[index].name}" اطمینان دارید؟`,
@@ -103,13 +191,35 @@ export class InstrumentComponent {
       dangerMode: true
     }).then(deleteConfirm => {
       if (deleteConfirm) {
-        this.table.loading = true;
-        this.apiService.delete(this.instruments.records[index].id).subscribe(res => {
-          this.table.loading = false;
+        this.instrumentTableConfig.loading = true;
+        this.instrumentService.delete(this.instruments.records[index].id).subscribe(res => {
+          this.instrumentTableConfig.loading = false;
           swal({title: 'موفق', text: `عملیات حذف انجام شد.`, icon: 'success'});
-          this.fetch();
+          this.fetchInstrument();
         }, err => {
-          this.table.loading = false;
+          this.instrumentTableConfig.loading = false;
+          swal({title: 'ناموفق', icon: 'error'});
+        });
+      }
+    });
+  }
+
+  onRemoveMaintenance(index: number) {
+    swal({
+      title: 'حذف',
+      text: `آیا از حذف "${this.maintenanceData.records[index].title}" اطمینان دارید؟`,
+      icon: 'warning',
+      buttons: ['انصراف', 'تأیید'],
+      dangerMode: true
+    }).then(deleteConfirm => {
+      if (deleteConfirm) {
+        this.maintenanceTableConfig.loading = true;
+        this.maintenanceService.delete(this.instruments.records[index].id).subscribe(res => {
+          this.maintenanceTableConfig.loading = false;
+          swal({title: 'موفق', text: `عملیات حذف انجام شد.`, icon: 'success'});
+          this.fetchInstrument();
+        }, err => {
+          this.maintenanceTableConfig.loading = false;
           swal({title: 'ناموفق', icon: 'error'});
         });
       }

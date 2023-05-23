@@ -1,0 +1,188 @@
+<h1 mat-dialog-title class="pt-1 pb-0">{{ title }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div style="overflow: scroll; max-height: 81vh">
+  <div class="container-fluid">
+    <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-8">
+          <div class="input-field">
+            <input type="text" id="title" name="title" class="txt" placeholder="pox" [(ngModel)]="data.title" autocomplete="off">
+            <label for="title">عنوان</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <app-jalali-date-picker [data]="dateOptions" name="date" [(ngModel)]="data.date"></app-jalali-date-picker>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="invoiceNo" name="invoiceNo" class="txt ltr" placeholder="pox" [(ngModel)]="data.invoiceNo" autocomplete="off">
+            <label for="invoiceNo">شماره فاکتور</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-field">
+            <input type="number" id="cost" name="cost" class="txt ltr" placeholder="pox" [(ngModel)]="data.totalCost" autocomplete="off">
+            <label for="cost">هزینه اقدام تعمیر و نگه‌داری (ریال)</label>
+          </div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-group-header">
+          <div class="group-title">مواد/قطعات مصرف شده برای تعمیر/اقدام نگهداری دستگاه</div>
+          <div class="group-buttons">
+            <button type="button" class="btn btn-outline-success btn-sm px-3" (click)="onAddMaterial()">
+              جدید
+            </button>
+          </div>
+        </div>
+        <div class="group-content">
+          <ng-template [ngIf]="data.usedMaterialList.length > 0" [ngIfElse]="noMaterials">
+            <div class="complex-field d-flex justify-content-around" *ngFor="let material of data.usedMaterialList, let i = index">
+              <div class="complex-field-label">ماده/قطعه {{i + 1}}</div>
+              <div style="width: 230px;">
+                <div class="input-field">
+                  <app-search-select
+                          [name]="'name'+i"
+                          [data]="materialOptions[i].searchOptions"
+                          [(ngModel)]="data.usedMaterialList[i].name"
+                          (onSearch)="onSearchMaterial(i)"
+                          (onSelectionChange)="onSelectMaterial(i)"
+                          [disabled]="data.usedMaterialList[i].id != null">
+                  </app-search-select>
+                </div>
+              </div>
+              <div style="width: 98px;">
+                <div class="input-field">
+                  <app-select [name]="'type-'+i" [data]="materialOptions[i].typeOptions" [(ngModel)]="data.usedMaterialList[i].type" [disabled]="data.usedMaterialList[i].id != null"></app-select>
+                </div>
+              </div>
+              <div style="width: 170px;">
+                <div class="input-field">
+                  <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt ltr" [(ngModel)]="data.usedMaterialList[i].price" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
+                  <label [for]="'price-'+i">قیمت هر واحد</label>
+                </div>
+              </div>
+              <div style="width: 170px;">
+                <div class="input-field">
+                  <input type="text" [id]="'manufacturer-'+i" [name]="'manufacturer-'+i" class="txt" [(ngModel)]="data.usedMaterialList[i].manufacturer" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
+                  <label [for]="'manufacturer-'+i">تولید کننده</label>
+                </div>
+              </div>
+              <div style="width: 110px;">
+                <div class="input-field">
+                  <input type="number" [id]="'quantity-'+i" [name]="'quantity-'+i" class="txt ltr" [(ngModel)]="data.usedMaterialList[i].quantity" [disabled]="data.usedMaterialList[i].maintenanceId != null" placeholder="pox" autocomplete="off">
+                  <label [for]="'quantity-'+i">تعداد/مقدار</label>
+                </div>
+              </div>
+              <div style="width: 36px; margin-top: 14px">
+                <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveMaterial(i)">حذف</button>
+              </div>
+            </div>
+            <p class="small text-muted ms-2">هزینه کل موارد: {{ calculateMaterialsPrice() }} ریال</p>
+          </ng-template>
+          <ng-template #noMaterials>
+            <p class="small text-muted mt-2 ms-2">خالی.</p>
+          </ng-template>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-group-header">
+          <div class="group-title">مشخصات تعمیرکار/شرکت ارائه دهنده خدمات</div>
+        </div>
+        <div class="group-content">
+          <div class="row">
+            <div class="col-6" style="margin-top: 18px;">
+              <div class="d-flex">
+                <div style="width: 100%">
+                  <app-search-select
+                          [data]="personSearchOptions"
+                          name="firstName" [(ngModel)]="data.serviceman.firstName"
+                          (onSelectionChange)="onSelectPerson()"
+                          (onSearch)="onSearchPerson()"
+                          [disabled]="data.serviceman.id != null">
+                  </app-search-select>
+                </div>
+                <div class="ms-2" style="width: 105px" *ngIf="data.serviceman.id != null">
+                  <button type="button" class="btn btn-small btn-outline-secondary"
+                          (click)="onDropSelectedPerson()" style="border-radius: 2px">
+                    لغو انتخاب <i class="fas fa-times-circle"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" id="lastName" name="lastName" class="txt" [(ngModel)]="data.serviceman.lastName" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
+                <label for="lastName">نام خانوادگی</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-5">
+              <div class="input-field">
+                <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" [(ngModel)]="data.serviceman.nationalNumber" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
+                <label for="nationalNumber">کد ملی</label>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="input-field">
+                <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" [(ngModel)]="data.serviceman.phoneNumber" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
+                <label for="phoneNumber">شماره تلفن</label>
+              </div>
+            </div>
+            <div class="col-2" style="margin-top: 18px;">
+              <app-select [data]="genderOptions" name="gender" [(ngModel)]="data.serviceman.gender" [disabled]="data.serviceman.id != null"></app-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-7" style="margin-top: 18px">
+          <div class="d-flex">
+            <div style="width: 100%">
+              <app-search-select
+                      [data]="organizationSearchOptions"
+                      name="orgName" [(ngModel)]="data.servicingCompany.name"
+                      (onSearch)="onSearchOrganization()"
+                      (onSelectionChange)="onSelectOrganization()"
+                      [disabled]="data.servicingCompany.id != null">
+              </app-search-select>
+            </div>
+            <div class="ms-2" style="width: 105px" *ngIf="data.servicingCompany.id != null">
+              <button type="button" class="btn btn-small btn-outline-secondary"
+                      (click)="onDropSelectedOrganization()" style="border-radius: 2px">
+                لغو انتخاب <i class="fas fa-times-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="input-field">
+            <input type="text" id="nationalId" name="nationalId" class="txt ltr" [(ngModel)]="data.servicingCompany.nationalId" [disabled]="data.servicingCompany.id != null" placeholder="." autocomplete="off">
+            <label for="nationalId">شناسه ملی شرکت</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field">
+          <textarea name="description" id="description" class="txt" rows="5" [(ngModel)]="data.description"></textarea>
+          <label for="description">توضیحات</label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions style="direction: ltr;">
+  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+    <app-loading-spinner-bars
+            color="white"
+            [size]="16"
+            class="ms-2"
+            *ngIf="reachingOut">
+    </app-loading-spinner-bars>
+    <div>ثبت</div>
+  </button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+</div>

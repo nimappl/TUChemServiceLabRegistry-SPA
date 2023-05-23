@@ -13,18 +13,15 @@ import swal from "sweetalert";
 })
 export class StudentComponent {
   students: Data<TUStudent> = new Data<TUStudent>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
   selectedItem: TUStudent = null;
 
   constructor(private apiService: StudentService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.hasSearch = true;
+    this.table.buttons = null;
+    this.table.buttonTitles = null;
     this.table.columns = [
       {for: 'nationalNumber', dbName: 'PNationalNumber', title: 'کد ملی', sortable: true, hasSearch: true},
       {for: 'firstName', dbName: 'PFirstName', title: 'نام', sortable: true, hasSearch: true},
@@ -36,7 +33,7 @@ export class StudentComponent {
         title: 'رشته تحصیلی',
         sortable: false,
         hasSearch: true,
-        transform: value => EduField.getFieldLevel(value.fieldLevel)
+        transform: value => TUStudent.getLevel(value.fieldLevel)
       },
     ];
 

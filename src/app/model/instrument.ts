@@ -1,4 +1,5 @@
 import InstrumentOperator from "./instrument-operator";
+import InstrumentMaintenance from "./instrument-maintenance";
 
 export default class Instrument {
   id: number;
@@ -7,6 +8,13 @@ export default class Instrument {
   serial: string;
   manufacturer: string;
   madeIn: string;
-  serviceable: any;
+  serviceable: boolean;
   operators: Array<InstrumentOperator>
+
+  public static getServiceability(value: boolean): string {
+    switch(value) {
+      case false: return 'غیرقابل استفاده';
+      case true: return 'آماده سرویس‌دهی';
+    }
+  }
 }

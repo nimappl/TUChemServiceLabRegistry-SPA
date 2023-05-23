@@ -2,39 +2,151 @@
   <div class="card-header py-1">دستگاه</div>
   <div class="card-body">
     <div class="mb-3">
-      <button class="btn btn-sm btn-success me-2 px-3" (click)="openForm()">
+      <button class="btn btn-sm btn-success me-2 px-3" (click)="openInstrumentForm()">
         جدید
         <i class="fas fa-plus ms-2"></i>
       </button>
-      <button class="btn btn-sm btn-secondary px-3" (click)="toggleSearch()">
+      <button class="btn btn-sm btn-secondary px-3" (click)="toggleInstrumentSearch()">
         جستجو
         <i class="fas fa-search ms-2"></i>
       </button>
     </div>
     <app-data-table
             [data]="instruments"
-            [config]="table"
-            (editItem)="openForm($event)"
-            (removeItem)="onRemoveItem($event)"
-            (paramsChanged)="fetch()"
-            (buttonClicked)="buttonClicked($event)">
+            [config]="instrumentTableConfig"
+            (editItem)="openInstrumentForm($event)"
+            (removeItem)="onRemoveInstrument($event)"
+            (paramsChanged)="fetchInstrument()"
+            (buttonClicked)="showInstrumentDetails($event)">
     </app-data-table>
   </div>
-  <app-progress *ngIf="table.loading"></app-progress>
-  <div class="details mx-3 py-3" *ngIf="selectedItem !== null">
-    <h5 class="fw-bold">جزئیات دستگاه</h5>
+  <app-progress *ngIf="instrumentTableConfig.loading"></app-progress>
+  <div class="mx-3 py-3 details-card" *ngIf="selectedInstrument !== null">
+    <h5 class="fw-bold details-title">جزئیات دستگاه</h5>
     <div class="row mb-2">
-      <div class="col">
-        <div><strong>نام دستگاه:</strong>&nbsp;<span>{{ selectedItem.name }}</span></div>
-        <div><strong>مدل دستگاه:</strong>&nbsp;<span>{{ selectedItem.model }}</span></div>
-        <div><strong>شماره سریال:</strong>&nbsp;<span>{{ selectedItem.serial }}</span></div>
+      <div class="col-6">
+        <div class="details-text"><strong>نام دستگاه:</strong>&nbsp;<span>{{ selectedInstrument.name }}</span></div>
       </div>
-      <div class="col">
-        <div><strong>شرکت سازنده:</strong>&nbsp;<span>{{ selectedItem.manufacturer }}</span></div>
-        <div><strong>کشور سازنده:</strong>&nbsp;<span>{{ selectedItem.madeIn }}</span></div>
-        <div><strong>وضعیت سرویس دهی:</strong>&nbsp;<span>{{ table.columns[4].transform(selectedItem.serviceable) }}</span></div>
+      <div class="col-6">
+        <div class="details-text"><strong>مدل دستگاه:</strong>&nbsp;<span>{{ selectedInstrument.model }}</span></div>
       </div>
-      <h5 class="fw-bold">اپراتور های دستگاه</h5>
+    </div>
+    <div class="row mb-2">
+      <div class="col-6">
+        <div class="details-text"><strong>شماره سریال:</strong>&nbsp;<span>{{ selectedInstrument.serial }}</span></div>
+      </div>
+      <div class="col-6">
+        <div class="details-text"><strong>شرکت سازنده:</strong>&nbsp;<span>{{ selectedInstrument.manufacturer }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <div class="details-text"><strong>کشور سازنده:</strong>&nbsp;<span>{{ selectedInstrument.madeIn }}</span></div>
+      </div>
+      <div class="col-6">
+        <div class="details-text"><strong>وضعیت سرویس دهی:</strong>&nbsp;<span>{{ instrumentTableConfig.columns[4].transform(selectedInstrument.serviceable) }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3" *ngIf="selectedInstrument.operators.length > 0">
+      <strong class="mb-1 details-header">اپراتورهای دستگاه</strong>
+      <app-data-table [data]="operatorsData" [config]="operatorsTableConfig"></app-data-table>
+    </div>
+    <div class="d-flex mb-3 justify-content-start">
+      <div class="" style="width: 270px">
+        <strong class=" details-header">تاریخچه تعمیر و نگه‌داری دستگاه</strong>
+      </div>
+      <div class="" style="width: 220px">
+        <button class="btn btn-sm btn-success me-3 px-3" (click)="openMaintenanceForm()">
+          جدید
+          <i class="fas fa-plus ms-2"></i>
+        </button>
+        <button class="btn btn-sm btn-secondary px-3" (click)="toggleMaintenanceSearch()">
+          جستجو
+          <i class="fas fa-search ms-2"></i>
+        </button>
+      </div>
+    </div>
+    <app-data-table
+            [data]="maintenanceData"
+            [config]="maintenanceTableConfig"
+            (editItem)="openMaintenanceForm($event)"
+            (removeItem)="onRemoveMaintenance($event)"
+            (paramsChanged)="fetchMaintenance()"
+            (buttonClicked)="showMaintenanceDetails($event)">
+    </app-data-table>
+    <hr class="invisible">
+    <div class="py-3 details-card" style="margin: 30px 0 10px 0" *ngIf="selectedMaintenance !== null">
+      <h5 class="fw-bold details-title">جزئیات اقدام تعمیر و نگه‌داری دستگاه {{ selectedInstrument.name }} مورخ {{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</h5>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>عنوان:</strong>&nbsp;<span>{{ selectedMaintenance.title }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>تاریخ:</strong>&nbsp;<span>{{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>شماره فاکتور:</strong>&nbsp;<span>{{ selectedMaintenance.invoiceNo }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>هزینه اقدامات:</strong>&nbsp;<span>{{ selectedMaintenance.totalCost }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <div class="details-text">
+            <strong>توضیحات:</strong>&nbsp;
+            <span *ngIf="selectedMaintenance.description != null" [innerHTML]="formatDescription(selectedMaintenance.description)"></span>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" *ngIf="selectedMaintenance.usedMaterialList.length > 0">
+        <strong class="details-header mb-2">مواد/قطعات استفاده شده در این اقدام</strong>
+        <app-data-table [data]="usedMaterialData" [config]="usedMaterialTableConfig"></app-data-table>
+      </div>
+      <div *ngIf="selectedMaintenance.servicemanId != null">
+        <strong class="details-header mb-3">مشخصات تعمیرکار/ارائه دهندهٔ سرویس</strong>
+        <div class="row mb-2">
+          <div class="col-6">
+            <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.firstName }}</span></div>
+          </div>
+          <div class="col-6">
+            <div class="details-text"><strong>نام خانوادگی:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.lastName }}</span></div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <div class="details-text"><strong>کد ملی:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.nationalNumber }}</span></div>
+          </div>
+          <div class="col-6">
+            <div class="details-text"><strong>شماره تماس:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.phoneNumber }}</span></div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedMaintenance.servicingCompanyId != null">
+        <strong class="details-header mb-3">مشخصات شرکت ارائه دهندهٔ سرویس</strong>
+        <div class="row mb-2">
+          <div class="col-6">
+            <div class="details-text"><strong>نام شرکت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.name }}</span></div>
+          </div>
+          <div class="col-6">
+            <div class="details-text"><strong>شناسه ملی شرکت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.nationalId }}</span></div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-6">
+            <div class="details-text"><strong>شماره ثبت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.registrationNo }}</span></div>
+          </div>
+          <div class="col-6">
+            <div class="details-text"><strong>شماره قرارداد:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.contractNo }}</span></div>
+          </div>
+        </div>
+        <div class="row" *ngIf="selectedMaintenance.servicingCompany.phoneNumbers.length > 0">
+          <div class="details-text"><strong class="mb-1">شماره‌های تماس شرکت</strong></div>
+          <app-data-table [data]="orgPhoneNumberData" [config]="orgPhoneNumberTableConfig"></app-data-table>
+        </div>
+      </div>
     </div>
   </div>
 </div>

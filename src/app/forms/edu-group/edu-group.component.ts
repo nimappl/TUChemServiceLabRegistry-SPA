@@ -13,18 +13,15 @@ import { EduGroupFormComponent } from "./edu-group-form/edu-group-form.component
 })
 export class EduGroupComponent {
   eduGroups: Data<EduGroup> = new Data<EduGroup>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
   selectedItem: EduGroup = null;
 
   constructor(private apiService: EduGroupService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.hasSearch = true;
+    this.table.buttons = null;
+    this.table.buttonTitles = null;
     this.table.columns = [
       {for: 'name', dbName: 'EduGroupName', title: 'نام گروه آموزشی', sortable: true, hasSearch: true},
     ];
@@ -53,7 +50,7 @@ export class EduGroupComponent {
     if (item) data = item; else data = new EduGroup();
 
     const dialogRef = this.dialog.open(EduGroupFormComponent, {
-      width: '850px',
+      width: '650px',
       direction: 'rtl',
       disableClose: true,
       data: data

@@ -23,8 +23,9 @@ export class TestFormComponent {
   instOptions: CustomFieldData = new CustomFieldData();
   feeTypeOptions: Array<CustomFieldData> = [];
   discountData = new Data<Discount>();
-  discountTableConfig = new TableConfig();
+  discountTableConfig = new TableConfig(0);
   discountOptions = new CustomFieldData();
+  selectedDiscount: Discount = null;
   @ViewChild('f') form: NgForm;
 
   constructor(
@@ -61,16 +62,11 @@ export class TestFormComponent {
 
     if (!this.data.discounts) this.data.discounts = [];
     this.discountData.records = this.data.discounts;
-    this.discountTableConfig.sortable = true;
     this.discountTableConfig.hasDelete = true;
-    this.discountTableConfig.hasEdit = false;
-    this.discountTableConfig.hasActivationCol = false;
-    this.discountTableConfig.hasPagination = false;
-    this.discountTableConfig.showSearch = false;
     this.discountTableConfig.columns = [
-      {for: 'name', dbName: 'TDName', title: 'عنوان', sortable: false, hasSearch: false},
-      {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false},
-      {for: 'minSamples', dbName: 'TDMinSamples', title: 'حداقل نمونه', sortable: false, hasSearch: false}
+      {for: 'type', dbName: 'TDType', title: 'عنوان', sortable: false, hasSearch: false, transform: value => Discount.getType(value)},
+      {for: 'minSamples', dbName: 'TDMinSamples', title: 'حداقل تعداد نمونه', sortable: false, hasSearch: false},
+      {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false}
     ];
 
     this.getInstrumentOptions();
@@ -129,13 +125,17 @@ export class TestFormComponent {
     this.data.samplePreparations.push(newPrep);
   }
 
-  onAddDiscount() {
-    this.discountApiSrv.getById(this.discountOptions.selectedValue).subscribe(res => {
-      this.data.discounts.push(res);
-      this.discountOptions.selectedValue = null;
-    }, error => {
-      swal({title: 'ناموفق', icon: 'error'});
+  onSelectDiscount(discountId: number) {
+    this.discountApiSrv.getById(discountId).subscribe( res => {
+      this.selectedDiscount = res;
+      this.selectedDiscount.typeString = Discount.getType(this.selectedDiscount.type);
     });
+  }
+
+  onAddDiscount() {
+    this.data.discounts.push(this.selectedDiscount);
+    this.selectedDiscount = null;
+    this.discountOptions.selectedValue = null;
   }
 
   onRemoveFee(index: number) {

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import {Data, Test} from "../../model";
+import {Data, Discount, Test, TestFee, TestPrep} from "../../model";
 import {TableConfig} from "../../data-table/table-config";
 import {TestService} from "../../services/test.service";
 import {MatDialog} from "@angular/material/dialog";
 import {TestFormComponent} from "./test-form/test-form.component";
 import swal from "sweetalert";
+import {DateConvertor} from "../../custom-fields/jalali-date-picker/date-convertor";
+import {ScrollStrategyOptions} from "@angular/cdk/overlay";
 
 @Component({
   selector: 'app-test',
@@ -13,23 +15,22 @@ import swal from "sweetalert";
 })
 export class TestComponent {
   tests: Data<Test> = new Data<Test>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
+  testFeesTable: TableConfig = new TableConfig(0);
+  testSamplePrepsTable: TableConfig = new TableConfig(0);
+  testDiscountsTable: TableConfig = new TableConfig(0);
+  testFeesData: Data<TestFee> = new Data<TestFee>();
+  testSamplePrepsData: Data<TestPrep> = new Data<TestPrep>();
+  testDiscountsData: Data<Discount> = new Data<Discount>();
   selectedItem: Test = null;
 
   constructor(private apiService: TestService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = true;
-    this.table.activeStatusKey = 'tActive';
-    this.table.hasSearch = true;
     this.table.columns = [
       {for: 'name', dbName: 'TName', title: 'نام آزمون', sortable: true, hasSearch: true},
       {for: 'description', dbName: 'TDescription', title: 'توضیح', sortable: true, hasSearch: true},
-      /* {for: 'fee', dbName: 'PLastName', title: 'تعرفه', sortable: false, hasSearch: false}, */
     ];
     this.table.buttonTitles = ['جزئیات'];
     this.table.buttons = [{title: 'مشاهده جزئیات', id: 1, altText: ''}];
@@ -59,13 +60,17 @@ export class TestComponent {
 
     const dialogRef = this.dialog.open(TestFormComponent, {
       width: '900px',
+      maxHeight: '95vh',
       direction: 'rtl',
       disableClose: true,
       data: data
     });
 
     dialogRef.afterClosed().subscribe(submitted => {
-      if(submitted) this.fetch(true);
+      if(submitted) {
+        this.fetch(true);
+        this.selectedItem = null;
+      }
     });
   }
 
@@ -78,8 +83,31 @@ export class TestComponent {
     this.table.showSearch = !this.table.showSearch;
   }
 
+  formatDescription(val:string):string {
+    return val.replace(/(\r\n|\r|\n)/g, '<br>');
+  }
+
   buttonClicked(item: {btnId: number, record: Test}) {
     this.selectedItem = item.record;
+    this.testFeesData.records = this.selectedItem.fees;
+    this.testSamplePrepsData.records = this.selectedItem.samplePreparations;
+    this.testDiscountsData.records = this.selectedItem.discounts;
+
+    this.testFeesTable.columns = [
+      {for: 'type', dbName: 'TFBase', title: 'مبنای تعرفه', sortable: false, hasSearch: false, transform: value => TestFee.getType(value)},
+      {for: 'step', dbName: 'TFStep', title: 'گام افزایش تعرفه', sortable: false, hasSearch: false},
+      {for: 'amount', dbName: 'TFAmount', title: 'مبلغ', sortable: false, hasSearch: false},
+      {for: 'date', dbName: 'TFDate', title: 'تاریخ ایجاد', sortable: false, hasSearch: false, transform: value => DateConvertor.dateStringToJalali(value)}
+    ];
+    this.testSamplePrepsTable.columns = [
+      {for: 'type', dbName: 'TPrepType', title: 'عنوان', sortable: false, hasSearch: false},
+      {for: 'price', dbName: 'TPrepPrice', title: 'هزینه', sortable: false, hasSearch: false}
+    ];
+    this.testDiscountsTable.columns = [
+      {for: 'type', dbName: 'TDType', title: 'عنوان', sortable: false, hasSearch: false, transform: value => Discount.getType(value)},
+      {for: 'minSamples', dbName: 'TDMinSamples', title: 'حداقل تعداد نمونه', sortable: false, hasSearch: false},
+      {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false}
+    ];
   }
 
   onRemoveItem(index: number) {

@@ -3,8 +3,9 @@ import {Data} from "../model";
 export class CustomFieldData {
     label: string;
     selectedValue: any = null;
-    options: Array<{value: number, title: string}> = [];
+    options: Array<{value: number, title: string, fieldValue?: string}> = [];
     loading: boolean = false;
     loadingFailed: boolean = false;
     invalid: boolean = false;
+    searchText: string = '';
 }

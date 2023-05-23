@@ -25,7 +25,7 @@ em {
     color: #666;
     user-select: none;
     font-size: 14px;
-    margin-top: 18px;
+    /*margin-top: 18px;*/
 }
 .arrow {
     width: 16px;
@@ -70,12 +70,4 @@ em {
 
 .open {
     border-color: #228B22;
-}
-
-.loading {
-    background-image: url("../../../assets/svg/spinner-0.5s-50px.svg");
-    background-repeat: no-repeat;
-    background-size: 20px;
-    width: 20px;
-    height: 20px;
 }

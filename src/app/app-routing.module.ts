@@ -10,12 +10,16 @@ import {TestComponent} from "./forms/test/test.component";
 import {DiscountComponent} from "./forms/discount/discount.component";
 import {ProfessorComponent} from "./forms/professor/professor.component";
 import {ProfessorGrantComponent} from "./forms/professor-grant/professor-grant.component";
+import {UsedMaterialComponent} from "./forms/used-material/used-material.component";
+import {OrganizationComponent} from "./forms/organization/organization.component";
 
 const routes: Routes = [
   { path: 'instrument', component: InstrumentComponent },
+  { path: 'used-material', component: UsedMaterialComponent },
   { path: 'student', component: StudentComponent },
   { path: 'lab-personnel', component: LabPersonnelComponent },
   { path: 'person', component: PersonComponent },
+  { path: 'organization', component: OrganizationComponent },
   { path: 'edu-group', component: EduGroupComponent },
   { path: 'edu-field', component: EduFieldComponent },
   { path: 'test', component: TestComponent },

@@ -6,4 +6,12 @@ export default class IMUsedMaterial {
   maintenanceId: number;
   quantity: number;
   type: number;
+
+  public static getType(type:number):string {
+    switch (type) {
+      case 0: return 'قطعه';
+      case 1: return 'مایع';
+      case 2: return 'گاز';
+    }
+  }
 }

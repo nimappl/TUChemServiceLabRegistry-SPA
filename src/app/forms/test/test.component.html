@@ -22,4 +22,52 @@
     </app-data-table>
   </div>
   <app-progress *ngIf="table.loading"></app-progress>
+  <div class="mx-3 py-3 details-card" *ngIf="selectedItem !== null">
+    <h5 class="fw-bold details-title">جزئیات آزمون</h5>
+    <div class="row mb-2">
+      <div class="col">
+        <div class="details-text"><strong>نام آزمون:</strong>&nbsp;<span>{{ selectedItem.name }}</span></div>
+      </div>
+      <div class="col">
+        <div class="details-text"><strong>نام کوتاه:</strong>&nbsp;<span>{{ selectedItem.shortName }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="details-text"><strong>توضیحات:</strong>&nbsp;<p [innerHTML]="formatDescription(selectedItem.description)"></p></div>
+      </div>
+      <div class="col">
+        <div class="details-text"><strong>آماده‌سازی نمونه:</strong>&nbsp;<span>{{ selectedItem.samplePreparations.length == 0 ? 'ندارد' : 'دارد' }}</span></div>
+      </div>
+    </div>
+    <strong class="mb-1 details-header">مشخصات دستگاه</strong>
+    <div class="row mb-2">
+      <div class="col">
+        <div class="details-text"><strong>نام دستگاه:</strong>&nbsp;<span>{{ selectedItem.instrument.name }}</span></div>
+      </div>
+      <div class="col">
+        <div class="details-text"><strong>مدل دستگاه:</strong>&nbsp;<span>{{ selectedItem.instrument.model }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="details-text"><strong>شرکت سازنده دستگاه:</strong>&nbsp;<span>{{ selectedItem.instrument.manufacturer }}</span></div>
+      </div>
+      <div class="col">
+        <div class="details-text"><strong>وضعیت سرویس‌دهی دستگاه:</strong>&nbsp;<span>{{ selectedItem.instrument.serviceable == 1 ? 'آماده سرویس دهی' : 'غیرقابل استفاده' }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <strong class="mb-1 details-header">تعرفه های آزمون</strong>
+      <app-data-table [data]="testFeesData" [config]="testFeesTable"></app-data-table>
+    </div>
+    <div class="row mb-3" *ngIf="selectedItem.samplePreparations.length > 0">
+      <strong class="mb-1 details-header">آماده‌سازی های نمونه برای آزمون</strong>
+      <app-data-table [data]="testSamplePrepsData" [config]="testSamplePrepsTable"></app-data-table>
+    </div>
+    <div class="row" *ngIf="selectedItem.discounts.length > 0">
+      <strong class="mb-1 details-header">تخفیف های آزمون</strong>
+      <app-data-table [data]="testDiscountsData" [config]="testDiscountsTable"></app-data-table>
+    </div>
+  </div>
 </div>

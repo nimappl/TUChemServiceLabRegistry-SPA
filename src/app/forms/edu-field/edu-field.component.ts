@@ -13,47 +13,18 @@ import swal from "sweetalert";
 })
 export class EduFieldComponent {
   eduFields: Data<EduField> = new Data<EduField>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
   selectedItem: EduField = null;
 
   constructor(private apiService: EduFieldService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.hasSearch = true;
+    this.table.buttons = null;
+    this.table.buttonTitles = null;
     this.table.columns = [
       {for: 'name', dbName: 'EduFieldName', title: 'نام رشته تحصیلی', sortable: true, hasSearch: true},
-      {
-        for: 'fieldLevel',
-        dbName: 'EduFieldLevel',
-        title: 'مقطع',
-        sortable: true,
-        hasSearch: false,
-        transform: ef => {
-          switch (ef) {
-            case 0:
-              return 'کاردانی';
-            case 1:
-              return 'کارشناسی';
-            case 2:
-              return 'کارشناسی ارشد';
-            case 3:
-              return 'دکتری';
-          }
-        }
-      },
-      {
-        for: 'eduGroup',
-        dbName: 'EduGroupID',
-        title: 'گروه آموزشی',
-        sortable: true,
-        hasSearch: false,
-        transform: eg => eg.name
-      }
+      {for: 'eduGroup', dbName: 'EduGroupID', title: 'گروه آموزشی', sortable: true, hasSearch: false, transform: eg => eg.name}
     ];
 
     this.fetch(true);

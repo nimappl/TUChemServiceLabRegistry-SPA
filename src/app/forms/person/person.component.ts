@@ -13,18 +13,15 @@ import { Data, Person } from "../../model";
 })
 export class PersonComponent {
   persons: Data<Person> = new Data<Person>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
   selectedItem: Person = null;
 
   constructor(private apiService: PersonService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.hasSearch = true;
+    this.table.buttons = null;
+    this.table.buttonTitles = null;
     this.table.columns = [
       {for: 'nationalNumber', dbName: 'PNationalNumber', title: 'کد ملی', sortable: true, hasSearch: true},
       {for: 'firstName', dbName: 'PFirstName', title: 'نام', sortable: true, hasSearch: true},

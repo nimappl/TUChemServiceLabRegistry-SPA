@@ -15,6 +15,10 @@ export class PersonService {
     return this.http.get<Data<Person>>(`${this.apiUrl}?queryParams=${JSON.stringify(options)}`);
   }
 
+  queryByFullName(name: String): Observable<Array<Person>> {
+    return this.http.get<Array<Person>>(`${this.apiUrl}/query-by-full-name/${name}`);
+  }
+
   getById(id: number):Observable<Person> {
     return this.http.get<Person>(`${this.apiUrl}/${id}`);
   }

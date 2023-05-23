@@ -13,18 +13,15 @@ import swal from "sweetalert";
 })
 export class LabPersonnelComponent {
   personnelList: Data<LabPersonnel> = new Data<LabPersonnel>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
   selectedItem: LabPersonnel = null;
 
   constructor(private apiService: LabPersonnelService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.hasSearch = true;
+    this.table.buttons = null;
+    this.table.buttonTitles = null;
     this.table.columns = [
       {for: 'nationalNumber', dbName: 'PNationalNumber', title: 'کد ملی', sortable: true, hasSearch: true},
       {for: 'firstName', dbName: 'PFirstName', title: 'نام', sortable: true, hasSearch: true},

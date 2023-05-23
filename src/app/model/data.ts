@@ -1,8 +1,8 @@
 import { default as Filter } from "./filter";
 
 export default class Data<T> {
-    records: T[];
-    filters: Filter[];
+    records: Array<T> = [];
+    filters: Array<Filter> = [];
     sortBy: string;
     sortType: SortType;
     pageSize: number = 5;

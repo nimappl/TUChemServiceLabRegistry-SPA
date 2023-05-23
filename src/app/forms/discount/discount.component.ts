@@ -13,18 +13,15 @@ import swal from "sweetalert";
 })
 export class DiscountComponent {
   discounts: Data<Discount> = new Data<Discount>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
   selectedItem: Discount = null;
 
   constructor(private apiService: DiscountService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.hasSearch = true;
+    this.table.buttons = null;
+    this.table.buttonTitles = null;
     this.table.columns = [
       {for: 'type',
         dbName: 'TDType',

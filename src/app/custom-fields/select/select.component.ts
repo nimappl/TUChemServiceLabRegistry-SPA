@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output} from '@angular/core';
 import { CustomFieldData } from "../custom-field-data";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
@@ -17,6 +17,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 export class SelectComponent implements ControlValueAccessor {
   showOptions: Boolean = false;
   @Input() data: CustomFieldData = new CustomFieldData();
+  @Output() onSelect = new EventEmitter();
   selectedValueTitle: string = '';
 
   onChange = (selectedValue) => {};
@@ -61,6 +62,7 @@ export class SelectComponent implements ControlValueAccessor {
   select(value: number) {
     this.data.selectedValue = value;
     this.onChange(this.data.selectedValue);
+    this.onSelect.emit(value);
     this.showOptions = false;
   }
 

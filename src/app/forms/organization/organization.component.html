@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-header py-1">شرکت/سازمان</div>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-sm btn-success me-2 px-3" (click)="openForm()">
+        جدید
+        <i class="fas fa-plus ms-2"></i>
+      </button>
+      <button class="btn btn-sm btn-secondary px-3" (click)="toggleSearch()">
+        جستجو
+        <i class="fas fa-search ms-2"></i>
+      </button>
+    </div>
+    <app-data-table
+            [data]="organizations"
+            [config]="table"
+            (editItem)="openForm($event)"
+            (removeItem)="onRemoveItem($event)"
+            (buttonClicked)="showDetailsOf($event)"
+            (paramsChanged)="fetch()">
+    </app-data-table>
+  </div>
+  <app-progress *ngIf="table.loading"></app-progress>
+  <div class="mx-3 py-3 details-card" *ngIf="selectedItem !== null">
+    <h5 class="fw-bold details-title">جزئیات شرکت/سازمان</h5>
+    <div class="row mb-1">
+      <div class="col">
+        <div class="details-text"><strong>نام شرکت/سازمان:</strong>&nbsp;<span>{{ selectedItem.name }}</span></div>
+      </div>
+      <div class="col">
+        <div class="details-text"><strong>شماره قرارداد:</strong>&nbsp;<span>{{ selectedItem.contractNo }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="details-text"><strong>شناسه ملی:</strong>&nbsp;<span>{{ selectedItem.nationalId }}</span></div>
+      </div>
+      <div class="col">
+        <div class="details-text"><strong>شماره ثبت:</strong>&nbsp;<span>{{ selectedItem.registrationNo }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3" *ngIf="selectedItem.phoneNumbers.length > 0">
+      <strong class="mb-1 details-header">دفترچه تلفن</strong>
+      <app-data-table [data]="phoneNumberData" [config]="phoneNumberTable"></app-data-table>
+    </div>
+    <div class="row mb-3" *ngIf="selectedItem.representatives.length > 0">
+      <strong class="mb-1 details-header">نمایندگان شرکت/سازمان</strong>
+      <app-data-table [data]="representativesData" [config]="representativesTable"></app-data-table>
+    </div>
+  </div>
+</div>

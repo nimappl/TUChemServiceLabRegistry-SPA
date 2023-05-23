@@ -78,7 +78,7 @@ export class StudentFormComponent {
       this.eduFieldOptions.loading = false;
       eduFields = res;
       res.records.forEach(item =>
-        this.eduFieldOptions.options.push({value: item.id, title: `${item.name}، ${EduField.getFieldLevel(item.fieldLevel)}`})
+        this.eduFieldOptions.options.push({value: item.id, title: `${item.name}`})
       );
       if (this.mode === 1) this.eduFieldOptions.selectedValue = this.data.id;
     }, err => {

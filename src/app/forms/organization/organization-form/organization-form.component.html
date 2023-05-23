@@ -1,0 +1,151 @@
+<h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div style="overflow: scroll; max-height: 81vh">
+  <div class="container-fluid">
+    <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
+            <label for="name">نام شرکت/سازمان</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="contractNo" name="contractNo" class="txt" placeholder="pox" [(ngModel)]="data.contractNo" autocomplete="off">
+            <label for="contractNo">شماره قرارداد</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="nationalId" name="nationalId" class="txt" placeholder="pox" [(ngModel)]="data.nationalId" autocomplete="off">
+            <label for="nationalId">شناسه ملی</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="registrationNo" name="registrationNo" class="txt" placeholder="pox" [(ngModel)]="data.registrationNo" autocomplete="off">
+            <label for="registrationNo">شماره ثبت</label>
+          </div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-group-header">
+          <div class="group-title">شماره‌های تلفن</div>
+          <div class="group-buttons">
+            <button type="button" class="btn btn-outline-success btn-sm px-3" (click)="onAddNumber()">
+              جدید
+            </button>
+          </div>
+        </div>
+        <div class="group-content">
+          <ng-template [ngIf]="data.phoneNumbers && data.phoneNumbers.length != 0" [ngIfElse]="noNumbers">
+            <div class="complex-field d-flex justify-content-around" *ngFor="let phone of data.phoneNumbers, let i = index">
+              <div class="complex-field-label">شماره تلفن  {{i + 1}}</div>
+              <div style="width: 250px">
+                <div class="input-field">
+                  <input type="text" [id]="'type-'+i" [name]="'type-'+i" class="txt ltr" placeholder="pox" [(ngModel)]="phone.number" autocomplete="off">
+                  <label [for]="'type-'+i">شماره تلفن</label>
+                </div>
+              </div>
+              <div style="width: 450px">
+                <div class="input-field">
+                  <input type="text" [id]="'price-'+i" [name]="'price-'+i" class="txt" placeholder="pox" [(ngModel)]="phone.section" autocomplete="off">
+                  <label [for]="'price-'+i">توضیح</label>
+                </div>
+              </div>
+              <div  style="width: 36px; margin-top: 14px">
+                <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveNumber(i)">حذف</button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #noNumbers>
+            <p class="small text-muted mt-2 ms-2">شماره تلفنی برای این شرکت تعریف نشده است.</p>
+          </ng-template>
+        </div>
+        <div class="group-footer"></div>
+      </div>
+      <div class="field-group">
+        <div class="field-group-header">
+          <div class="group-title">نماینده‌ها</div>
+          <div class="group-buttons">
+            <button type="button" class="btn btn-outline-success btn-sm px-3" (click)="showRepresentativeForm = true">
+              جدید
+            </button>
+          </div>
+        </div>
+        <div class="group-content">
+          <div *ngIf="showRepresentativeForm">
+            <div class="row">
+              <div class="col-4" style="margin-top: 18px;">
+                <app-search-select name="firstName" [data]="selectPersonData" [(ngModel)]="pendingRepresentative.firstName" (onSearch)="onSearchPerson($event)" (onSelectionChange)="onSelectPerson()" [disabled]="repSelectedFromDb"></app-search-select>
+              </div>
+              <div class="col-4">
+                <div class="input-field">
+                  <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [(ngModel)]="pendingRepresentative.lastName" [disabled]="repSelectedFromDb" autocomplete="off">
+                  <label for="lastName">نام خانوادگی</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="input-field" style="margin-top: 18px">
+                  <app-select [data]="genderOptions" name="gender" [(ngModel)]="pendingRepresentative.gender" [disabled]="repSelectedFromDb"></app-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <div class="input-field">
+                  <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.nationalNumber" [disabled]="repSelectedFromDb" autocomplete="off">
+                  <label for="nationalNumber">کد ملی</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="input-field">
+                  <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.phoneNumber" [disabled]="repSelectedFromDb" autocomplete="off">
+                  <label for="phoneNumber">شماره تلفن</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="input-field">
+                  <input type="text" id="email" name="email" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.email" [disabled]="repSelectedFromDb" autocomplete="off">
+                  <label for="email">ایمیل</label>
+                </div>
+              </div>
+            </div>
+            <div class="my-2 ltr" style="text-align: left">
+              <button type="button" class="btn btn-outline-success btn-sm px-3 ms-2" (click)="onAddRepresentative()">
+                افزودن به لیست نمایندگان
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm px-3" (click)="clearPersonForm()" *ngIf="repSelectedFromDb">
+                لغو انتخاب
+                <i class="fas fa-times-circle"></i>
+              </button>
+            </div>
+          </div>
+          <ng-template [ngIf]="data.representatives.length > 0" [ngIfElse]="noRepresentatives">
+            <div class="mt-3">
+              <app-data-table [data]="representativesData" [config]="representativesTableConfig" (removeItem)="onRemoveRepresentative($event)"></app-data-table>
+            </div>
+          </ng-template>
+          <ng-template #noRepresentatives>
+            <p class="small text-muted mt-2 ms-2">لیست نمایندگان شرکت/سازمان خالی است.</p>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions style="direction: ltr;">
+  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+    <app-loading-spinner-bars
+            color="white"
+            [size]="16"
+            class="ms-2"
+            *ngIf="reachingOut">
+    </app-loading-spinner-bars>
+    <div>ثبت</div>
+  </button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+</div>

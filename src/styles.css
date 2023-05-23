@@ -16,7 +16,7 @@ body {
 }
 
 .card-header { font-size: 1.30rem; font-weight: bold;}
-.card { box-shadow: 3px 0 20px 8px #ccc; }
+.card { box-shadow: 3px 0 20px 8px #ccc; margin-bottom: 50px;}
 .mdc-dialog__surface { overflow-y: visible !important; }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -55,6 +55,14 @@ body {
 .slide-toggle:checked:before { left: 20px; }
 
 .slide-toggle:hover { cursor: pointer; }
+
+.loading {
+    background-image: url("./assets/svg/spinner-0.5s-50px.svg");
+    background-repeat: no-repeat;
+    background-size: 20px;
+    width: 20px;
+    height: 20px;
+}
 
 .input-field {
     margin: 0 auto;
@@ -109,6 +117,7 @@ label {
 .txt::placeholder {
     color: transparent;
 }
+.ltr { direction: ltr }
 .form-hr {
     margin-top: 18px;
     position: relative;
@@ -171,4 +180,81 @@ select.txt::before, select.txt::before {
 .status-invalid {
     background-color: #fff;
     background-image: url("./assets/svg/cross.svg");
+}
+
+.details-card {
+    position: relative;
+    border: 1px solid #5f987e;
+    margin: 30px 20px;
+    padding: 10px 20px;
+}
+
+.details-title {
+    position: absolute;
+    background-color: #5f987e;
+    font-size: 14px;
+    color: #fff;
+    margin: 0 0 0 20px;
+    padding: 5px 10px 4px;
+    top: -26px;
+}
+
+.details-text {
+    font-size: 15px;
+}
+.details-text > p { margin: 0 }
+.details-text strong, .details-header { color: #555; }
+.details-header { font-size: 18px; }
+
+.field-group {
+    /*border: 1px solid #999;*/
+    margin-top: 18px;
+}
+
+.field-group-header {
+    display: flex;
+    justify-content: flex-start;
+    /*background-color: #1881501e;*/
+    padding: 4px 8px 4px 4px;
+}
+
+.group-title {
+    color: #666;
+    font-weight: bold;
+    margin-left: 20px;
+    font-size: 14px;
+}
+.group-buttons > .btn-sm {
+    padding: 1px 1rem 2px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.complex-field {
+    position: relative;
+    border: 1px solid #999;
+    background-color: #1881500f;
+    margin: 22px 5px 12px 5px;
+    padding-bottom: 10px;
+}
+
+.complex-field-label {
+    position: absolute;
+    top: -18px;
+    right: 12px;
+    background-color: #188150;
+    color: #fff;
+    font-size: 12px;
+    padding: 0 15px;
+    user-select: none;
+}
+
+.btn-small {
+    margin-top: 2px;
+    font-size: 12px;
+    padding: 7px 4px;
+}
+
+.complex-field .input-field {
+    margin-top: 14px;
 }

@@ -8,10 +8,9 @@
           <input type="text" id="name" name="name" class="txt" placeholder="pox" [ngModel]="data.name" autocomplete="off">
           <label for="name">نام رشته</label>
         </div>
-        <app-search-select [data]="groupOptions" (onSearch)="getEduGroupOptions($event)" name="eduGroup" ngModel></app-search-select>
       </div>
       <div class="col-6">
-        <app-select [data]="levelOptions" name="fieldLevel" [ngModel]="data.fieldLevel"></app-select>
+        <app-search-select [data]="groupOptions" (onSearch)="getEduGroupOptions($event)" name="eduGroup" ngModel></app-search-select>
       </div>
     </div>
   </form>

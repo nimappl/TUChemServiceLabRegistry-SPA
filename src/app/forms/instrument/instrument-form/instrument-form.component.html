@@ -1,35 +1,127 @@
 <h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
 <app-progress *ngIf="reachingOut"></app-progress>
-<div class="container-fluid">
-  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
-    <div class="row">
-      <div class="col-6">
-        <div class="input-field">
-            <input type="text" id="name" name="name" class="txt" placeholder="pox" [ngModel]="data.name" autocomplete="off">
-            <label for="name">نام دستگاه</label>
+<div style="overflow-y: scroll; max-height: 81vh">
+  <div class="container-fluid">
+    <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+              <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
+              <label for="name">نام دستگاه</label>
+          </div>
         </div>
-        <div class="input-field">
-          <input type="text" id="model" name="model" class="txt" placeholder="pox" [ngModel]="data.model" autocomplete="off">
-          <label for="model">مدل دستگاه</label>
-        </div>
-        <div class="input-field">
-          <input type="text" id="serial" name="serial" class="txt" placeholder="pox" [ngModel]="data.serial" autocomplete="off">
-          <label for="serial">شماره سریال</label>
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="model" name="model" class="txt" placeholder="pox" [(ngModel)]="data.model" autocomplete="off">
+            <label for="model">مدل دستگاه</label>
+          </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="input-field">
-          <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [ngModel]="data.manufacturer" autocomplete="off">
-          <label for="manufacturer">شرکت سازنده</label>
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="serial" name="serial" class="txt" placeholder="pox" [(ngModel)]="data.serial" autocomplete="off">
+            <label for="serial">شماره سریال</label>
+          </div>
         </div>
-        <div class="input-field">
-          <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [ngModel]="data.madeIn" autocomplete="off">
-          <label for="madeIn">کشور سازنده</label>
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [(ngModel)]="data.manufacturer" autocomplete="off">
+            <label for="manufacturer">شرکت سازنده</label>
+          </div>
         </div>
-        <app-select [data]="statusOptions" name="serviceable" [ngModel]="data.serviceable"></app-select>
       </div>
-    </div>
-  </form>
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [ngModel]="data.madeIn" autocomplete="off">
+            <label for="madeIn">کشور سازنده</label>
+          </div>
+        </div>
+        <div class="col-6" style="margin-top: 18px">
+          <app-select [data]="statusOptions" name="serviceable" [(ngModel)]="data.serviceable"></app-select>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-group-header">
+          <div class="group-title">اپراتورهای دستگاه</div>
+          <div class="group-buttons">
+            <button type="button" class="btn btn-outline-success btn-sm px-3" (click)="showOperatorForm = true">
+              جدید
+            </button>
+          </div>
+        </div>
+        <div class="group-content">
+          <div *ngIf="showOperatorForm">
+            <div class="row">
+              <div class="col-6" style="margin-top: 18px">
+                <div class="d-flex">
+                  <div style="width: 100%">
+                    <app-search-select
+                            [data]="operatorSearchOptions"
+                            name="firstName" [(ngModel)]="pendingOperator.firstName"
+                            (onSelectionChange)="onSelectOperator()"
+                            (onSearch)="onSearchOperator()"
+                            [disabled]="operatorSearchOptions.selectedValue != null">
+                    </app-search-select>
+                  </div>
+                  <div class="ms-2" style="width: 105px" *ngIf="pendingOperator.id != null">
+                    <button type="button" class="btn btn-small btn-outline-secondary"
+                            (click)="clearOperatorForm()" style="border-radius: 2px">
+                      لغو انتخاب <i class="fas fa-times-circle"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="input-field">
+                  <input type="text" id="lastName" name="lastName" class="txt" [(ngModel)]="pendingOperator.lastName" [disabled]="operatorSearchOptions.selectedValue != null" placeholder="." autocomplete="off">
+                  <label for="lastName">نام خانوادگی</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <div class="input-field">
+                  <input type="text" id="nationalNumber" name="nationalNumber" class="txt" [(ngModel)]="pendingOperator.nationalNumber" [disabled]="operatorSearchOptions.selectedValue != null" placeholder="." autocomplete="off">
+                  <label for="nationalNumber">کد ملی</label>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="input-field">
+                  <input type="text" id="phoneNumber" name="phoneNumber" class="txt" [(ngModel)]="pendingOperator.phoneNumber" [disabled]="operatorSearchOptions.selectedValue != null" placeholder="." autocomplete="off">
+                  <label for="phoneNumber">شماره تماس</label>
+                </div>
+              </div>
+              <div class="col-2" style="margin-top: 18px">
+                <app-select [data]="genderOptions" name="gender" [(ngModel)]="pendingOperator.gender" [disabled]="operatorSearchOptions.selectedValue != null"></app-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <app-jalali-date-picker [data]="dateOptions" name="designationDate" [(ngModel)]="pendingOperator.designationDate"></app-jalali-date-picker>
+              </div>
+              <div class="col-6" style="margin-top: 18px">
+                <app-select [data]="operatorTypeOptions" name="type" [(ngModel)]="pendingOperator.type"></app-select>
+              </div>
+            </div>
+            <div class="my-2" style="text-align: left">
+              <button type="button" class="btn btn-outline-success btn-sm px-3" (click)="onAddOperator()">افزودن به لیست</button>
+            </div>
+          </div>
+          <ng-template [ngIf]="data.operators != null && data.operators.length > 0" [ngIfElse]="noOperators">
+            <div class="mt-2">
+              <app-data-table [config]="operatorTableConfig" [data]="operatorTableData" (removeItem)="onRemoveOperator($event)">
+              </app-data-table>
+            </div>
+          </ng-template>
+          <ng-template #noOperators>
+            <p class="small text-muted ms-2 mt-2">اپراتوری برای دستگاه ثبت نشده است.</p>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 <div mat-dialog-actions style="direction: ltr;">
   <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">

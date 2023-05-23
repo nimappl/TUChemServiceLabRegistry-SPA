@@ -7,7 +7,10 @@ export default class Person {
   email: string;
   gender: number;
   customerId: number;
-  type: number;
+  typeStdn: number;
+  typeProf: number;
+  typeLab: number;
+  typeOrg: number;
   username: string;
   password: string;
 
@@ -20,7 +23,10 @@ export default class Person {
     this.gender = person.gender;
     this.customerId = person.customerId;
     this.email = person.email;
-    this.type = person.type;
+    this.typeStdn = person.typeStdn;
+    this.typeProf = person.typeProf;
+    this.typeLab = person.typeLab;
+    this.typeOrg = person.typeOrg;
     this.username = person.username;
     this.password = person.password;
   }

@@ -3,18 +3,24 @@
 <div class="container-fluid">
   <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
     <div class="row">
-      <div class="col-6">
+      <div class="col-6" style="padding-top: 18px">
         <app-select [data]="typeOptions" name="type" [(ngModel)]="data.type"></app-select>
+      </div>
+      <div class="col-6">
         <div class="input-field">
           <input type="number" id="percent" name="percent" class="txt" placeholder="pox" [(ngModel)]="data.percent" autocomplete="off">
           <label for="percent">درصد تخفیف</label>
         </div>
       </div>
+    </div>
+    <div class="row">
       <div class="col-6">
         <div class="input-field">
           <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
           <label for="name">عنوان</label>
         </div>
+      </div>
+      <div class="col-6">
         <div class="input-field">
           <input type="number" id="minSamples" name="minSamples" class="txt" placeholder="pox" [(ngModel)]="data.minSamples" autocomplete="off" [disabled]="data.type != 2">
           <label for="minSamples">حداقل تعداد نمونه</label>

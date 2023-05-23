@@ -18,7 +18,6 @@ export class EduFieldFormComponent {
   reachingOut: boolean = false;
   submitted: boolean = false;
   groupOptions: CustomFieldData = new CustomFieldData();
-  levelOptions: CustomFieldData = new CustomFieldData();
   @ViewChild('f') form: NgForm;
 
   constructor(
@@ -31,14 +30,6 @@ export class EduFieldFormComponent {
   ngOnInit() {
     this.mode = (this.data.id == undefined) ? 0 : 1;
     this.title = (this.data.id == undefined) ? 'جدید' : 'ویرایش';
-
-    this.levelOptions.label = 'مقطع';
-    this.levelOptions.options = [
-      {value: 0, title: 'کاردانی'},
-      {value: 1, title: 'کارشناسی'},
-      {value: 2, title: 'کارشناسی ارشد'},
-      {value: 3, title: 'دکتری'},
-    ];
 
     this.groupOptions.label = 'گروه آموزشی';
     this.getEduGroupOptions();
@@ -63,7 +54,6 @@ export class EduFieldFormComponent {
 
   onSubmit() {
     this.data.name = this.form.value.name;
-    this.data.fieldLevel = this.form.value.fieldLevel;
     this.data.eduGroupId = this.form.value.eduGroup;
     this.submit();
   }

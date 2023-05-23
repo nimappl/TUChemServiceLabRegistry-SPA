@@ -15,18 +15,15 @@ import {ProfessorGrantFormComponent} from "./professor-grant-form/professor-gran
 })
 export class ProfessorGrantComponent {
   professors: Data<TUProfessor> = new Data<TUProfessor>;
-  table: TableConfig = new TableConfig();
+  table: TableConfig = new TableConfig(1);
   selectedItem: TUProfessor = null;
 
   constructor(private apiService: ProfessorService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.sortable = true;
-    this.table.hasDelete = true;
-    this.table.hasEdit = true;
-    this.table.hasActivationCol = false;
-    this.table.hasSearch = true;
+    this.table.buttons = null;
+    this.table.buttonTitles = null;
     this.table.columns = [
       {for: 'firstName', dbName: 'PFirstName', title: 'نام استاد', sortable: true, hasSearch: true},
       {for: 'lastName', dbName: 'PLastName', title: 'نام خانوادگی استاد', sortable: true, hasSearch: true},

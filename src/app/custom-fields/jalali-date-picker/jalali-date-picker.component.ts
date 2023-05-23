@@ -66,7 +66,7 @@ export class JalaliDatePickerComponent implements OnInit, ControlValueAccessor {
   ngOnInit() {
     this.initializeValue(this.data.selectedValue);
 
-    let start: Date = new Date('2023-03-20');
+    let start: Date = new Date('2024-03-19');
     let untilYear = new Date().getFullYear() - 20;
     let jalaliList: {year: number, month: number, day: number, weekDay?: number}[] = [];
     let index = 0;

@@ -26,11 +26,9 @@ export class EduGroupFormComponent {
   ngOnInit() {
     this.mode = (this.data.id == undefined) ? 0 : 1;
     this.title = (this.data.id == undefined) ? 'جدید' : 'ویرایش';
-    // if (this.mode === 1) this.statusOptions.selectedValue = this.data.active ? 1 : 0;
   }
 
   onSubmit() {
-    this.data.name = this.form.value.name;
     this.submit();
   }
 

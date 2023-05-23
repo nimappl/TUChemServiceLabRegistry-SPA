@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Data, Instrument } from '../model';
+import {Data, Instrument, Person} from '../model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,10 @@ export class InstrumentService {
 
   get(options: Data<Instrument>):Observable<Data<Instrument>> {
     return this.http.get<Data<Instrument>>(`${this.apiUrl}?queryParams=${JSON.stringify(options)}`);
+  }
+
+  getCandidateOperators(name: string): Observable<Array<Person>> {
+    return this.http.get<Array<Person>>(`${this.apiUrl}/get-operator-candidates/${name}`);
   }
 
   getById(id: number):Observable<Instrument> {

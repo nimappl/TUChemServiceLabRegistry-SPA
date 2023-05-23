@@ -20,9 +20,8 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   @ViewChild('formStatus') formStatus: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
   @Input() data: CustomFieldData;
-  @Output() onSearch: EventEmitter<string> = new EventEmitter();
   @Output() onSelectionChange: EventEmitter<any> = new EventEmitter();
-  searchText: string = '';
+  @Output() onSearch: EventEmitter<any> = new EventEmitter<any>();
   inputId = Math.floor(Math.random() * 100);
 
   onChange = (selectedValue) => {};
@@ -33,7 +32,7 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   loadingFailed = false;
 
   ngOnInit() {
-    if (this.data.selectedValue !== null) this.searchText = this.data.options[this.data.selectedValue].title;
+    // if (this.data.selectedValue !== null) this.data.searchText = this.data.options[this.data.selectedValue].title;
   }
 
   registerOnChange(onChange: any): void {
@@ -50,9 +49,9 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
 
   writeValue(value: any): void {
     if (value === null || value === undefined || value === "") {
-      this.data.selectedValue = null;
+      this.data.searchText = null;
     } else {
-      this.data.selectedValue = value;
+      this.data.searchText = value;
     }
   }
 
@@ -63,27 +62,22 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  select(value: number) {
+  select(value: number, fieldValue: string) {
     this.data.selectedValue = value;
+    this.data.searchText = fieldValue;
     this.onSelectionChange.emit();
     this.showOptions = false;
     this.changeFormStatus(2);
-    this.onChange(this.data.selectedValue);
-  }
-
-  setTitleOfSelectedValue() {
-    this.data.options.forEach(opt => {
-      if (opt.value === this.data.selectedValue)
-        this.searchText = opt.title;
-    });
   }
 
   onInteract() {
     if (!this.disabled) {
       this.data.selectedValue = null;
-      if (this.searchText === '') this.changeFormStatus(0);
+      this.openOptions();
+      if (this.data.searchText === '') this.changeFormStatus(0);
       else this.changeFormStatus(1);
-      this.onSearch.emit(this.searchText);
+      this.onChange(this.data.searchText);
+      this.onSearch.emit();
     }
   }
 
@@ -97,8 +91,16 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
 
   clicked() {
     this.markAsTouched();
-    this.showOptions = true;
-    setTimeout(() =>  this.focusFlag = true, 10 );
+    this.openOptions();
+  }
+
+  openOptions() {
+    if (this.data.searchText && this.data.searchText.length > 0) {
+      this.showOptions = true;
+      setTimeout(() =>  this.focusFlag = true, 10 );
+    } else {
+      this.showOptions = false;
+    }
   }
 
   focusout() {
@@ -108,6 +110,6 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
         this.showOptions = false;
         this.focusFlag = false;
       }
-    }, 50);
+    }, 30);
   }
 }

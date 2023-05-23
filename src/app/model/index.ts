@@ -24,4 +24,3 @@ export { default as TestFee } from './test-fee';
 export { default as TestPrep } from './test-prep';
 export { default as TUProfessor } from './tuprofessor';
 export { default as TUStudent } from './tustudent';
-export { default as DateTestObject } from './date-test-object';

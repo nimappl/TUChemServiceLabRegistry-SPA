@@ -8,10 +8,16 @@
           <input type="text" id="firstName" name="firstName" class="txt" placeholder="pox" [ngModel]="data.firstName" autocomplete="off">
           <label for="firstName">نام</label>
         </div>
+      </div>
+      <div class="col-6">
         <div class="input-field">
           <input type="text" id="phoneNumber" name="phoneNumber" class="txt" placeholder="pox" [ngModel]="data.phoneNumber" autocomplete="off">
           <label for="phoneNumber">شماره موبایل</label>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
         <div class="input-field">
           <input type="text" id="nationalNumber" name="nationalNumber" class="txt" placeholder="pox" [ngModel]="data.nationalNumber" autocomplete="off">
           <label for="nationalNumber">کد ملی</label>
@@ -22,10 +28,16 @@
           <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [ngModel]="data.lastName" autocomplete="off">
           <label for="lastName">نام خانوادگی</label>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
         <div class="input-field">
           <input type="text" id="email" name="email" class="txt" placeholder="pox" [ngModel]="data.email" autocomplete="off">
           <label for="email">ایمیل</label>
         </div>
+      </div>
+      <div class="col-6" style="margin-top: 18px">
         <app-select [data]="genderOptions" name="gender" [ngModel]="data.gender"></app-select>
       </div>
     </div>

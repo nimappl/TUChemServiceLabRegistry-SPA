@@ -6,6 +6,7 @@ export default class Organization {
   name: string;
   nationalId: string;
   registrationNo: string;
+  contractNo: string;
   phoneNumbers: Array<OrgPhoneNumber>;
   representatives: Array<OrgRepresentative>;
   customerId: number;

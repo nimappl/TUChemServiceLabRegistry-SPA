@@ -2,17 +2,17 @@
   <div class="select-box"
        (click)="openOptions($event)"
        [ngClass]="{'open': showCalendar, 'invalid': data.invalid && this.touched, 'disabled': disabled}">
-    <p class="selected">{{ selectedDate === null ? '' : dateToString() }}</p>
+    <p class="selected ltr">{{ selectedDate === null ? '' : dateToString() }}</p>
     <span class="icon"></span>
     <span class="label" [ngClass]="{'small': selectedDate !== null}">{{ data.label }}</span>
   </div>
   <div class="options px-1" [ngStyle]="{'display': showCalendar ? 'block' : 'none'}">
     <div class="d-flex justify-content-center py-1">
       <select id="month" [(ngModel)]="pendingDate.month" (change)="onSelectMonth()" class="me-2" (blur)="focusout()" (focusin)="clicked()">
-        <option *ngFor="let month of monthName; let i = index" [value]="(i+1)*1">{{ month }}</option>
+        <option *ngFor="let month of monthName; let i = index" [value]="(i+1)">{{ month }}</option>
       </select>
       <select id="year" [(ngModel)]="pendingDate.year" (change)="onSelectYear()" (blur)="focusout()" (focusin)="clicked()">
-        <option *ngFor="let year of dateList" [value]="(year.yearNumber)*1">{{ year.yearNumber }}</option>
+        <option *ngFor="let year of dateList" [value]="(year.yearNumber)">{{ year.yearNumber }}</option>
       </select>
     </div>
     <table class="w-100">

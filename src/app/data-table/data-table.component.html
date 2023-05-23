@@ -1,46 +1,46 @@
-<div style="overflow-x: scroll" class="mb-2">
+<div style="overflow-x: scroll" class="mb-1">
   <table class="table table-striped table-bordered table-hover mb-1">
-    <thead class="thead-dark">
-      <tr>
-        <th>ردیف</th>
-        <ng-template ngFor let-col [ngForOf]="config.columns" let-i="index">
-          <th *ngIf="config.sortable; else nonSortable"
-              (click)="toggleSortFor(i)" [ngStyle]="{'cursor': col.sortable ? 'pointer' : 'unset'}">
-            {{ col.title }}
-            <span *ngIf="col.dbName === data.sortBy && col.sortable">
-              <i class="fas fa-sort-amount-down-alt mr-2" *ngIf="data.sortType === 0"></i>
-              <i class="fas fa-sort-amount-down mr-2" *ngIf="data.sortType === 1"></i>
-            </span>
-          </th>
-          <ng-template #nonSortable>
-            <th>{{ col.title }}</th>
+    <ng-template [ngIf]="!config.sorting && !config.loadingFailed && data.records.length > 0">
+      <thead class="thead-dark">
+        <tr>
+          <th>ردیف</th>
+          <ng-template ngFor let-col [ngForOf]="config.columns" let-i="index">
+            <th *ngIf="config.sortable; else nonSortable"
+                (click)="toggleSortFor(i)" [ngStyle]="{'cursor': col.sortable ? 'pointer' : 'unset'}">
+              {{ col.title }}
+              <span *ngIf="col.dbName === data.sortBy && col.sortable">
+                <i class="fas fa-sort-amount-down-alt mr-2" *ngIf="data.sortType === 0"></i>
+                <i class="fas fa-sort-amount-down mr-2" *ngIf="data.sortType === 1"></i>
+              </span>
+            </th>
+            <ng-template #nonSortable>
+              <th>{{ col.title }}</th>
+            </ng-template>
           </ng-template>
-        </ng-template>
-        <th *ngFor="let col of config.buttonTitles">
-          {{ col }}
-        </th>
-        <th class="text-center" *ngIf="config.hasEdit">ویرایش</th>
-        <th class="text-center" *ngIf="config.hasDelete">حذف</th>
-        <th class="text-center" *ngIf="config.hasActivationCol">{{ config.activationColTitle }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngIf="config.hasSearch && config.showSearch">
-        <th><i class="fas fa-search"></i></th>
-        <td *ngFor="let col of config.columns">
-          <input
-            *ngIf="col.hasSearch"
-            type="text" class="form-control form-control-sm"
-            placeholder="جستجو" autocomplete="off"
-            [name]="col.for"
-            (input)="search(col.dbName, $event)">
-        </td>
-        <td *ngFor="let e of config.buttonTitles"></td>
-        <td *ngIf="config.hasEdit"></td>
-        <td *ngIf="config.hasDelete"></td>
-        <td *ngIf="config.hasActivationCol"></td>
-      </tr>
-      <ng-template [ngIf]="!config.sorting && !config.loadingFailed">
+          <th *ngFor="let col of config.buttonTitles">
+            {{ col }}
+          </th>
+          <th class="text-center" *ngIf="config.hasEdit">ویرایش</th>
+          <th class="text-center" *ngIf="config.hasDelete">حذف</th>
+          <th class="text-center" *ngIf="config.hasActivationCol">{{ config.activationColTitle }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="config.hasSearch && config.showSearch">
+          <th><i class="fas fa-search"></i></th>
+          <td *ngFor="let col of config.columns">
+            <input
+              *ngIf="col.hasSearch"
+              type="text" class="form-control form-control-sm"
+              placeholder="جستجو" autocomplete="off"
+              [name]="col.for"
+              (input)="search(col.dbName, $event)">
+          </td>
+          <td *ngFor="let e of config.buttonTitles"></td>
+          <td *ngIf="config.hasEdit"></td>
+          <td *ngIf="config.hasDelete"></td>
+          <td *ngIf="config.hasActivationCol"></td>
+        </tr>
         <tr *ngFor="let record of data.records; let i = index">
           <th>{{ i + (data.pageNumber - 1) * data.pageSize + 1 }}</th>
           <td *ngFor="let col of config.columns">
@@ -51,14 +51,14 @@
           </td>
           <td *ngFor="let btn of config.buttons" class="py-1 edit">
             <div class="d-flex justify-content-center align-items-center buttons">
-              <button class="btn btn-sm btn-outline-success" (click)="btnClick(btn.id, record)">
+              <button type="button" class="btn btn-sm btn-outline-success" (click)="btnClick(btn.id, record)">
                 {{ btn.title }}
               </button>
             </div>
           </td>
           <td class="py-1 edit" *ngIf="config.hasEdit">
             <div class="d-flex justify-content-center align-items-center buttons">
-              <button class="btn btn-sm btn-outline-warning" (click)="edit(i)">
+              <button type="button" class="btn btn-sm btn-outline-warning" (click)="edit(i)">
                 ویرایش
                 <i class="fas fa-edit"></i>
               </button>
@@ -66,7 +66,7 @@
           </td>
           <td class="py-1 edit" *ngIf="config.hasDelete">
             <div class="d-flex justify-content-center align-items-center buttons">
-              <button class="btn btn-outline-danger btn-sm" (click)="remove(i)">
+              <button type="button" class="btn btn-outline-danger btn-sm" (click)="remove(i)">
                 حذف
                 <i class="fas fa-times-circle"></i>
               </button>
@@ -79,20 +79,21 @@
             </div>
           </td>
         </tr>
-      </ng-template>
-    </tbody>
+      </tbody>
+    </ng-template>
   </table>
 </div>
 <div class="me-2 mb-2 text-danger" *ngIf="!config.loading && config.loadingFailed">
   <i class="fas fa-exclamation-triangle"></i>
   <span class="message ms-1 font-weight-bold">خطا در برقراری ارتباط با سرور</span>
 </div>
-<div class="me-2 mb-2" *ngIf="!config.loading && !config.loadingFailed && data.records.length === 0">
+<div class="me-2 mb-2" *ngIf="!config.loading && !config.loadingFailed && (!data.records || data.records.length === 0)">
   <span class="message text-muted font-weight-bold">موردی یافت نشد</span>
 </div>
 <div class="me-2 mb-2 d-flex align-items-center" *ngIf="config.sorting && config.loading">
   <app-loading-spinner-bars style="height: 25px;"></app-loading-spinner-bars>
   <p class="message my-auto fst-italic ms-1 text-muted">در حال بارگذاری</p>
 </div>
-<app-pagination *ngIf="!config.sorting && !config.loadingFailed && config.hasPagination"
-  [pagingParams]="data" (pagingChanged)="pagingChanged()"></app-pagination>
+<app-pagination *ngIf="!config.sorting && !config.loadingFailed && config.hasPagination && data.records.length > 0"
+  [pagingParams]="data" (pagingChanged)="pagingChanged()">
+</app-pagination>

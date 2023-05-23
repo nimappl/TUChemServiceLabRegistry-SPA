@@ -4,7 +4,7 @@
          [ngClass]="{'invalid': data.invalid && touched}"
          #searchField
          [disabled]="disabled"
-         [(ngModel)]="searchText"
+         [(ngModel)]="data.searchText"
          (input)="onInteract()"
          (focusin)="clicked()"
          (focusout)="focusout()"
@@ -16,23 +16,23 @@
       <li tabindex="-33" class="option"
           *ngFor="let opt of data.options"
           title="{{ opt.title }}"
-          (click)="select(opt.value)">
+          (click)="select(opt.value, opt.fieldValue)">
         {{ opt.title }}
       </li>
-      {{ setTitleOfSelectedValue() }}
+<!--      {{ setTitleOfSelectedValue() }}-->
     </ng-template>
-    <ng-template [ngIf]="!loading && !loadingFailed && data.options.length === 0">
+    <ng-template [ngIf]="!data.loading && !data.loadingFailed && data.options.length === 0">
       <div class="ms-2 py-1">
         <span class="message text-muted font-weight-bold">موردی یافت نشد.</span>
       </div>
     </ng-template>
-    <ng-template [ngIf]="!loading && loadingFailed">
+    <ng-template [ngIf]="!data.loading && data.loadingFailed">
       <div class="ms-2 text-danger py-1">
         <i class="fas fa-exclamation-triangle"></i>
         <span class="message ms-1 font-weight-bold">خطا در برقراری ارتباط با سرور</span>
       </div>
     </ng-template>
-    <ng-template [ngIf]="loading">
+    <ng-template [ngIf]="data.loading">
       <div class="d-flex">
         <p class="loading mx-2 my-1"></p>
         <p class="message my-1 fst-italic text-muted">در حال بارگذاری</p>
