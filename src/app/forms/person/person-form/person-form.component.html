@@ -1,56 +1,189 @@
 <h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
 <app-progress *ngIf="reachingOut"></app-progress>
-<div class="container-fluid">
-  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
-    <div class="row">
-      <div class="col-6">
-        <div class="input-field">
-          <input type="text" id="firstName" name="firstName" class="txt" placeholder="pox" [ngModel]="data.firstName" autocomplete="off">
-          <label for="firstName">نام</label>
+<div style="overflow: scroll; min-height: 220px; max-height: 81vh">
+  <div class="container-fluid">
+    <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="firstName" name="firstName" class="txt" placeholder="pox" [(ngModel)]="data.firstName" autocomplete="off">
+            <label for="firstName">نام</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [(ngModel)]="data.lastName" autocomplete="off">
+            <label for="lastName">نام خانوادگی</label>
+          </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="input-field">
-          <input type="text" id="phoneNumber" name="phoneNumber" class="txt" placeholder="pox" [ngModel]="data.phoneNumber" autocomplete="off">
-          <label for="phoneNumber">شماره موبایل</label>
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="nationalNumber" name="nationalNumber" class="txt" placeholder="pox" [(ngModel)]="data.nationalNumber" autocomplete="off">
+            <label for="nationalNumber">کد ملی</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="phoneNumber" name="phoneNumber" class="txt" placeholder="pox" [(ngModel)]="data.phoneNumber" autocomplete="off">
+            <label for="phoneNumber">شماره موبایل</label>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <div class="input-field">
-          <input type="text" id="nationalNumber" name="nationalNumber" class="txt" placeholder="pox" [ngModel]="data.nationalNumber" autocomplete="off">
-          <label for="nationalNumber">کد ملی</label>
+      <div class="row">
+        <div class="col-6">
+          <div class="input-field">
+            <input type="text" id="email" name="email" class="txt" placeholder="pox" [(ngModel)]="data.email" autocomplete="off">
+            <label for="email">ایمیل</label>
+          </div>
+        </div>
+        <div class="col-6" style="margin-top: 18px">
+          <app-select [data]="genderOptions" name="gender" [(ngModel)]="data.gender"></app-select>
         </div>
       </div>
-      <div class="col-6">
-        <div class="input-field">
-          <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [ngModel]="data.lastName" autocomplete="off">
-          <label for="lastName">نام خانوادگی</label>
+      <div class="d-flex justify-content-between mt-2">
+        <div class="position-relative" style="width: 210px">
+          <input type="checkbox" name="typeLab" id="typeLab" class="btn-check" [(ngModel)]="data.typeLab" autocomplete="off">
+          <label for="typeLab" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeLab, 'btn-outline-success': data.typeLab}">
+            <i class="fas" [ngClass]="{'fa-close': !data.typeLab, 'fa-check': data.typeLab}"></i>
+            پرسنل آزمایشگاه
+          </label>
+        </div>
+        <div class="position-relative" style="width: 210px">
+          <input type="checkbox" name="typeProf" id="typeProf" class="btn-check" [(ngModel)]="data.typeProf" autocomplete="off" (change)="onSelectType()">
+          <label for="typeProf" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeProf, 'btn-outline-success': data.typeProf}">
+            <i class="fas" [ngClass]="{'fa-close': !data.typeProf, 'fa-check': data.typeProf}"></i>
+            هیأت علمی دانشگاه تبریز
+          </label>
+        </div>
+        <div class="position-relative" style="width: 210px">
+          <input type="checkbox" name="typeStdn" id="typeStdn" class="btn-check" [(ngModel)]="data.typeStdn" autocomplete="off" (change)="onSelectType()">
+          <label for="typeStdn" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeStdn, 'btn-outline-success': data.typeStdn}">
+            <i class="fas" [ngClass]="{'fa-close': !data.typeStdn, 'fa-check': data.typeStdn}"></i>
+            دانشجوی دانشگاه تبریز
+          </label>
+        </div>
+        <div class="position-relative" style="width: 210px">
+          <input type="checkbox" name="typeOrg" id="typeOrg" class="btn-check" [(ngModel)]="data.typeOrg" autocomplete="off" (change)="onSelectType()">
+          <label for="typeOrg" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeOrg, 'btn-outline-success': data.typeOrg}">
+            <i class="fas" [ngClass]="{'fa-close': !data.typeOrg, 'fa-check': data.typeOrg}"></i>
+            نماینده شرکت/سازمان
+          </label>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <div class="input-field">
-          <input type="text" id="email" name="email" class="txt" placeholder="pox" [ngModel]="data.email" autocomplete="off">
-          <label for="email">ایمیل</label>
+      <div class="row mt-4"></div>
+      <div class="field-group mt-4" *ngIf="data.typeLab">
+        <div class="field-group-header">
+          <div class="group-title">پرسنل آزمایشگاه</div>
+        </div>
+        <div class="group-content">
+          <div class="row">
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" id="labPersonnelCode" name="labPersonnelCode" class="txt ltr" [(ngModel)]="data.labPersonnelCode" placeholder="." autocomplete="off">
+                <label for="labPersonnelCode">کد پرسنلی</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" id="labPost" name="labPost" class="txt" [(ngModel)]="data.labPost" placeholder="." autocomplete="off">
+                <label for="labPost">سمت</label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-6" style="margin-top: 18px">
-        <app-select [data]="genderOptions" name="gender" [ngModel]="data.gender"></app-select>
+      <div class="field-group" *ngIf="data.typeProf">
+        <div class="field-group-header">
+          <div class="group-title">هیأت علمی دانشگاه تبریز</div>
+        </div>
+        <div class="group-content">
+          <div class="row">
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" name="profPersonnelCode" id="profPersonnelCode" class="txt ltr" [(ngModel)]="data.profPersonnelCode" placeholder="." autocomplete="off">
+                <label for="profPersonnelCode">کد پرسنلی</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-field">
+                <app-select name="profEduGroup" [data]="eduGroupOptions" [(ngModel)]="data.profEduGroupId">
+                </app-select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </form>
+      <div class="field-group" *ngIf="data.typeStdn">
+        <div class="field-group-header">
+          <div class="group-title">دانشجوی دانشگاه تبریز</div>
+        </div>
+        <div class="group-content">
+          <div class="row">
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" name="stdnCode" id="stdnCode" class="txt ltr" [(ngModel)]="data.stdnCode" placeholder="." autocomplete="off">
+                <label for="stdnCode">شماره دانشجویی</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-field">
+                <app-select name="stdnEduLevel" [data]="eduLevelOptions" [(ngModel)]="data.stdnEduLevel"></app-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="input-field">
+                <app-select name="stdnEduField" [data]="eduFieldOptions" [(ngModel)]="data.stdnEduFieldId"></app-select>
+              </div>
+            </div>
+            <div class="col-6">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field-group" *ngIf="data.typeOrg">
+        <div class="field-group-header">
+          <div class="group-title">نماینده شرکت/سازمان - لیست شرکت های مطبوعه</div>
+        </div>
+        <div class="group-content">
+          <div class="d-flex justify-content-start ms-2">
+            <div style="width: 300px; margin-top: 6px;">
+              <app-select [data]="organizationOptions" (onSelect)="onSelectOrganization($event)"></app-select>
+            </div>
+            <div style="width: 150px; margin-top: 8px; margin-right: 15px">
+              <button type="button" class="btn btn-sm btn-outline-success" (click)="onAddOrganization()" [disabled]="pendingOrgIndex == null">افزودن به لیست</button>
+            </div>
+          </div>
+          <div class="row mt-3 ms-2" *ngIf="pendingOrgIndex != null">
+            <div class="col-4">
+              <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ organizations[pendingOrgIndex].name }}</span></div>
+            </div>
+            <div class="col-4">
+              <div class="details-text"><strong>شناسه ملی:</strong>&nbsp;<span>{{ organizations[pendingOrgIndex].nationalId }}</span></div>
+            </div>
+            <div class="col-4">
+              <div class="details-text"><strong>شماره قرارداد:</strong>&nbsp;<span>{{ organizations[pendingOrgIndex].contractNo }}</span></div>
+            </div>
+          </div>
+          <ng-template [ngIf]="data.orgRepOrganizations.length > 0" [ngIfElse]="noOrgs">
+            <div class="mt-2">
+              <app-data-table [data]="organizationTableData" [config]="organizationTableConfig" (removeItem)="onRemoveOrganization()"></app-data-table>
+            </div>
+          </ng-template>
+          <ng-template #noOrgs>
+            <p class="small text-muted mt-2 ms-2">خالی</p>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 <div mat-dialog-actions style="direction: ltr;">
   <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
-    <app-loading-spinner-bars
-            color="white"
-            [size]="16"
-            class="ms-2"
-            *ngIf="reachingOut">
-    </app-loading-spinner-bars>
+    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
     <div>ثبت</div>
   </button>
   <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>

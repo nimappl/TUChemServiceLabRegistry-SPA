@@ -45,6 +45,7 @@ import { UsedMaterialFormComponent } from './forms/used-material/used-material-f
 import { OrganizationComponent } from './forms/organization/organization.component';
 import { OrganizationFormComponent } from './forms/organization/organization-form/organization-form.component';
 import { InstrumentMaintenanceFormComponent } from './forms/instrument/instrument-maintenance-form/instrument-maintenance-form.component';
+import { DeletePersonFormComponent } from './forms/person/delete-person-form/delete-person-form.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { InstrumentMaintenanceFormComponent } from './forms/instrument/instrumen
     UsedMaterialFormComponent,
     OrganizationComponent,
     OrganizationFormComponent,
-    InstrumentMaintenanceFormComponent
+    InstrumentMaintenanceFormComponent,
+    DeletePersonFormComponent
   ],
   imports: [
     BrowserModule,

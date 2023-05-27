@@ -1,5 +1,4 @@
 import InstrumentOperator from "./instrument-operator";
-import InstrumentMaintenance from "./instrument-maintenance";
 
 export default class Instrument {
   id: number;

@@ -1,0 +1,12 @@
+h1:before { display: none; }
+h1 { font-family: Vazir, sans-serif !important; font-size: 18px !important; }
+.slide-toggle:checked { background: #ff4242 }
+label {
+    position: static;
+    color: #6c757d;
+}
+.slide-toggle:checked:disabled {
+    background-color: #d54e4e;
+    cursor: default;
+}
+.slide-toggle:checked:disabled:before { background-color: #eee }

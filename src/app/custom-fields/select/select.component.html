@@ -9,9 +9,9 @@
   <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
     <ng-template [ngIf]="!data.loading && !data.loadingFailed && data.options.length > 0">
       <li class="option"
-          *ngFor="let opt of data.options"
+          *ngFor="let opt of data.options; let i = index"
           title="{{ opt.title }}"
-          (click)="select(opt.value)">
+          (click)="select(i)">
         {{ opt.title }}
       </li>
       {{ setTitleOfSelectedValue(title) }}

@@ -125,12 +125,7 @@
 </div>
 <div mat-dialog-actions style="direction: ltr;">
   <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
-  <app-loading-spinner-bars
-          color="white"
-          [size]="16"
-          class="ms-2"
-          *ngIf="reachingOut">
-  </app-loading-spinner-bars>
+    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
   <div>ثبت</div>
   </button>
   <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>

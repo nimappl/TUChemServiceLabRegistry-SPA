@@ -59,10 +59,10 @@ export class SelectComponent implements ControlValueAccessor {
     }
   }
 
-  select(value: number) {
-    this.data.selectedValue = value;
+  select(index: number) {
+    this.data.selectedValue = this.data.options[index].value;
     this.onChange(this.data.selectedValue);
-    this.onSelect.emit(value);
+    this.onSelect.emit(index);
     this.showOptions = false;
   }
 

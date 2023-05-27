@@ -1,4 +1,4 @@
-import { default as Filter } from "./filter";
+import Filter from "./filter";
 
 export default class Data<T> {
     records: Array<T> = [];

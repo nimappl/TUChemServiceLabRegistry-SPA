@@ -1,0 +1,54 @@
+<h1 mat-dialog-title class="pt-2 pb-0 fw-bold">حذف اطلاعات شخص: {{ person.firstName }} {{ person.lastName }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div class="container-fluid">
+  <form id="form" #f="ngForm" (ngSubmit)="onSend()">
+    <p class="text-muted mx-2 pt-2">اطلاعاتی که مایلید حذف شوند را انتخاب کنید:</p>
+    <div class="d-flex mx-3 mt-1">
+      <div style="width: 40px">
+        <input type="checkbox" class="slide-toggle" name="all" id="all" [(ngModel)]="all" (change)="onSelectAll()">
+      </div>
+      <div style="width: 270px">
+        <label for="all">کل اطلاعات شخص</label>
+      </div>
+    </div>
+    <div class="d-flex mx-3 mt-1" *ngIf="person.typeLab">
+      <div style="width: 40px">
+        <input type="checkbox" name="typeLab" id="typeLab" class="slide-toggle" [(ngModel)]="typeLab" [disabled]="all">
+      </div>
+      <div style="width: 270px">
+        <label for="typeLab">پرسنل آزمایشگاه</label>
+      </div>
+    </div>
+    <div class="d-flex mx-3 mt-1" *ngIf="person.typeProf">
+      <div style="width: 40px">
+        <input type="checkbox" name="typeProf" id="typeProf" class="slide-toggle" [(ngModel)]="typeProf" [disabled]="all">
+      </div>
+      <div style="width: 270px">
+        <label for="typeProf">هیأت علمی دانشگاه تبریز</label>
+      </div>
+    </div>
+    <div class="d-flex mx-3 mt-1" *ngIf="person.typeStdn">
+      <div style="width: 40px">
+        <input type="checkbox" name="typeStdn" id="typeStdn" class="slide-toggle" [(ngModel)]="typeStdn" [disabled]="all">
+      </div>
+      <div style="width: 270px">
+        <label for="typeStdn">دانشجوی دانشگاه تبریز</label>
+      </div>
+    </div>
+    <div class="d-flex mx-3 mt-1" *ngIf="person.typeOrg">
+      <div style="width: 40px">
+        <input type="checkbox" name="typeOrg" id="typeOrg" class="slide-toggle" [(ngModel)]="typeOrg" [disabled]="all">
+      </div>
+      <div style="width: 270px">
+        <label for="typeOrg">نماینده شرکت</label>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions style="direction: ltr">
+  <button type="submit" form="form" class="btn btn-danger btn-sm d-flex px-3">
+    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
+    <div>حذف</div>
+  </button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+</div>

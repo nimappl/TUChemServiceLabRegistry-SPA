@@ -1,10 +1,10 @@
 import Test from "./test";
 import TestFee from "./test-fee";
 import LabPersonnel from "./lab-personnel";
-import Customer from "./customer";
+import Account from "./account";
 import ServiceResultFile from "./service-result-file";
 import Discount from "./discount";
-import Payment from "./payment";
+import TestPrep from "./test-prep";
 
 export default class Service {
   id: number;
@@ -12,14 +12,13 @@ export default class Service {
   sampleQuantity: number;
   testTime: number;
   price: number;
-  hasSamplePrep: any;
   test: Test;
   testFee: TestFee;
+  testPreps: Array<TestPrep>;
   servingPersonnel: LabPersonnel;
-  customer: Customer;
-  settlementStatus: any;
+  customer: Account;
+  customerId: number;
   resultFiles: Array<ServiceResultFile>;
   discounts: Array<Discount>;
-  payments: Array<Payment>;
   considerations: string;
 }

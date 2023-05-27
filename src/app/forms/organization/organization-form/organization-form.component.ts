@@ -87,6 +87,7 @@ export class OrganizationFormComponent {
   }
 
   onAddRepresentative() {
+    this.pendingRepresentative.typeOrg = true;
     this.data.representatives.push(<OrgRepresentative>this.pendingRepresentative);
     this.clearPersonForm();
     this.showRepresentativeForm = false;

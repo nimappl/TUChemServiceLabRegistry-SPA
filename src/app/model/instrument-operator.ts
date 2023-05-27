@@ -1,5 +1,5 @@
-import Instrument from "./instrument";
 import Person from "./person";
+import Instrument from "./instrument";
 
 export default class InstrumentOperator extends Person {
   designationDate: Date;

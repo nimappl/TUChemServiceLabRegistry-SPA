@@ -2,7 +2,7 @@ import { Component, Inject, ViewChild } from '@angular/core';
 import { CustomFieldData } from "../../../custom-fields/custom-field-data";
 import { NgForm } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import {Data, EduGroup, LabPersonnel, Person} from "../../../model";
+import {Data, EduGroup, LabPersonnel, Person, PersonGeneral} from "../../../model";
 import swal from "sweetalert";
 import { LabPersonnelService } from "../../../services/lab-personnel.service";
 import {PersonService} from "../../../services/person.service";
@@ -46,13 +46,13 @@ export class LabPersonnelFormComponent {
 
   getPeopleOptions(filter: string = '') {
     this.peopleOptions.options = [];
-    let eduGroups: Data<Person> = new Data();
-    eduGroups.pageSize = 100;
-    eduGroups.filters = [{key: 'PNationalNumber', value: filter}];
+    let person: Data<PersonGeneral> = new Data();
+    person.pageSize = 100;
+    person.filters = [{key: 'PNationalNumber', value: filter}];
     this.peopleOptions.loading = true;
-    this.personApiService.get(eduGroups).subscribe(res => {
+    this.personApiService.get(person).subscribe(res => {
       this.peopleOptions.loading = false;
-      eduGroups = res;
+      person = res;
       res.records.forEach(eg =>
         this.peopleOptions.options.push({value: eg.id, title: `${eg.firstName} ${eg.lastName}`})
       );

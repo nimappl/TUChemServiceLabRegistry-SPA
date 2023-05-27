@@ -3,8 +3,12 @@ import { NgForm } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import swal from "sweetalert";
 import { PersonService } from "../../../services/person.service";
-import { Person } from "../../../model";
+import {Data, EduField, EduGroup, Filter, Organization, PersonGeneral} from "../../../model";
 import {CustomFieldData} from "../../../custom-fields/custom-field-data";
+import {TableConfig} from "../../../data-table/table-config";
+import {EduGroupService} from "../../../services/edu-group.service";
+import {OrganizationService} from "../../../services/organization.service";
+import {EduFieldService} from "../../../services/edu-field.service";
 
 @Component({
   selector: 'app-person-form',
@@ -17,40 +21,149 @@ export class PersonFormComponent implements OnInit {
   reachingOut: boolean = false;
   submitted: boolean = false;
   genderOptions: CustomFieldData = new CustomFieldData();
+  eduFieldOptions: CustomFieldData = new CustomFieldData();
+  eduGroupOptions: CustomFieldData = new CustomFieldData();
+  eduLevelOptions: CustomFieldData = new CustomFieldData();
+  organizationOptions: CustomFieldData = new CustomFieldData();
+  organizationTableConfig: TableConfig = new TableConfig(0);
+  organizationTableData: Data<Organization> = new Data<Organization>();
+  organizations: Array<Organization> = [];
+  pendingOrgIndex: number;
   @ViewChild('f') form: NgForm;
 
   constructor(
     private dialogRef: MatDialogRef<PersonFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Person,
-    private apiService: PersonService
+    @Inject(MAT_DIALOG_DATA) public data: PersonGeneral,
+    private personService: PersonService,
+    private eduGroupService: EduGroupService,
+    private eduFieldService: EduFieldService,
+    private organizationService: OrganizationService
   ) {}
 
   ngOnInit() {
     this.mode = (this.data.id == undefined) ? 0 : 1;
     this.title = (this.data.id == undefined) ? 'جدید' : 'ویرایش';
-
+    if (!this.data.profEduGroup) this.data.profEduGroup = new EduGroup();
+    if (!this.data.stdnEduField) this.data.stdnEduField = new EduField();
+    if (!this.data.orgRepOrganizations) this.data.orgRepOrganizations = [];
+    this.organizationTableData.records = this.data.orgRepOrganizations;
+    this.eduGroupOptions.label = 'گروه آموزشی';
+    this.eduFieldOptions.label = 'رشته تحصیلی';
+    this.eduLevelOptions.label = 'مقطع تحصیلی';
+    this.organizationOptions.label = 'انتخاب شرکت/سازمان';
     this.genderOptions.label = 'جنسیت';
     this.genderOptions.options = [
       {value: 0, title: 'مرد'},
       {value: 1, title: 'زن'}
     ];
-    // if (this.mode === 1) this.statusOptions.selectedValue = this.data.active ? 1 : 0;
+    this.eduLevelOptions.options = [
+      {value: 0, title: 'کاردانی'},
+      {value: 1, title: 'کارشناسی'},
+      {value: 2, title: 'کارشناسی ارشد'},
+      {value: 3, title: 'دکتری'}
+    ];
+    this.organizationTableConfig.hasDelete = true;
+    this.organizationTableConfig.columns = [
+      {for: 'name', dbName: 'OrgName', title: 'نام', sortable: true, hasSearch: true},
+      {for: 'nationalId', dbName: 'OrgNationalID', title: 'شناسه ملی', sortable: true, hasSearch: true},
+      {for: 'contractNo', dbName: 'OrgContractNo', title: 'شماره قرارداد', sortable: true, hasSearch: true}
+    ];
+
+    this.onSelectType();
+  }
+
+  getEduFieldOptions() {
+    this.eduFieldOptions.options = [];
+    this.eduFieldOptions.loading = true;
+    let efData: Data<EduField> = new Data<EduField>();
+    efData.pageSize = null;
+    this.eduFieldService.get(efData).subscribe(result => {
+      this.eduFieldOptions.loading = false;
+      let inList: boolean = false;
+      result.records.forEach(eduField => {
+        this.eduFieldOptions.options.push({value: eduField.id, title: eduField.name});
+        if (this.eduFieldOptions.selectedValue && !inList)
+          inList = this.eduFieldOptions.selectedValue === eduField.id;
+      });
+      if (this.eduFieldOptions.selectedValue && !inList)
+        this.eduFieldOptions.options.push({value: this.data.stdnEduField.id, title: this.data.stdnEduField.name});
+    }, err => {
+      this.eduFieldOptions.loading = false;
+      this.eduFieldOptions.loadingFailed = true;
+    });
+  }
+
+  getEduGroupOptions() {
+    this.eduGroupOptions.options = [];
+    this.eduGroupOptions.loading = true;
+    let egData: Data<EduGroup> = new Data<EduGroup>();
+    egData.pageSize = null;
+    this.eduGroupService.get(egData).subscribe(result => {
+      this.eduGroupOptions.loading = false;
+      let inList: boolean = false;
+      result.records.forEach(eduGroup => {
+        this.eduGroupOptions.options.push({value: eduGroup.id, title: eduGroup.name, fieldValue: eduGroup.name});
+        if (this.eduGroupOptions.selectedValue && !inList)
+          inList = this.eduGroupOptions.selectedValue === eduGroup.id;
+      });
+      if (this.eduGroupOptions.selectedValue && !inList) {
+        this.eduGroupOptions.options.push({value: this.data.profEduGroup.id, title: this.data.profEduGroup.name});
+      }
+    }, err => {
+      this.eduGroupOptions.loading = false;
+      this.eduGroupOptions.loadingFailed = true;
+    });
+  }
+
+  getOrganizationOptions() {
+    this.organizationOptions.options = [];
+    this.organizationOptions.loading = true;
+    let orgData: Data<Organization> = new Data<Organization>();
+    orgData.pageSize = null;
+    this.organizationService.get(orgData).subscribe(result => {
+      this.organizationOptions.loading = false;
+      this.organizations = result.records;
+      result.records.forEach(org => {
+        this.organizationOptions.options.push({value: org.id, title: org.name});
+      });
+    }, err => {
+      this.organizationOptions.loading = false;
+      this.organizationOptions.loadingFailed = true;
+    });
+  }
+
+  onSelectType() {
+    if (this.data.typeProf) this.getEduGroupOptions();
+    if (this.data.typeStdn) this.getEduFieldOptions();
+    if (this.data.typeOrg) this.getOrganizationOptions();
+  }
+
+  onSelectEduGroup() {
+    this.data.profEduGroup = this.eduGroupOptions.selectedValue;
+  }
+
+  onSelectOrganization(index: number) {
+    this.pendingOrgIndex = index;
+  }
+
+  onAddOrganization() {
+    this.data.orgRepOrganizations.push(this.organizations[this.pendingOrgIndex]);
+    this.pendingOrgIndex = null;
+    this.organizationOptions.selectedValue = null;
+  }
+
+  onRemoveOrganization() {
+    this.data.orgRepOrganizations.splice(this.pendingOrgIndex, 1);
   }
 
   onSubmit() {
-    this.data.nationalNumber = this.form.value.nationalNumber;
-    this.data.firstName = this.form.value.firstName;
-    this.data.lastName = this.form.value.lastName;
-    this.data.phoneNumber = this.form.value.phoneNumber;
-    this.data.email = this.form.value.email;
-    this.data.gender = this.form.value.gender;
     this.submit();
   }
 
   submit() {
     this.reachingOut = true;
     if (this.mode === 0) {
-      this.apiService.create(this.data).subscribe(res => {
+      this.personService.create(this.data).subscribe(res => {
         this.reachingOut = false;
         this.submitted = true;
         swal({title: 'موفق', text: `شخص جدید با موفقیت ثبت شد.`, icon: 'success'}).then(() => {
@@ -61,7 +174,7 @@ export class PersonFormComponent implements OnInit {
         swal({title: 'ناموفق', icon: 'error'});
       });
     } else {
-      this.apiService.update(this.data).subscribe(res => {
+      this.personService.update(this.data).subscribe(res => {
         this.reachingOut = false;
         this.submitted = true;
         swal({title: 'موفق', text: `عملیات بروزرسانی با موفقیت انجام شد.`, icon: 'success'}).then(() => {

@@ -35,17 +35,23 @@ export class EduFieldFormComponent {
     this.getEduGroupOptions();
   }
 
-  getEduGroupOptions(titleFilter: string = '') {
-    this.groupOptions.options = [];
+  getEduGroupOptions() {
     let eduGroups: Data<EduGroup> = new Data();
-    eduGroups.pageSize = 100;
-    eduGroups.filters = [{key: 'EduGroupName', value: titleFilter}];
+    eduGroups.pageSize = null;
     this.groupOptions.loading = true;
     this.eduGroupApi.get(eduGroups).subscribe(res => {
       this.groupOptions.loading = false;
       eduGroups = res;
-      res.records.forEach(eg => this.groupOptions.options.push({value: eg.id, title: eg.name}));
-      if (this.mode === 1) this.groupOptions.selectedValue = this.data.eduGroupId;
+      res.records.forEach(group => this.groupOptions.options.push({value: group.id, title: group.name}));
+      if (this.mode === 1 && this.groupOptions.selectedValue) {
+        let selectedGroupIsInList = false;
+        res.records.forEach(group => {
+          if (this.groupOptions.selectedValue === group.id) selectedGroupIsInList = true;
+        });
+        if (!selectedGroupIsInList) {
+          this.groupOptions.options.push({value: this.data.eduGroup.id, title: this.data.eduGroup.name});
+        }
+      }
     }, err => {
       this.groupOptions.loading = false;
       this.groupOptions.loadingFailed = true;

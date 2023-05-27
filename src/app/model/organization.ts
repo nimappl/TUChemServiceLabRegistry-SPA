@@ -9,5 +9,4 @@ export default class Organization {
   contractNo: string;
   phoneNumbers: Array<OrgPhoneNumber>;
   representatives: Array<OrgRepresentative>;
-  customerId: number;
 }

@@ -1,4 +1,7 @@
-import {Organization, Person, IMUsedMaterial, Instrument} from "./index";
+import Instrument from "./instrument";
+import Person from "./person";
+import Organization from "./organization";
+import IMUsedMaterial from "./im-used-material";
 
 export default class InstrumentMaintenance {
   id: number;

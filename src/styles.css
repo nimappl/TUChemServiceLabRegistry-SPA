@@ -16,7 +16,7 @@ body {
 }
 
 .card-header { font-size: 1.30rem; font-weight: bold;}
-.card { box-shadow: 3px 0 20px 8px #ccc; margin-bottom: 50px;}
+.card { box-shadow: 3px 0 20px 8px #ccc; margin-bottom: 1.5rem}
 .mdc-dialog__surface { overflow-y: visible !important; }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -48,7 +48,7 @@ body {
     left: 0;
     background: #fff;
     transform: scale(1.1);
-    box-shadow: 0 2px 5px rgba(0,0,0,.3);
+    box-shadow: 0 1px 7px rgba(0,0,0,.3);
     transition: .25s;
 }
 
@@ -56,8 +56,9 @@ body {
 
 .slide-toggle:hover { cursor: pointer; }
 
-.loading {
-    background-image: url("./assets/svg/spinner-0.5s-50px.svg");
+.loading { background-image: url("./assets/svg/spinner-0.5s-50px.svg") }
+.loading-double-ring { background-image: url("./assets/svg/double-ring-0.8s-50px.svg") }
+.loading, .loading-double-ring {
     background-repeat: no-repeat;
     background-size: 20px;
     width: 20px;

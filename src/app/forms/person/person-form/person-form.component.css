@@ -1,2 +1,5 @@
 h1:before { display: none; }
 h1 { font-family: Vazir, sans-serif !important; }
+label > .fas { font-size: 16px }
+.group-content > .row:first-child .input-field { margin-top: 6px;}
+.details-text { font-size: 13px; }
