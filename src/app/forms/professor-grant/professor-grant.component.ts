@@ -3,7 +3,6 @@ import {Data, TUProfessor} from "../../model";
 import {TableConfig} from "../../data-table/table-config";
 import {ProfessorService} from "../../services/professor.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ProfessorFormComponent} from "../professor/professor-form/professor-form.component";
 import swal from "sweetalert";
 import {DateConvertor} from "../../custom-fields/jalali-date-picker/date-convertor";
 import {ProfessorGrantFormComponent} from "./professor-grant-form/professor-grant-form.component";

@@ -24,10 +24,6 @@ import { LoadingSpinnerBarsComponent } from "./custom-fields/loading-spinner-bar
 import { InstrumentFormComponent } from './forms/instrument/instrument-form/instrument-form.component';
 import { PersonComponent } from './forms/person/person.component';
 import { PersonFormComponent } from './forms/person/person-form/person-form.component';
-import { StudentComponent } from './forms/student/student.component';
-import { StudentFormComponent } from './forms/student/student-form/student-form.component';
-import { LabPersonnelComponent } from './forms/lab-personnel/lab-personnel.component';
-import { LabPersonnelFormComponent } from './forms/lab-personnel/lab-personnel-form/lab-personnel-form.component';
 import { EduGroupComponent } from './forms/edu-group/edu-group.component';
 import { EduFieldComponent } from './forms/edu-field/edu-field.component';
 import { EduGroupFormComponent } from './forms/edu-group/edu-group-form/edu-group-form.component';
@@ -36,8 +32,6 @@ import { TestComponent } from './forms/test/test.component';
 import { TestFormComponent } from './forms/test/test-form/test-form.component';
 import { DiscountComponent } from './forms/discount/discount.component';
 import { DiscountFormComponent } from './forms/discount/discount-form/discount-form.component';
-import { ProfessorComponent } from './forms/professor/professor.component';
-import { ProfessorFormComponent } from './forms/professor/professor-form/professor-form.component';
 import { ProfessorGrantComponent } from './forms/professor-grant/professor-grant.component';
 import { ProfessorGrantFormComponent } from './forms/professor-grant/professor-grant-form/professor-grant-form.component';
 import { UsedMaterialComponent } from './forms/used-material/used-material.component';
@@ -65,10 +59,6 @@ import { DeletePersonFormComponent } from './forms/person/delete-person-form/del
     InstrumentFormComponent,
     PersonComponent,
     PersonFormComponent,
-    StudentComponent,
-    StudentFormComponent,
-    LabPersonnelComponent,
-    LabPersonnelFormComponent,
     EduGroupComponent,
     EduFieldComponent,
     EduGroupFormComponent,
@@ -77,8 +67,6 @@ import { DeletePersonFormComponent } from './forms/person/delete-person-form/del
     TestFormComponent,
     DiscountComponent,
     DiscountFormComponent,
-    ProfessorComponent,
-    ProfessorFormComponent,
     ProfessorGrantComponent,
     ProfessorGrantFormComponent,
     UsedMaterialComponent,

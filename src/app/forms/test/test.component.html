@@ -1,5 +1,6 @@
 <div class="card">
   <div class="card-header py-1">آزمون</div>
+  <app-progress *ngIf="table.loading"></app-progress>
   <div class="card-body">
     <div class="mb-3">
       <button class="btn btn-sm btn-success me-2 px-3" (click)="openForm()">
@@ -21,7 +22,6 @@
             (buttonClicked)="buttonClicked($event)">
     </app-data-table>
   </div>
-  <app-progress *ngIf="table.loading"></app-progress>
   <div class="mx-3 py-3 details-card" *ngIf="selectedItem !== null">
     <h5 class="fw-bold details-title">جزئیات آزمون</h5>
     <div class="row mb-2">

@@ -1,5 +1,6 @@
 <div class="card">
   <div class="card-header py-1">لیست افراد</div>
+  <app-progress *ngIf="table.loading"></app-progress>
   <div class="card-body">
     <div class="d-flex mb-3">
       <div class="pt-1" style="width: 230px">
@@ -25,7 +26,6 @@
             (buttonClicked)="buttonClicked($event)">
     </app-data-table>
   </div>
-  <app-progress *ngIf="table.loading"></app-progress>
 </div>
 <div class="card" *ngIf="selectedItem != null">
   <div class="card-header py-1">اطلاعات شخص</div>

@@ -20,7 +20,7 @@
       <tr>
         <td *ngFor="let day of weeks[0]">
           <div *ngIf="day !== null" (click)="onSelectDay(day)"
-               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}">
+               [ngClass]="{'selected': selectedDateIsOnCalendar && selectedDate.day === day}"> 
             {{ day }}
           </div>
         </td>
