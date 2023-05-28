@@ -8,7 +8,6 @@ import swal from "sweetalert";
 import {OrganizationService} from "../../../services/organization.service";
 import {PersonService} from "../../../services/person.service";
 import {UsedMaterialService} from "../../../services/used-material.service";
-import {TableConfig} from "../../../data-table/table-config";
 
 @Component({
   selector: 'app-instrument-maintenance-form',
@@ -17,7 +16,7 @@ import {TableConfig} from "../../../data-table/table-config";
 })
 export class InstrumentMaintenanceFormComponent {
   mode: number; // 0: new, 1: edit
-  title: string;
+  dialogTitle: string;
   reachingOut: boolean = false;
   submitted: boolean = false;
   dateOptions: CustomFieldData = new CustomFieldData();
@@ -29,7 +28,6 @@ export class InstrumentMaintenanceFormComponent {
   pendingCompany: Organization = new Organization();
   personSelectedFromDB: boolean = false;
   companySelectedFromDB: boolean = false;
-
   @ViewChild('f') form: NgForm;
 
   constructor(
@@ -42,8 +40,8 @@ export class InstrumentMaintenanceFormComponent {
   ) {}
 
   ngOnInit() {
-    this.mode = (this.data.id == undefined) ? 0 : 1;
-    this.title = (this.data.id == undefined) ? 'جدید' : 'ویرایش';
+    this.mode = (!this.data.id) ? 0 : 1;
+    this.dialogTitle = (!this.data.id) ? 'جدید' : 'ویرایش';
 
     this.dateOptions.label = 'تاریخ';
     this.personSearchOptions.label = 'نام تعمیرکار';
@@ -191,8 +189,7 @@ export class InstrumentMaintenanceFormComponent {
     if ((!this.data.servicingCompany.name || this.data.servicingCompany.name === '') &&
         (!this.data.servicingCompany.nationalId || this.data.servicingCompany.nationalId === ''))
       this.data.servicingCompany = null;
-    console.log(this.data)
-    this.submit();
+    if (this.form.valid) this.submit();
   }
 
   submit() {

@@ -21,8 +21,10 @@
             (buttonClicked)="showInstrumentDetails($event)">
     </app-data-table>
   </div>
-  <div class="mx-3 py-3 details-card" *ngIf="selectedInstrument !== null">
-    <h5 class="fw-bold details-title">جزئیات دستگاه</h5>
+</div>
+<div class="card" *ngIf="selectedInstrument != null">
+  <div class="card-header py-1">اطلاعات دستگاه</div>
+  <div class="card-body">
     <div class="row mb-2">
       <div class="col-6">
         <div class="details-text"><strong>نام دستگاه:</strong>&nbsp;<span>{{ selectedInstrument.name }}</span></div>
@@ -74,78 +76,79 @@
             (paramsChanged)="fetchMaintenance()"
             (buttonClicked)="showMaintenanceDetails($event)">
     </app-data-table>
-    <hr class="invisible">
-    <div class="py-3 details-card" style="margin: 30px 0 10px 0" *ngIf="selectedMaintenance !== null">
-      <h5 class="fw-bold details-title">جزئیات اقدام تعمیر و نگه‌داری دستگاه {{ selectedInstrument.name }} مورخ {{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</h5>
-      <div class="row mb-2">
-        <div class="col-6">
-          <div class="details-text"><strong>عنوان:</strong>&nbsp;<span>{{ selectedMaintenance.title }}</span></div>
-        </div>
-        <div class="col-6">
-          <div class="details-text"><strong>تاریخ:</strong>&nbsp;<span>{{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</span></div>
+  </div>
+</div>
+<div class="card" *ngIf="selectedMaintenance !== null">
+  <div class="card-header py-1">جزئیات اقدام تعمیر و نگه‌داری دستگاه {{ selectedInstrument.name }} مورخ {{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</div>
+  <div class="card-body">
+    <div class="row mb-2">
+      <div class="col-6">
+        <div class="details-text"><strong>عنوان:</strong>&nbsp;<span>{{ selectedMaintenance.title }}</span></div>
+      </div>
+      <div class="col-6">
+        <div class="details-text"><strong>تاریخ:</strong>&nbsp;<span>{{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-6">
+        <div class="details-text"><strong>شماره فاکتور:</strong>&nbsp;<span>{{ selectedMaintenance.invoiceNo }}</span></div>
+      </div>
+      <div class="col-6">
+        <div class="details-text"><strong>هزینه اقدامات:</strong>&nbsp;<span>{{ selectedMaintenance.totalCost }}</span></div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="details-text">
+          <strong>توضیحات:</strong>&nbsp;
+          <span *ngIf="selectedMaintenance.description != null" [innerHTML]="formatDescription(selectedMaintenance.description)"></span>
         </div>
       </div>
+    </div>
+    <div class="row mb-3" *ngIf="selectedMaintenance.usedMaterialList.length > 0">
+      <strong class="details-header mb-2">مواد/قطعات استفاده شده در این اقدام</strong>
+      <app-data-table [data]="usedMaterialData" [config]="usedMaterialTableConfig"></app-data-table>
+    </div>
+    <div *ngIf="selectedMaintenance.servicemanId != null">
+      <strong class="details-header mb-3">مشخصات تعمیرکار/ارائه دهندهٔ سرویس</strong>
       <div class="row mb-2">
         <div class="col-6">
-          <div class="details-text"><strong>شماره فاکتور:</strong>&nbsp;<span>{{ selectedMaintenance.invoiceNo }}</span></div>
+          <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.firstName }}</span></div>
         </div>
         <div class="col-6">
-          <div class="details-text"><strong>هزینه اقدامات:</strong>&nbsp;<span>{{ selectedMaintenance.totalCost }}</span></div>
+          <div class="details-text"><strong>نام خانوادگی:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.lastName }}</span></div>
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col">
-          <div class="details-text">
-            <strong>توضیحات:</strong>&nbsp;
-            <span *ngIf="selectedMaintenance.description != null" [innerHTML]="formatDescription(selectedMaintenance.description)"></span>
-          </div>
+        <div class="col-6">
+          <div class="details-text"><strong>کد ملی:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.nationalNumber }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>شماره تماس:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.phoneNumber }}</span></div>
         </div>
       </div>
-      <div class="row mb-3" *ngIf="selectedMaintenance.usedMaterialList.length > 0">
-        <strong class="details-header mb-2">مواد/قطعات استفاده شده در این اقدام</strong>
-        <app-data-table [data]="usedMaterialData" [config]="usedMaterialTableConfig"></app-data-table>
-      </div>
-      <div *ngIf="selectedMaintenance.servicemanId != null">
-        <strong class="details-header mb-3">مشخصات تعمیرکار/ارائه دهندهٔ سرویس</strong>
-        <div class="row mb-2">
-          <div class="col-6">
-            <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.firstName }}</span></div>
-          </div>
-          <div class="col-6">
-            <div class="details-text"><strong>نام خانوادگی:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.lastName }}</span></div>
-          </div>
+    </div>
+    <div *ngIf="selectedMaintenance.servicingCompanyId != null">
+      <strong class="details-header mb-3">مشخصات شرکت ارائه دهندهٔ سرویس</strong>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>نام شرکت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.name }}</span></div>
         </div>
-        <div class="row mb-3">
-          <div class="col-6">
-            <div class="details-text"><strong>کد ملی:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.nationalNumber }}</span></div>
-          </div>
-          <div class="col-6">
-            <div class="details-text"><strong>شماره تماس:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.phoneNumber }}</span></div>
-          </div>
+        <div class="col-6">
+          <div class="details-text"><strong>شناسه ملی شرکت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.nationalId }}</span></div>
         </div>
       </div>
-      <div *ngIf="selectedMaintenance.servicingCompanyId != null">
-        <strong class="details-header mb-3">مشخصات شرکت ارائه دهندهٔ سرویس</strong>
-        <div class="row mb-2">
-          <div class="col-6">
-            <div class="details-text"><strong>نام شرکت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.name }}</span></div>
-          </div>
-          <div class="col-6">
-            <div class="details-text"><strong>شناسه ملی شرکت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.nationalId }}</span></div>
-          </div>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>شماره ثبت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.registrationNo }}</span></div>
         </div>
-        <div class="row mb-2">
-          <div class="col-6">
-            <div class="details-text"><strong>شماره ثبت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.registrationNo }}</span></div>
-          </div>
-          <div class="col-6">
-            <div class="details-text"><strong>شماره قرارداد:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.contractNo }}</span></div>
-          </div>
+        <div class="col-6">
+          <div class="details-text"><strong>شماره قرارداد:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.contractNo }}</span></div>
         </div>
-        <div class="row" *ngIf="selectedMaintenance.servicingCompany.phoneNumbers.length > 0">
-          <div class="details-text"><strong class="mb-1">شماره‌های تماس شرکت</strong></div>
-          <app-data-table [data]="orgPhoneNumberData" [config]="orgPhoneNumberTableConfig"></app-data-table>
-        </div>
+      </div>
+      <div class="row" *ngIf="selectedMaintenance.servicingCompany.phoneNumbers.length > 0">
+        <div class="details-text"><strong class="mb-1">شماره‌های تماس شرکت</strong></div>
+        <app-data-table [data]="orgPhoneNumberData" [config]="orgPhoneNumberTableConfig"></app-data-table>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title class="pt-1 pb-0">{{ title }}</h1>
+<h1 mat-dialog-title class="pt-1 pb-0">{{ dialogTitle }}</h1>
 <app-progress *ngIf="reachingOut"></app-progress>
 <div style="overflow: scroll; max-height: 81vh">
   <div class="container-fluid">
@@ -6,8 +6,13 @@
       <div class="row">
         <div class="col-8">
           <div class="input-field">
-            <input type="text" id="title" name="title" class="txt" placeholder="pox" [(ngModel)]="data.title" autocomplete="off">
+            <input type="text" id="title" name="title" class="txt" placeholder="pox"
+                   [(ngModel)]="data.title" autocomplete="off" #title='ngModel' required
+                   [ngClass]="{'invalid': (title.invalid && title.touched) || (f.submitted && title.invalid)}">
             <label for="title">عنوان</label>
+            <small class="text-danger ms-2" *ngIf="(title.invalid && title.touched) || (f.submitted && title.invalid)">
+              این فیلد الزامی است.
+            </small>
           </div>
         </div>
         <div class="col-4">

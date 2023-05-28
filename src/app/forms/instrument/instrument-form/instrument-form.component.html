@@ -6,8 +6,13 @@
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-              <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
-              <label for="name">نام دستگاه</label>
+            <input type="text" id="name" name="name" class="txt" placeholder="pox"
+                   [(ngModel)]="data.name" autocomplete="off" required #name='ngModel'
+                   [ngClass]="{'invalid': (name.invalid && name.touched) || f.submitted && name.invalid}">
+            <label for="name">نام دستگاه</label>
+            <small class="text-danger ms-2" *ngIf="(name.invalid && name.touched) || f.submitted && name.invalid">
+              این فیلد الزامی است.
+            </small>
           </div>
         </div>
         <div class="col-6">

@@ -108,7 +108,7 @@ export class InstrumentFormComponent implements OnInit{
   }
 
   onSubmit() {
-    this.submit();
+    if (this.form.valid) this.submit();
   }
 
   submit() {

@@ -21,9 +21,11 @@
             (paramsChanged)="fetch()">
     </app-data-table>
   </div>
-  <div class="mx-3 py-3 details-card" *ngIf="selectedItem !== null">
-    <h5 class="fw-bold details-title">جزئیات شرکت/سازمان</h5>
-    <div class="row mb-1">
+</div>
+<div class="card" *ngIf="selectedItem !== null">
+  <div class="card-header">اطلاعات شرکت/سازمان</div>
+    <div class="card-body">
+      <div class="row mb-1">
       <div class="col">
         <div class="details-text"><strong>نام شرکت/سازمان:</strong>&nbsp;<span>{{ selectedItem.name }}</span></div>
       </div>
@@ -39,12 +41,12 @@
         <div class="details-text"><strong>شماره ثبت:</strong>&nbsp;<span>{{ selectedItem.registrationNo }}</span></div>
       </div>
     </div>
-    <div class="row mb-3" *ngIf="selectedItem.phoneNumbers.length > 0">
-      <strong class="mb-1 details-header">دفترچه تلفن</strong>
+    <div class="mt-2" *ngIf="selectedItem.phoneNumbers.length > 0">
+      <div class="form-hr mb-3"><span>دفترچه تلفن</span><div></div></div>
       <app-data-table [data]="phoneNumberData" [config]="phoneNumberTable"></app-data-table>
     </div>
-    <div class="row mb-3" *ngIf="selectedItem.representatives.length > 0">
-      <strong class="mb-1 details-header">نمایندگان شرکت/سازمان</strong>
+    <div class="mt-2" *ngIf="selectedItem.representatives.length > 0">
+      <div class="form-hr mb-3"><span>نمایندگان شرکت/سازمان</span><div></div></div>
       <app-data-table [data]="representativesData" [config]="representativesTable"></app-data-table>
     </div>
   </div>

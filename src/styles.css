@@ -15,7 +15,11 @@ body {
     direction: rtl;
 }
 
-.card-header { font-size: 1.30rem; font-weight: bold;}
+.card-header {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #555
+}
 .card { box-shadow: 3px 0 20px 8px #ccc; margin-bottom: 1.5rem}
 .mdc-dialog__surface { overflow-y: visible !important; }
 
@@ -71,6 +75,7 @@ body {
     position: relative;
     margin-top: 18px;
 }
+.input-field > small { font-size: 12px }
 label {
     background-color: #fff;
     color: #666;
@@ -117,6 +122,7 @@ label {
 }
 .txt::placeholder {
     color: transparent;
+    user-select: none;
 }
 .ltr { direction: ltr }
 .form-hr {
@@ -127,12 +133,13 @@ label {
 .form-hr > div {
     height: 7px;
     width: 100%;
-    background-color: #18815066;
+    background-color: #18815020;
     margin-top: 9px;
 }
 .form-hr > span {
     color: #999;
     position: absolute;
+    top: -10px;
     padding: 0 10px;
     background-color: #ffffff;
     margin-right: 25px;
@@ -204,7 +211,7 @@ select.txt::before, select.txt::before {
     font-size: 15px;
 }
 .details-text > p { margin: 0 }
-.details-text strong, .details-header { color: #555; }
+.details-text strong, .details-header { color: #888; }
 .details-header { font-size: 18px; }
 
 .field-group {
