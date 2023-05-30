@@ -1,2 +1,3 @@
 h1:before { display: none; }
 h1 { font-family: Vazir, sans-serif !important; }
+app-search-select ~ small, app-select ~ small { font-size: 12px }

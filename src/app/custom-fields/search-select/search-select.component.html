@@ -1,7 +1,7 @@
 <div tabindex="-59" id="master" class="select-wrapper" (blur)="focusout()">
   <span class="form-status" #formStatus></span>
   <input [id]="inputId" type="text" class="txt"
-         [ngClass]="{'invalid': data.invalid && touched}"
+         [ngClass]="{'invalid': invalid && touched}"
          #searchField
          [disabled]="disabled"
          [(ngModel)]="data.searchText"

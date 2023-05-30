@@ -1,7 +1,7 @@
 <div class="select-wrapper" tabindex="5" (blur)="focusout()">
   <div class="select-box"
        (click)="openOptions($event)"
-       [ngClass]="{'open': showOptions, 'invalid': data.invalid && this.touched, 'disabled': disabled}">
+       [ngClass]="{'open': showOptions, 'invalid': invalid && touched, 'disabled': disabled}">
     <p class="selected" style="" #title></p>
     <span class="arrow"></span>
     <span class="label" [ngClass]="{'small': data.selectedValue !== null}">{{ data.label }}</span>

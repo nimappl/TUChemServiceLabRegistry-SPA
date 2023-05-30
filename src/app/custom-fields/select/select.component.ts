@@ -17,8 +17,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 export class SelectComponent implements ControlValueAccessor {
   showOptions: Boolean = false;
   @Input() data: CustomFieldData = new CustomFieldData();
+  @Input() invalid: boolean;
   @Output() onSelect = new EventEmitter();
-  selectedValueTitle: string = '';
 
   onChange = (selectedValue) => {};
   onTouched = () => {};
@@ -54,7 +54,6 @@ export class SelectComponent implements ControlValueAccessor {
 
   openOptions(e: any) {
     if (!this.disabled) {
-      this.markAsTouched();
       this.showOptions ? this.showOptions = false : this.showOptions = true;
     }
   }
@@ -76,5 +75,6 @@ export class SelectComponent implements ControlValueAccessor {
 
   focusout() {
     this.showOptions = false;
+    this.markAsTouched();
   }
 }

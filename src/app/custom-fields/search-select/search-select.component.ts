@@ -20,6 +20,7 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   @ViewChild('formStatus') formStatus: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
   @Input() data: CustomFieldData;
+  @Input() invalid: boolean;
   @Output() onSelectionChange: EventEmitter<any> = new EventEmitter();
   @Output() onSearch: EventEmitter<any> = new EventEmitter<any>();
   inputId = Math.floor(Math.random() * 100);
@@ -90,7 +91,6 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   clicked() {
-    this.markAsTouched();
     this.openOptions();
   }
 
@@ -109,6 +109,7 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
       if (!this.focusFlag) {
         this.showOptions = false;
         this.focusFlag = false;
+        this.markAsTouched();
       }
     }, 30);
   }

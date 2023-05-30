@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import swal from "sweetalert";
 import { InstrumentService } from "../../../services/instrument.service";
@@ -27,9 +27,9 @@ export class InstrumentFormComponent implements OnInit{
   operatorTableConfig: TableConfig = new TableConfig(0);
   operatorTableData: Data<InstrumentOperator> = new Data<InstrumentOperator>();
   pendingOperator: InstrumentOperator = new InstrumentOperator();
-  operatorSelectedFromDB: boolean = false;
   showOperatorForm: boolean = false;
   @ViewChild('f') form: NgForm;
+  @ViewChild('operatorForm') operatorForm: NgForm;
 
   constructor(
     private dialogRef: MatDialogRef<InstrumentFormComponent>,
@@ -93,9 +93,11 @@ export class InstrumentFormComponent implements OnInit{
   }
 
   onAddOperator() {
-    this.data.operators.push(this.pendingOperator);
-    this.clearOperatorForm();
-    this.showOperatorForm = false;
+    if (!this.operatorForm.invalid) {
+      this.data.operators.push(this.pendingOperator);
+      this.clearOperatorForm();
+      this.showOperatorForm = false;
+    }
   }
 
   onRemoveOperator(index: number) {
