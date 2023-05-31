@@ -9,7 +9,7 @@
             <input type="text" id="title" name="title" class="txt" placeholder="pox"
                    [(ngModel)]="data.title" autocomplete="off" #title='ngModel' required
                    [ngClass]="{'invalid': (title.invalid && title.touched) || (f.submitted && title.invalid)}">
-            <label for="title">عنوان</label>
+            <label for="title" class="input">عنوان</label>
             <small class="text-danger ms-2" *ngIf="(title.invalid && title.touched) || (f.submitted && title.invalid)">
               این فیلد الزامی است.
             </small>
@@ -23,13 +23,13 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="invoiceNo" name="invoiceNo" class="txt ltr" placeholder="pox" [(ngModel)]="data.invoiceNo" autocomplete="off">
-            <label for="invoiceNo">شماره فاکتور</label>
+            <label for="invoiceNo" class="input">شماره فاکتور</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
             <input type="number" id="cost" name="cost" class="txt ltr" placeholder="pox" [(ngModel)]="data.totalCost" autocomplete="off">
-            <label for="cost">هزینه اقدام تعمیر و نگه‌داری (ریال)</label>
+            <label for="cost" class="input">هزینه اقدام تعمیر و نگه‌داری (ریال)</label>
           </div>
         </div>
       </div>
@@ -66,19 +66,19 @@
               <div style="width: 170px;">
                 <div class="input-field">
                   <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt ltr" [(ngModel)]="data.usedMaterialList[i].price" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
-                  <label [for]="'price-'+i">قیمت هر واحد</label>
+                  <label class="input" [for]="'price-'+i">قیمت هر واحد</label>
                 </div>
               </div>
               <div style="width: 170px;">
                 <div class="input-field">
                   <input type="text" [id]="'manufacturer-'+i" [name]="'manufacturer-'+i" class="txt" [(ngModel)]="data.usedMaterialList[i].manufacturer" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
-                  <label [for]="'manufacturer-'+i">تولید کننده</label>
+                  <label class="input" [for]="'manufacturer-'+i">تولید کننده</label>
                 </div>
               </div>
               <div style="width: 110px;">
                 <div class="input-field">
                   <input type="number" [id]="'quantity-'+i" [name]="'quantity-'+i" class="txt ltr" [(ngModel)]="data.usedMaterialList[i].quantity" [disabled]="data.usedMaterialList[i].maintenanceId != null" placeholder="pox" autocomplete="off">
-                  <label [for]="'quantity-'+i">تعداد/مقدار</label>
+                  <label class="input" [for]="'quantity-'+i">تعداد/مقدار</label>
                 </div>
               </div>
               <div style="width: 36px; margin-top: 14px">
@@ -120,7 +120,7 @@
             <div class="col-6">
               <div class="input-field">
                 <input type="text" id="lastName" name="lastName" class="txt" [(ngModel)]="data.serviceman.lastName" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
-                <label for="lastName">نام خانوادگی</label>
+                <label class="input" for="lastName">نام خانوادگی</label>
               </div>
             </div>
           </div>
@@ -128,13 +128,13 @@
             <div class="col-5">
               <div class="input-field">
                 <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" [(ngModel)]="data.serviceman.nationalNumber" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
-                <label for="nationalNumber">کد ملی</label>
+                <label class="input" for="nationalNumber">کد ملی</label>
               </div>
             </div>
             <div class="col-5">
               <div class="input-field">
                 <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" [(ngModel)]="data.serviceman.phoneNumber" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
-                <label for="phoneNumber">شماره تلفن</label>
+                <label class="input" for="phoneNumber">شماره تلفن</label>
               </div>
             </div>
             <div class="col-2" style="margin-top: 18px;">
@@ -166,14 +166,14 @@
         <div class="col-5">
           <div class="input-field">
             <input type="text" id="nationalId" name="nationalId" class="txt ltr" [(ngModel)]="data.servicingCompany.nationalId" [disabled]="data.servicingCompany.id != null" placeholder="." autocomplete="off">
-            <label for="nationalId">شناسه ملی شرکت</label>
+            <label class="input" for="nationalId">شناسه ملی شرکت</label>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
           <textarea name="description" id="description" class="txt" rows="5" [(ngModel)]="data.description"></textarea>
-          <label for="description">توضیحات</label>
+          <label class="input" for="description">توضیحات</label>
         </div>
       </div>
     </form>

@@ -125,9 +125,10 @@ export class TestFormComponent {
     this.data.samplePreparations.push(newPrep);
   }
 
-  onSelectDiscount(discountId: number) {
-    this.discountApiSrv.getById(discountId).subscribe( res => {
+  onSelectDiscount() {
+    this.discountApiSrv.getById(this.discountOptions.selectedValue).subscribe( res => {
       this.selectedDiscount = res;
+      console.log(res)
       this.selectedDiscount.typeString = Discount.getType(this.selectedDiscount.type);
     });
   }

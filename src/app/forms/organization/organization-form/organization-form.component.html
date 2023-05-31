@@ -7,13 +7,13 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
-            <label for="name">نام شرکت/سازمان</label>
+            <label class="input" for="name">نام شرکت/سازمان</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="contractNo" name="contractNo" class="txt" placeholder="pox" [(ngModel)]="data.contractNo" autocomplete="off">
-            <label for="contractNo">شماره قرارداد</label>
+            <label class="input" for="contractNo">شماره قرارداد</label>
           </div>
         </div>
       </div>
@@ -21,13 +21,13 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="nationalId" name="nationalId" class="txt" placeholder="pox" [(ngModel)]="data.nationalId" autocomplete="off">
-            <label for="nationalId">شناسه ملی</label>
+            <label class="input" for="nationalId">شناسه ملی</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="registrationNo" name="registrationNo" class="txt" placeholder="pox" [(ngModel)]="data.registrationNo" autocomplete="off">
-            <label for="registrationNo">شماره ثبت</label>
+            <label class="input" for="registrationNo">شماره ثبت</label>
           </div>
         </div>
       </div>
@@ -47,13 +47,13 @@
               <div style="width: 250px">
                 <div class="input-field">
                   <input type="text" [id]="'type-'+i" [name]="'type-'+i" class="txt ltr" placeholder="pox" [(ngModel)]="phone.number" autocomplete="off">
-                  <label [for]="'type-'+i">شماره تلفن</label>
+                  <label class="input" [for]="'type-'+i">شماره تلفن</label>
                 </div>
               </div>
               <div style="width: 450px">
                 <div class="input-field">
                   <input type="text" [id]="'price-'+i" [name]="'price-'+i" class="txt" placeholder="pox" [(ngModel)]="phone.section" autocomplete="off">
-                  <label [for]="'price-'+i">توضیح</label>
+                  <label class="input" [for]="'price-'+i">توضیح</label>
                 </div>
               </div>
               <div  style="width: 36px; margin-top: 14px">
@@ -85,7 +85,7 @@
               <div class="col-4">
                 <div class="input-field">
                   <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [(ngModel)]="pendingRepresentative.lastName" [disabled]="repSelectedFromDb" autocomplete="off">
-                  <label for="lastName">نام خانوادگی</label>
+                  <label class="input" for="lastName">نام خانوادگی</label>
                 </div>
               </div>
               <div class="col-4">
@@ -98,19 +98,19 @@
               <div class="col-4">
                 <div class="input-field">
                   <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.nationalNumber" [disabled]="repSelectedFromDb" autocomplete="off">
-                  <label for="nationalNumber">کد ملی</label>
+                  <label class="input" for="nationalNumber">کد ملی</label>
                 </div>
               </div>
               <div class="col-4">
                 <div class="input-field">
                   <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.phoneNumber" [disabled]="repSelectedFromDb" autocomplete="off">
-                  <label for="phoneNumber">شماره تلفن</label>
+                  <label class="input" for="phoneNumber">شماره تلفن</label>
                 </div>
               </div>
               <div class="col-4">
                 <div class="input-field">
                   <input type="text" id="email" name="email" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.email" [disabled]="repSelectedFromDb" autocomplete="off">
-                  <label for="email">ایمیل</label>
+                  <label class="input" for="email">ایمیل</label>
                 </div>
               </div>
             </div>

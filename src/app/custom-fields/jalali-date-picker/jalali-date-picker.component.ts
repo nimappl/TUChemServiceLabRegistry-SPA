@@ -19,6 +19,7 @@ export class JalaliDatePickerComponent implements OnInit, ControlValueAccessor {
   showCalendar: boolean = false;
   focusFlag: boolean = false;
   @Input() data: CustomFieldData;
+  @Input() invalid: boolean;
   monthName = DateConvertor.monthName;
   dateList: {
     yearNumber: number,

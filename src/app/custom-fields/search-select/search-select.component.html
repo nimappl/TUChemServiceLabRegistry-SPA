@@ -1,7 +1,7 @@
 <div tabindex="-59" id="master" class="select-wrapper" (blur)="focusout()">
   <span class="form-status" #formStatus></span>
   <input [id]="inputId" type="text" class="txt"
-         [ngClass]="{'invalid': invalid && touched}"
+         [ngClass]="{'invalid': invalid}"
          #searchField
          [disabled]="disabled"
          [(ngModel)]="data.searchText"
@@ -9,7 +9,7 @@
          (focusin)="clicked()"
          (focusout)="focusout()"
          placeholder="df" autocomplete="off">
-  <label [for]="inputId" class="label">{{ data.label }}</label>
+  <label [for]="inputId" class="input">{{ data.label }}</label>
   <em></em>
   <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}" (mousedown)="clicked()">
     <ng-template [ngIf]="!loading && !loadingFailed && data.options.length > 0">

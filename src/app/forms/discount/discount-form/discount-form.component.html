@@ -9,7 +9,7 @@
       <div class="col-6">
         <div class="input-field">
           <input type="number" id="percent" name="percent" class="txt" placeholder="pox" [(ngModel)]="data.percent" autocomplete="off">
-          <label for="percent">درصد تخفیف</label>
+          <label for="percent" class="input">درصد تخفیف</label>
         </div>
       </div>
     </div>
@@ -17,13 +17,13 @@
       <div class="col-6">
         <div class="input-field">
           <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
-          <label for="name">عنوان</label>
+          <label for="name" class="input">عنوان</label>
         </div>
       </div>
       <div class="col-6">
         <div class="input-field">
           <input type="number" id="minSamples" name="minSamples" class="txt" placeholder="pox" [(ngModel)]="data.minSamples" autocomplete="off" [disabled]="data.type != 2">
-          <label for="minSamples">حداقل تعداد نمونه</label>
+          <label for="minSamples" class="input">حداقل تعداد نمونه</label>
         </div>
       </div>
     </div>

@@ -10,9 +10,6 @@ export default class PersonGeneral extends Person {
   profPersonnelCode: string;
   profEduGroupId: number;
   profEduGroup: EduGroup;
-  profGrantIssueDate: Date;
-  profGrantAmount: number;
-  profGrantCredibleUntil: Date;
   stdnCode: string;
   stdnEduLevel: number;
   stdnEduFieldId: number;

@@ -7,13 +7,13 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="firstName" name="firstName" class="txt" placeholder="pox" [(ngModel)]="data.firstName" autocomplete="off">
-            <label for="firstName">نام</label>
+            <label class="input" for="firstName">نام</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [(ngModel)]="data.lastName" autocomplete="off">
-            <label for="lastName">نام خانوادگی</label>
+            <label class="input" for="lastName">نام خانوادگی</label>
           </div>
         </div>
       </div>
@@ -21,13 +21,13 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="nationalNumber" name="nationalNumber" class="txt" placeholder="pox" [(ngModel)]="data.nationalNumber" autocomplete="off">
-            <label for="nationalNumber">کد ملی</label>
+            <label class="input" for="nationalNumber">کد ملی</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="phoneNumber" name="phoneNumber" class="txt" placeholder="pox" [(ngModel)]="data.phoneNumber" autocomplete="off">
-            <label for="phoneNumber">شماره موبایل</label>
+            <label class="input" for="phoneNumber">شماره موبایل</label>
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="email" name="email" class="txt" placeholder="pox" [(ngModel)]="data.email" autocomplete="off">
-            <label for="email">ایمیل</label>
+            <label class="input" for="email">ایمیل</label>
           </div>
         </div>
         <div class="col-6" style="margin-top: 18px">
@@ -43,37 +43,28 @@
         </div>
       </div>
       <div class="d-flex justify-content-between mt-2">
-        <div class="position-relative" style="width: 210px">
-          <input type="checkbox" name="typeLab" id="typeLab" class="btn-check" [(ngModel)]="data.typeLab" autocomplete="off">
-          <label for="typeLab" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeLab, 'btn-outline-success': data.typeLab}">
-            <i class="fas" [ngClass]="{'fa-close': !data.typeLab, 'fa-check': data.typeLab}"></i>
-            پرسنل آزمایشگاه
-          </label>
-        </div>
-        <div class="position-relative" style="width: 210px">
-          <input type="checkbox" name="typeProf" id="typeProf" class="btn-check" [(ngModel)]="data.typeProf" autocomplete="off" (change)="onSelectType()">
-          <label for="typeProf" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeProf, 'btn-outline-success': data.typeProf}">
-            <i class="fas" [ngClass]="{'fa-close': !data.typeProf, 'fa-check': data.typeProf}"></i>
-            هیأت علمی دانشگاه تبریز
-          </label>
-        </div>
-        <div class="position-relative" style="width: 210px">
-          <input type="checkbox" name="typeStdn" id="typeStdn" class="btn-check" [(ngModel)]="data.typeStdn" autocomplete="off" (change)="onSelectType()">
-          <label for="typeStdn" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeStdn, 'btn-outline-success': data.typeStdn}">
-            <i class="fas" [ngClass]="{'fa-close': !data.typeStdn, 'fa-check': data.typeStdn}"></i>
-            دانشجوی دانشگاه تبریز
-          </label>
-        </div>
-        <div class="position-relative" style="width: 210px">
-          <input type="checkbox" name="typeOrg" id="typeOrg" class="btn-check" [(ngModel)]="data.typeOrg" autocomplete="off" (change)="onSelectType()">
-          <label for="typeOrg" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeOrg, 'btn-outline-success': data.typeOrg}">
-            <i class="fas" [ngClass]="{'fa-close': !data.typeOrg, 'fa-check': data.typeOrg}"></i>
-            نماینده شرکت/سازمان
-          </label>
-        </div>
+        <input type="checkbox" name="typeLab" id="typeLab" class="btn-check" [(ngModel)]="data.typeLab" autocomplete="off">
+        <label for="typeLab" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeLab, 'btn-outline-success': data.typeLab}">
+          <i class="fas" [ngClass]="{'fa-close': !data.typeLab, 'fa-check': data.typeLab}"></i>
+          پرسنل آزمایشگاه
+        </label>
+        <input type="checkbox" name="typeProf" id="typeProf" class="btn-check" [(ngModel)]="data.typeProf" autocomplete="off" (change)="onSelectType()">
+        <label for="typeProf" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeProf, 'btn-outline-success': data.typeProf}">
+          <i class="fas" [ngClass]="{'fa-close': !data.typeProf, 'fa-check': data.typeProf}"></i>
+          هیأت علمی دانشگاه تبریز
+        </label>
+        <input type="checkbox" name="typeStdn" id="typeStdn" class="btn-check" [(ngModel)]="data.typeStdn" autocomplete="off" (change)="onSelectType()">
+        <label for="typeStdn" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeStdn, 'btn-outline-success': data.typeStdn}">
+          <i class="fas" [ngClass]="{'fa-close': !data.typeStdn, 'fa-check': data.typeStdn}"></i>
+          دانشجوی دانشگاه تبریز
+        </label>
+        <input type="checkbox" name="typeOrg" id="typeOrg" class="btn-check" [(ngModel)]="data.typeOrg" autocomplete="off" (change)="onSelectType()">
+        <label for="typeOrg" class="btn btn-sm px-2" [ngClass]="{'btn-outline-secondary': !data.typeOrg, 'btn-outline-success': data.typeOrg}">
+          <i class="fas" [ngClass]="{'fa-close': !data.typeOrg, 'fa-check': data.typeOrg}"></i>
+          نماینده شرکت/سازمان
+        </label>
       </div>
-      <div class="row mt-4"></div>
-      <div class="field-group mt-4" *ngIf="data.typeLab">
+      <div class="field-group mt-2" *ngIf="data.typeLab">
         <div class="field-group-header">
           <div class="group-title">پرسنل آزمایشگاه</div>
         </div>
@@ -82,13 +73,13 @@
             <div class="col-6">
               <div class="input-field">
                 <input type="text" id="labPersonnelCode" name="labPersonnelCode" class="txt ltr" [(ngModel)]="data.labPersonnelCode" placeholder="." autocomplete="off">
-                <label for="labPersonnelCode">کد پرسنلی</label>
+                <label class="input" for="labPersonnelCode">کد پرسنلی</label>
               </div>
             </div>
             <div class="col-6">
               <div class="input-field">
                 <input type="text" id="labPost" name="labPost" class="txt" [(ngModel)]="data.labPost" placeholder="." autocomplete="off">
-                <label for="labPost">سمت</label>
+                <label class="input" for="labPost">سمت</label>
               </div>
             </div>
           </div>
@@ -103,7 +94,7 @@
             <div class="col-6">
               <div class="input-field">
                 <input type="text" name="profPersonnelCode" id="profPersonnelCode" class="txt ltr" [(ngModel)]="data.profPersonnelCode" placeholder="." autocomplete="off">
-                <label for="profPersonnelCode">کد پرسنلی</label>
+                <label class="input" for="profPersonnelCode">کد پرسنلی</label>
               </div>
             </div>
             <div class="col-6">
@@ -124,7 +115,7 @@
             <div class="col-6">
               <div class="input-field">
                 <input type="text" name="stdnCode" id="stdnCode" class="txt ltr" [(ngModel)]="data.stdnCode" placeholder="." autocomplete="off">
-                <label for="stdnCode">شماره دانشجویی</label>
+                <label class="input" for="stdnCode">شماره دانشجویی</label>
               </div>
             </div>
             <div class="col-6">

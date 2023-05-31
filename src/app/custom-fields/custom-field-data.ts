@@ -6,6 +6,5 @@ export class CustomFieldData {
     options: Array<{value: number, title: string, fieldValue?: string}> = [];
     loading: boolean = false;
     loadingFailed: boolean = false;
-    invalid: boolean = false;
     searchText: string = '';
 }

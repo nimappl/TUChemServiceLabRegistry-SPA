@@ -84,7 +84,7 @@ export class TestComponent {
   }
 
   formatDescription(val:string):string {
-    return val.replace(/(\r\n|\r|\n)/g, '<br>');
+    if (val) return val.replace(/(\r\n|\r|\n)/g, '<br>');
   }
 
   buttonClicked(item: {btnId: number, record: Test}) {
@@ -105,7 +105,6 @@ export class TestComponent {
     ];
     this.testDiscountsTable.columns = [
       {for: 'type', dbName: 'TDType', title: 'عنوان', sortable: false, hasSearch: false, transform: value => Discount.getType(value)},
-      {for: 'minSamples', dbName: 'TDMinSamples', title: 'حداقل تعداد نمونه', sortable: false, hasSearch: false},
       {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false}
     ];
   }

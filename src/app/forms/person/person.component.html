@@ -30,7 +30,7 @@
 <div class="card" *ngIf="selectedItem != null">
   <div class="card-header py-1">اطلاعات شخص</div>
   <div class="card-body">
-    <div class="row mb-1">
+    <div class="row mb-2">
       <div class="col">
         <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ selectedItem.firstName }}</span></div>
       </div>
@@ -38,7 +38,7 @@
         <div class="details-text"><strong>نام خانوادگی:</strong>&nbsp;<span>{{ selectedItem.lastName }}</span></div>
       </div>
     </div>
-    <div class="row mb-1">
+    <div class="row mb-2">
       <div class="col">
         <div class="details-text"><strong>کد ملی:</strong>&nbsp;<span>{{ selectedItem.nationalNumber }}</span></div>
       </div>
@@ -46,7 +46,7 @@
         <div class="details-text"><strong>جنسیت:</strong>&nbsp;<span>{{ transformGender(selectedItem.gender) }}</span></div>
       </div>
     </div>
-    <div class="row mb-1">
+    <div class="row mb-2">
       <div class="col">
         <div class="details-text"><strong>شماره موبایل:</strong>&nbsp;<span>{{ selectedItem.phoneNumber }}</span></div>
       </div>
@@ -56,7 +56,7 @@
     </div>
     <div class="mt-2" *ngIf="selectedItem.typeLab">
       <div class="form-hr mb-3"><span>پرسنل آزمایشگاه</span><div></div></div>
-      <div class="row mb1">
+      <div class="row mb-2">
         <div class="col">
           <div class="details-text"><strong>کد پرسنلی:</strong>&nbsp;<span>{{ selectedItem.labPersonnelCode }}</span></div>
         </div>
@@ -67,7 +67,7 @@
     </div>
     <div class="mt-2" *ngIf="selectedItem.typeProf">
       <div class="form-hr mb-3"><span>هیأت علمی دانشگاه تبریز</span><div></div></div>
-      <div class="row mb-1">
+      <div class="row mb-2">
         <div class="col-6">
           <div class="details-text"><strong>کد پرسنلی:</strong>&nbsp;<span>{{ selectedItem.profPersonnelCode }}</span></div>
         </div>

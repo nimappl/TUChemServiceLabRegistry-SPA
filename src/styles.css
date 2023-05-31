@@ -76,7 +76,7 @@ body {
     margin-top: 18px;
 }
 .input-field > small { font-size: 12px }
-label {
+label.input {
     background-color: #fff;
     color: #666;
     font-size: 14px;

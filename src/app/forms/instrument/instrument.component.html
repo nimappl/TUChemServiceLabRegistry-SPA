@@ -49,24 +49,23 @@
         <div class="details-text"><strong>وضعیت سرویس دهی:</strong>&nbsp;<span>{{ instrumentTableConfig.columns[4].transform(selectedInstrument.serviceable) }}</span></div>
       </div>
     </div>
-    <div class="row mb-3" *ngIf="selectedInstrument.operators.length > 0">
-      <strong class="mb-1 details-header">اپراتورهای دستگاه</strong>
+    <div class="mb-4" *ngIf="selectedInstrument.operators.length > 0">
+      <div class="form-hr mb-3"><span>اپراتورهای دستگاه</span><div></div></div>
       <app-data-table [data]="operatorsData" [config]="operatorsTableConfig"></app-data-table>
     </div>
-    <div class="d-flex mb-3 justify-content-start">
-      <div class="" style="width: 270px">
-        <strong class=" details-header">تاریخچه تعمیر و نگه‌داری دستگاه</strong>
-      </div>
-      <div class="" style="width: 220px">
-        <button class="btn btn-sm btn-success me-3 px-3" (click)="openMaintenanceForm()">
-          جدید
-          <i class="fas fa-plus ms-2"></i>
-        </button>
-        <button class="btn btn-sm btn-secondary px-3" (click)="toggleMaintenanceSearch()">
-          جستجو
-          <i class="fas fa-search ms-2"></i>
-        </button>
-      </div>
+    <div class="form-hr mb-4">
+      <span>
+        تاریخچه تعمیر و نگه‌داری دستگاه
+          <button class="btn btn-sm btn-success ms-3 px-3" (click)="openMaintenanceForm()">
+            جدید
+            <i class="fas fa-plus ms-2"></i>
+          </button>
+          <button class="btn btn-sm btn-secondary ms-3 px-3" (click)="toggleMaintenanceSearch()">
+            جستجو
+            <i class="fas fa-search ms-2"></i>
+          </button>
+      </span>
+      <div></div>
     </div>
     <app-data-table
             [data]="maintenanceData"
@@ -105,12 +104,12 @@
         </div>
       </div>
     </div>
-    <div class="row mb-3" *ngIf="selectedMaintenance.usedMaterialList.length > 0">
-      <strong class="details-header mb-2">مواد/قطعات استفاده شده در این اقدام</strong>
+    <div class="mb-3" *ngIf="selectedMaintenance.usedMaterialList.length > 0">
+      <div class="form-hr mb-3"><span>مواد/قطعات استفاده شده در این اقدام</span><div></div></div>
       <app-data-table [data]="usedMaterialData" [config]="usedMaterialTableConfig"></app-data-table>
     </div>
     <div *ngIf="selectedMaintenance.servicemanId != null">
-      <strong class="details-header mb-3">مشخصات تعمیرکار/ارائه دهندهٔ سرویس</strong>
+      <div class="form-hr mb-3"><span>مشخصات تعمیرکار/ارائه دهندهٔ سرویس</span><div></div></div>
       <div class="row mb-2">
         <div class="col-6">
           <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ selectedMaintenance.serviceman.firstName }}</span></div>
@@ -129,7 +128,7 @@
       </div>
     </div>
     <div *ngIf="selectedMaintenance.servicingCompanyId != null">
-      <strong class="details-header mb-3">مشخصات شرکت ارائه دهندهٔ سرویس</strong>
+      <div class="form-hr mb-3"><span>مشخصات شرکت ارائه دهندهٔ سرویس</span><div></div></div>
       <div class="row mb-2">
         <div class="col-6">
           <div class="details-text"><strong>نام شرکت:</strong>&nbsp;<span>{{ selectedMaintenance.servicingCompany.name }}</span></div>
@@ -147,7 +146,7 @@
         </div>
       </div>
       <div class="row" *ngIf="selectedMaintenance.servicingCompany.phoneNumbers.length > 0">
-        <div class="details-text"><strong class="mb-1">شماره‌های تماس شرکت</strong></div>
+        <div class="details-text mb-1"><strong>شماره‌های تماس شرکت</strong></div>
         <app-data-table [data]="orgPhoneNumberData" [config]="orgPhoneNumberTableConfig"></app-data-table>
       </div>
     </div>

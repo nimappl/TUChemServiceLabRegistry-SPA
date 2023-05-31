@@ -5,7 +5,4 @@ export default class TUProfessor extends Person {
   personnelCode: string;
   eduGroupId;
   eduGroup: EduGroup;
-  grantIssueDate: Date;
-  grantAmount: number;
-  grantCredibleUntil: Date;
 }

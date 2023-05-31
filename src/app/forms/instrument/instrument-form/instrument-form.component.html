@@ -9,7 +9,7 @@
             <input type="text" id="name" name="name" class="txt" placeholder="pox"
                    [(ngModel)]="data.name" autocomplete="off" required #name='ngModel'
                    [ngClass]="{'invalid': (name.invalid && name.touched) || f.submitted && name.invalid}">
-            <label for="name">نام دستگاه</label>
+            <label for="name" class="input">نام دستگاه</label>
             <small class="text-danger ms-2" *ngIf="(name.invalid && name.touched) || f.submitted && name.invalid">
               پرکردن این فیلد الزامی است.
             </small>
@@ -18,7 +18,7 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="model" name="model" class="txt" placeholder="pox" [(ngModel)]="data.model" autocomplete="off">
-            <label for="model">مدل دستگاه</label>
+            <label for="model" class="input">مدل دستگاه</label>
           </div>
         </div>
       </div>
@@ -26,13 +26,13 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="serial" name="serial" class="txt" placeholder="pox" [(ngModel)]="data.serial" autocomplete="off">
-            <label for="serial">شماره سریال</label>
+            <label for="serial" class="input">شماره سریال</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [(ngModel)]="data.manufacturer" autocomplete="off">
-            <label for="manufacturer">شرکت سازنده</label>
+            <label for="manufacturer" class="input">شرکت سازنده</label>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [ngModel]="data.madeIn" autocomplete="off">
-            <label for="madeIn">کشور سازنده</label>
+            <label for="madeIn" class="input">کشور سازنده</label>
           </div>
         </div>
         <div class="col-6" style="margin-top: 18px">
@@ -93,7 +93,7 @@
                            [disabled]="operatorSearchOptions.selectedValue != null"
                            placeholder="." autocomplete="off" required #lName='ngModel'
                            [ngClass]="{'invalid': (lName.touched && lName.invalid) || (operatorForm.submitted && lName.invalid)}">
-                    <label for="lastName">نام خانوادگی</label>
+                    <label for="lastName" class="input">نام خانوادگی</label>
                     <small class="ms-2 text-danger"
                            *ngIf="(lName.touched && lName.invalid) || (operatorForm.submitted && lName.invalid)">
                       پرکردن این فیلد الزامی است.
@@ -109,7 +109,7 @@
                            [disabled]="operatorSearchOptions.selectedValue != null"
                            placeholder="." autocomplete="off" required #natId='ngModel'
                            [ngClass]="{'invalid': (natId.touched && natId.invalid) || (operatorForm.submitted && natId.invalid)}">
-                    <label for="nationalNumber">کد ملی</label>
+                    <label for="nationalNumber" class="input">کد ملی</label>
                     <small class="ms-2 text-danger"
                            *ngIf="(natId.touched && natId.invalid) || (operatorForm.submitted && natId.invalid)">
                       پرکردن این فیلد الزامی است.
@@ -119,7 +119,7 @@
                 <div class="col-5">
                   <div class="input-field">
                     <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" [(ngModel)]="pendingOperator.phoneNumber" [disabled]="operatorSearchOptions.selectedValue != null" placeholder="." autocomplete="off">
-                    <label for="phoneNumber">شماره تماس</label>
+                    <label for="phoneNumber" class="input">شماره تماس</label>
                   </div>
                 </div>
                 <div class="col-2" style="margin-top: 18px">

@@ -7,7 +7,7 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
-            <label for="name">نام آزمون</label>
+            <label class="input" for="name">نام آزمون</label>
           </div>
           <div style="padding-top: 18px">
             <app-select [data]="instOptions" name="instrumentId" [(ngModel)]="data.instrumentId"></app-select>
@@ -16,7 +16,7 @@
         <div class="col-6">
           <div class="input-field">
             <input type="text" id="shortName" name="shortName" class="txt" placeholder="pox" [(ngModel)]="data.shortName" autocomplete="off">
-            <label for="shortName">نام کوتاه (حداکثر ۴ کاراکتر)</label>
+            <label class="input" for="shortName">نام کوتاه (حداکثر ۴ کاراکتر)</label>
           </div>
           <div style="padding-top: 18px">
             <app-select [data]="statusOptions" name="tActive" [(ngModel)]="data.tActive"></app-select>
@@ -26,7 +26,7 @@
       <div class="row">
         <div class="input-field">
           <textarea name="description" id="description" rows="2" class="txt" [(ngModel)]="data.description"></textarea>
-          <label for="description">توضیح</label>
+          <label class="input" for="description">توضیح</label>
         </div>
       </div>
       <div class="field-group">
@@ -48,13 +48,13 @@
               <div style="width: 190px;">
                 <div class="input-field">
                   <input type="number" [id]="'step-'+i" [name]="'step-'+i" class="txt" placeholder="pox" [(ngModel)]="fee.step" autocomplete="off" [disabled]="fee.type === 0">
-                  <label [for]="'step-'+i">گام افزایش</label>
+                  <label class="input" [for]="'step-'+i">گام افزایش</label>
                 </div>
               </div>
               <div style="width: 380px;">
                 <div class="input-field">
                   <input type="number" [id]="'amount-'+i" [name]="'amount-'+i" class="txt" placeholder="pox" [(ngModel)]="fee.amount" autocomplete="off">
-                  <label [for]="'amount-'+i">مبلغ (ریال)</label>
+                  <label class="input" [for]="'amount-'+i">مبلغ (ریال)</label>
                 </div>
               </div>
               <div style="width: 36px; margin-top: 14px">
@@ -86,13 +86,13 @@
               <div style="width: 480px">
                 <div class="input-field">
                   <input type="text" [id]="'type-'+i" [name]="'type-'+i" class="txt" placeholder="pox" [(ngModel)]="prep.type" autocomplete="off">
-                  <label [for]="'type-'+i">عنوان</label>
+                  <label class="input" [for]="'type-'+i">عنوان</label>
                 </div>
               </div>
               <div style="width: 310px">
                 <div class="input-field">
                   <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt" placeholder="pox" [(ngModel)]="prep.price" autocomplete="off">
-                  <label [for]="'price-'+i">هزینه (ریال)</label>
+                  <label class="input" [for]="'price-'+i">هزینه (ریال)</label>
                 </div>
               </div>
               <div style="width: 36px; margin-top: 14px">
@@ -113,7 +113,7 @@
         <div class="group-content">
           <div class="d-flex justify-content-start my-2">
             <div style="width: 400px" class="me-3">
-              <app-select [data]="discountOptions" (onSelect)="onSelectDiscount($event)" name="discount" [(ngModel)]="discountOptions.selectedValue"></app-select>
+              <app-select [data]="discountOptions" (onSelect)="onSelectDiscount()" name="discount" [(ngModel)]="discountOptions.selectedValue"></app-select>
             </div>
             <div style="width: 200px; margin-top: 3px">
               <button type="button" class="btn btn-success btn-sm px-3" (click)="onAddDiscount()" [disabled]="discountOptions.selectedValue === null">
@@ -121,7 +121,7 @@
               </button>
             </div>
           </div>
-          <div class="mx-3 py-2" *ngIf="selectedDiscount !== null">
+          <div class="mx-3 py-2" *ngIf="selectedDiscount != null">
             <div class="row mb-1">
               <div class="col">
                 <div class="details-text"><strong>نوع تخفیف:</strong>&nbsp;<span>{{ selectedDiscount.typeString }}</span></div>
