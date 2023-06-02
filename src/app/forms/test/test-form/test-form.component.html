@@ -66,7 +66,11 @@
             <p class="small text-muted mt-2 ms-2">تعرفه‌ای تعریف نشده است.</p>
           </ng-template>
         </div>
-        <div class="group-footer"></div>
+        <div class="group-footer">
+          <p class="small mt-2 ms-2 text-danger" *ngIf="noFees && f.submitted">
+            ثبت حداقل یک تعرفه برای هر آزمون الزامی است.
+          </p>
+        </div>
       </div>
 <!--        <div class="form-hr"><span>تعرفه آزمون</span><div></div></div>-->
 

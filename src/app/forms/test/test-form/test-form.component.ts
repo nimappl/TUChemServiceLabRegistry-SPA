@@ -26,6 +26,7 @@ export class TestFormComponent {
   discountTableConfig = new TableConfig(0);
   discountOptions = new CustomFieldData();
   selectedDiscount: Discount = null;
+  noFees: boolean;
   @ViewChild('f') form: NgForm;
 
   constructor(
@@ -153,7 +154,9 @@ export class TestFormComponent {
   }
 
   onSubmit() {
-    this.submit();
+    if (!this.data.fees || this.data.fees.length === 0) this.noFees = true;
+    if (this.form.valid && !this.noFees)
+      this.submit();
   }
 
   submit() {
