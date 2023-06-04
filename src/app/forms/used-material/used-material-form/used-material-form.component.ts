@@ -18,6 +18,7 @@ export class UsedMaterialFormComponent {
   submitted: boolean = false;
   typeOptions: CustomFieldData = new CustomFieldData();
   @ViewChild('f') form: NgForm;
+  getMaterialUnit = IMUsedMaterial.getTypeUnit;
 
   constructor(
     private dialogRef: MatDialogRef<UsedMaterialFormComponent>,
@@ -37,7 +38,7 @@ export class UsedMaterialFormComponent {
   }
 
   onSubmit() {
-    this.submit();
+    if (this.form.valid) this.submit();
   }
 
   submit() {

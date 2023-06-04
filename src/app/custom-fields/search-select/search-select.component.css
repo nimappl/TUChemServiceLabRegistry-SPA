@@ -17,6 +17,7 @@ em {
     background-repeat: no-repeat;
     background-size: 14px 14px;
     padding-left: 35px;
+    cursor: default;
 }
 .select-wrapper {
     position: relative;
@@ -70,4 +71,20 @@ em {
 
 .open {
     border-color: #228B22;
+}
+
+button {
+    background-color: #fff;
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 11px;
+    border-radius: 15px;
+    padding: 0 5px 0 2px;
+}
+.fas {
+    display: inline-block;
+    font-size: 13px;
+    margin-top:2px;
+    margin-right: 3px;
 }

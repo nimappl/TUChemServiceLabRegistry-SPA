@@ -29,6 +29,8 @@ export class InstrumentMaintenanceFormComponent {
   personSelectedFromDB: boolean = false;
   companySelectedFromDB: boolean = false;
   @ViewChild('f') form: NgForm;
+  getMaterialType = IMUsedMaterial.getType;
+  getMaterialUnit = IMUsedMaterial.getTypeUnit;
 
   constructor(
     private dialogRef: MatDialogRef<InstrumentMaintenanceFormComponent>,
@@ -59,13 +61,15 @@ export class InstrumentMaintenanceFormComponent {
       this.materialOptions[i].typeOptions.options = [
         {title: 'قطعه', value: 0},
         {title: 'مایع', value: 1},
-        {title: 'گاز', value: 2}
+        {title: 'گاز', value: 2},
+        {title: 'جامد', value: 3}
       ];
     });
     this.genderOptions.label = 'جنسیت';
     this.genderOptions.options = [
       {title: 'مرد', value: 0},
-      {title: 'زن', value: 1}
+      {title: 'زن', value: 1},
+      {title: 'بدون انتخاب', value: null}
     ];
   }
 
@@ -74,13 +78,13 @@ export class InstrumentMaintenanceFormComponent {
     this.personSearchOptions.loading = true;
     this.personService.queryByFullName(this.personSearchOptions.searchText).subscribe(res => {
       this.personSearchOptions.loading = false;
+      this.personSearchOptions.loadingFailed = false;
       res.forEach(person => {
-        this.personSearchOptions.loading = false;
         this.personSearchOptions.options.push({value: person.id, title: `${person.firstName} ${person.lastName}`, fieldValue: person.firstName});
-      }, err => {
-        this.personSearchOptions.loading = false;
-        this.personSearchOptions.loadingFailed = true;
       });
+    }, err => {
+      this.personSearchOptions.loading = false;
+      this.personSearchOptions.loadingFailed = true;
     });
   }
 
@@ -89,8 +93,8 @@ export class InstrumentMaintenanceFormComponent {
     this.organizationSearchOptions.loading = true;
     this.organizationService.queryByName(this.organizationSearchOptions.searchText).subscribe(res => {
       this.organizationSearchOptions.loading = false;
+      this.organizationSearchOptions.loadingFailed = false;
       res.forEach(org => {
-        this.organizationSearchOptions.loading = false;
         this.organizationSearchOptions.options.push({value: org.id, title: org.name, fieldValue: org.name});
       });
     }, err => {
@@ -156,7 +160,8 @@ export class InstrumentMaintenanceFormComponent {
     this.materialOptions[this.materialOptions.length - 1].typeOptions.options = [
       {title: 'قطعه', value: 0},
       {title: 'مایع', value: 1},
-      {title: 'گاز', value: 2}
+      {title: 'گاز', value: 2},
+      {title: 'جامد', value: 3}
     ];
   }
 
@@ -177,19 +182,27 @@ export class InstrumentMaintenanceFormComponent {
     return total;
   }
 
+  isPersonFormEmpty(): boolean {
+    return (!this.data.serviceman.firstName || this.data.serviceman.firstName === '') &&
+    (!this.data.serviceman.lastName || this.data.serviceman.lastName === '') &&
+    (!this.data.serviceman.nationalNumber || this.data.serviceman.nationalNumber === '') &&
+    (!this.data.serviceman.phoneNumber || this.data.serviceman.phoneNumber === '') &&
+    (this.data.serviceman.gender == null);
+  }
+
+  isOrgFormEmpty(): boolean {
+    return (!this.data.servicingCompany.name || this.data.servicingCompany.name === '') &&
+    (!this.data.servicingCompany.nationalId || this.data.servicingCompany.nationalId === '');
+  }
+
   onSubmit() {
-    this.data.servicemanId = this.data.serviceman.id;
-    this.data.servicingCompanyId = this.data.servicingCompany.id;
-    if ((!this.data.serviceman.firstName || this.data.serviceman.firstName === '') &&
-        (!this.data.serviceman.lastName || this.data.serviceman.lastName === '') &&
-        (!this.data.serviceman.nationalNumber || this.data.serviceman.nationalNumber === '') &&
-        (!this.data.serviceman.phoneNumber || this.data.serviceman.phoneNumber === '') &&
-        (!this.data.serviceman.gender))
-      this.data.serviceman = null;
-    if ((!this.data.servicingCompany.name || this.data.servicingCompany.name === '') &&
-        (!this.data.servicingCompany.nationalId || this.data.servicingCompany.nationalId === ''))
-      this.data.servicingCompany = null;
-    if (this.form.valid) this.submit();
+    if (this.form.valid) {
+      this.data.servicemanId = this.data.serviceman.id;
+      this.data.servicingCompanyId = this.data.servicingCompany.id;
+      if (this.isPersonFormEmpty()) this.data.serviceman = null;
+      if (this.isOrgFormEmpty()) this.data.servicingCompany = null;
+      this.submit();
+    }
   }
 
   submit() {

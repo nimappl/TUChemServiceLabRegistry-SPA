@@ -29,7 +29,7 @@ export class EduGroupFormComponent {
   }
 
   onSubmit() {
-    this.submit();
+    if (this.form.valid) this.submit();
   }
 
   submit() {

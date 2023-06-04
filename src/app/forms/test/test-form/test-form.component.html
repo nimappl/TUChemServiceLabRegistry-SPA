@@ -6,7 +6,9 @@
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
+            <input type="text" id="name" name="name" class="txt" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.name" #testName='ngModel' required
+                   [ngClass]="{'invalid': (testName.invalid && testName.invalid) || (f.submitted && testName.invalid)}">
             <label class="input" for="name">نام آزمون</label>
           </div>
           <div style="padding-top: 18px">
@@ -67,13 +69,11 @@
           </ng-template>
         </div>
         <div class="group-footer">
-          <p class="small mt-2 ms-2 text-danger" *ngIf="noFees && f.submitted">
+          <p class="small mt-2 ms-2 text-danger" *ngIf="data.fees.length == 0 && f.submitted">
             ثبت حداقل یک تعرفه برای هر آزمون الزامی است.
           </p>
         </div>
       </div>
-<!--        <div class="form-hr"><span>تعرفه آزمون</span><div></div></div>-->
-
       <div class="field-group">
         <div class="field-group-header">
           <div class="group-title">آماده سازی‌های نمونه برای آزمون</div>
@@ -156,10 +156,16 @@
     </form>
   </div>
 </div>
-<div mat-dialog-actions style="direction: ltr;">
-  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
-    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
-    <div>ثبت</div>
-  </button>
-  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+<div mat-dialog-actions class="d-flex justify-content-between ltr">
+  <div class="w-25 d-flex">
+    <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+      <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
+      <div>ثبت</div>
+    </button>
+    <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+  </div>
+  <p class="small text-danger mb-0 ms-2 rtl" *ngIf="f.submitted && (f.invalid || data.fees.length == 0)">
+    <i class="fas fa-exclamation-triangle"></i>
+    لطفاً خطا های فوق را اصلاح کرده و مجدداً امتحان کنید.
+  </p>
 </div>

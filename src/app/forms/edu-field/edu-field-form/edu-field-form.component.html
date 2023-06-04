@@ -5,12 +5,22 @@
     <div class="row">
       <div class="col-6">
         <div class="input-field">
-          <input type="text" id="name" name="name" class="txt" placeholder="pox" [ngModel]="data.name" autocomplete="off">
+          <input type="text" id="name" name="name" class="txt" placeholder="pox"
+                 [(ngModel)]="data.name" autocomplete="off" required #name='ngModel'
+                 [ngClass]="{'invalid': (name.invalid && name.touched) || (name.invalid && f.submitted)}">
           <label for="name" class="input">نام رشته</label>
+          <small class="error text-danger" *ngIf="(name.invalid && name.touched) || (name.invalid && f.submitted)">
+            پرکردن این فیلد الزامی است.
+          </small>
         </div>
       </div>
       <div class="col-6" style="margin-top: 18px">
-        <app-select [data]="groupOptions" name="eduGroup" [(ngModel)]="data.eduGroupId"></app-select>
+        <app-select [data]="groupOptions" name="eduGroup" [(ngModel)]="data.eduGroupId" required #eduGroup='ngModel'
+                    [invalid]="(eduGroup.invalid && eduGroup.touched) || (eduGroup.invalid && f.submitted)">
+        </app-select>
+        <small class="error text-danger" *ngIf="(eduGroup.invalid && eduGroup.touched) || (eduGroup.invalid && f.submitted)">
+          پرکردن این فیلد الزامی است.
+        </small>
       </div>
     </div>
   </form>

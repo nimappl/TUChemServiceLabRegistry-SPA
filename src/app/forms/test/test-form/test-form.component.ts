@@ -26,7 +26,6 @@ export class TestFormComponent {
   discountTableConfig = new TableConfig(0);
   discountOptions = new CustomFieldData();
   selectedDiscount: Discount = null;
-  noFees: boolean;
   @ViewChild('f') form: NgForm;
 
   constructor(
@@ -41,6 +40,9 @@ export class TestFormComponent {
     this.mode = (this.data.id == undefined) ? 0 : 1;
     this.title = (this.data.id == undefined) ? 'جدید' : 'ویرایش';
 
+    if (!this.data.fees || this.data.fees.length == 0) this.data.fees = [new TestFee()];
+    if (!this.data.samplePreparations) this.data.samplePreparations = [];
+    if (!this.data.discounts) this.data.discounts = [];
     this.instOptions.label = 'دستگاه';
     this.statusOptions.label = 'فعال/غیرفعال';
     this.discountOptions.label = 'انتخاب تخفیف'
@@ -48,20 +50,15 @@ export class TestFormComponent {
       {value: 0, title: 'غیر فعال'},
       {value: 1, title: 'فعال'}
     ];
-
-    if (this.mode == 1) {
-      this.data.fees.forEach(fee => {
-        let options: CustomFieldData = new CustomFieldData();
-        options.label = 'مبنای تعرفه';
-        options.options = [
-          {value: 0, title: 'تعداد نمونه'},
-          {value: 1, title: 'زمان (دقیقه)'}
-        ];
-        this.feeTypeOptions.push(options);
-      });
-    }
-
-    if (!this.data.discounts) this.data.discounts = [];
+    this.data.fees.forEach(fee => {
+      let options: CustomFieldData = new CustomFieldData();
+      options.label = 'مبنای تعرفه';
+      options.options = [
+        {value: 0, title: 'تعداد نمونه'},
+        {value: 1, title: 'زمان (دقیقه)'}
+      ];
+      this.feeTypeOptions.push(options);
+    });
     this.discountData.records = this.data.discounts;
     this.discountTableConfig.hasDelete = true;
     this.discountTableConfig.columns = [
@@ -105,7 +102,6 @@ export class TestFormComponent {
   }
 
   onAddFee() {
-    if (!this.data.fees) this.data.fees = [];
     let newFee = new TestFee();
     let options: CustomFieldData = new CustomFieldData();
 
@@ -120,7 +116,6 @@ export class TestFormComponent {
   }
 
   onAddPrep() {
-    if (!this.data.samplePreparations) this.data.samplePreparations = [];
     let newPrep = new TestPrep();
     newPrep.testId = this.data.id;
     this.data.samplePreparations.push(newPrep);
@@ -154,8 +149,7 @@ export class TestFormComponent {
   }
 
   onSubmit() {
-    if (!this.data.fees || this.data.fees.length === 0) this.noFees = true;
-    if (this.form.valid && !this.noFees)
+    if (this.form.valid && this.data.fees.length != 0)
       this.submit();
   }
 

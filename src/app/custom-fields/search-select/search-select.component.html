@@ -1,8 +1,11 @@
 <div tabindex="-59" id="master" class="select-wrapper" (blur)="focusout()">
-  <span class="form-status" #formStatus></span>
+  <button type="button" class="btn btn-outline-secondary d-flex"
+          (click)="dropSelected()" *ngIf="hasDropSelectionBtn && data.selectedValue != null && data.selectedValue != ''">
+    <div>لغو انتخاب</div>
+    <i class="fas fa-times-circle"></i>
+  </button>
   <input [id]="inputId" type="text" class="txt"
          [ngClass]="{'invalid': invalid}"
-         #searchField
          [disabled]="disabled"
          [(ngModel)]="data.searchText"
          (input)="onInteract()"
@@ -10,7 +13,7 @@
          (focusout)="focusout()"
          placeholder="df" autocomplete="off">
   <label [for]="inputId" class="input">{{ data.label }}</label>
-  <em></em>
+  <em (click)="clicked()"></em>
   <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}" (mousedown)="clicked()">
     <ng-template [ngIf]="!loading && !loadingFailed && data.options.length > 0">
       <li tabindex="-33" class="option"

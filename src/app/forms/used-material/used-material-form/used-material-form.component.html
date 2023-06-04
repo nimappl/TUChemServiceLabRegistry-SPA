@@ -5,12 +5,22 @@
     <div class="row">
       <div class="col-6">
         <div class="input-field">
-          <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
+          <input type="text" id="name" name="name" class="txt" placeholder="pox"
+                 [(ngModel)]="data.name" #name='ngModel' autocomplete="off" required
+                 [ngClass]="{'invalid': (name.invalid && name.touched) || (f.submitted && name.invalid)}">
           <label class="input" for="name">عنوان</label>
+          <small class="error text-danger" *ngIf="(name.invalid && name.touched) || (f.submitted && name.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
         </div>
       </div>
       <div class="col-6" style="margin-top: 18px">
-        <app-select [data]="typeOptions" name="type" [(ngModel)]="data.type"></app-select>
+        <app-select [data]="typeOptions" name="type" [(ngModel)]="data.type" #type='ngModel' required
+                    [invalid]="(type.invalid && type.touched) || (f.submitted && type.invalid)">
+        </app-select>
+        <small class="error text-danger" *ngIf="(type.invalid && type.touched) || (f.submitted && type.invalid)">
+          پرکردن این فیلد الزامی است.
+        </small>
       </div>
     </div>
     <div class="row">
@@ -22,8 +32,23 @@
       </div>
       <div class="col-6">
         <div class="input-field">
-          <input type="number" id="price" name="price" class="txt" placeholder="pox" [(ngModel)]="data.price" autocomplete="off">
-          <label class="input" for="price">قیمت</label>
+          <input type="number" id="price" name="price" class="txt" placeholder="pox"
+                 [(ngModel)]="data.price" #price='ngModel' autocomplete="off" required min="0"
+                 [ngClass]="{'invalid': (price.invalid && price.touched) || (f.submitted && price.invalid)}">
+          <label class="input" for="price">
+            قیمت
+            <ng-template [ngIf]="type.value != null && type.value != 0">
+              (برحسب {{ getMaterialUnit(type.value)}})
+            </ng-template>
+          </label>
+          <ng-template [ngIf]="(price.invalid && price.touched) || (f.submitted && price.invalid)">
+            <small class="error text-danger" *ngIf="price.errors?.['required']">
+              پرکردن این فیلد الزامی است.
+            </small>
+            <small class="error text-danger" *ngIf="price.errors?.['min']">
+              مقدار وارد شده مجاز نمی‌باشد.
+            </small>
+          </ng-template>
         </div>
       </div>
     </div>

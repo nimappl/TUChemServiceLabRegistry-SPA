@@ -38,7 +38,6 @@ export class InstrumentComponent {
       {for: 'name', dbName: 'IName', title: 'نام دستگاه', sortable: true, hasSearch: true},
       {for: 'model', dbName: 'IModel', title: 'مدل', sortable: true, hasSearch: true},
       {for: 'manufacturer', dbName: 'IManufacturer', title: 'شرکت سازنده', sortable: true, hasSearch: true},
-      {for: 'madeIn', dbName: 'IMadeIn', title: 'کشور سازنده', sortable: true, hasSearch: true},
       {for: 'serviceable', dbName: 'IServiceable', title: 'وضعیت سرویس دهی', sortable: false, hasSearch: false, transform: value => Instrument.getServiceability(value)}
     ];
     this.fetchInstrument(true);

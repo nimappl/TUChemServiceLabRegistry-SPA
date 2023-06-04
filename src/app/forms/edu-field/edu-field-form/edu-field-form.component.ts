@@ -59,9 +59,7 @@ export class EduFieldFormComponent {
   }
 
   onSubmit() {
-    this.data.name = this.form.value.name;
-    this.data.eduGroupId = this.form.value.eduGroup;
-    this.submit();
+    if (this.form.valid) this.submit();
   }
 
   submit() {

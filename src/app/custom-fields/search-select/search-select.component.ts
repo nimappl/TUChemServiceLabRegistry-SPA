@@ -17,12 +17,12 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   showOptions: boolean = false;
   focusFlag: boolean = false;
-  @ViewChild('formStatus') formStatus: ElementRef;
-  @ViewChild('searchField') searchField: ElementRef;
   @Input() data: CustomFieldData;
   @Input() invalid: boolean;
+  @Input() hasDropSelectionBtn: boolean = true;
   @Output() onSelectionChange: EventEmitter<any> = new EventEmitter();
   @Output() onSearch: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDropSelected: EventEmitter<any> = new EventEmitter<any>();
   inputId = Math.floor(Math.random() * 100);
 
   onChange = (selectedValue) => {};
@@ -32,9 +32,7 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   loading = false;
   loadingFailed = false;
 
-  ngOnInit() {
-    // if (this.data.selectedValue !== null) this.data.searchText = this.data.options[this.data.selectedValue].title;
-  }
+  ngOnInit() {}
 
   registerOnChange(onChange: any): void {
     this.onChange = onChange;
@@ -51,8 +49,10 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   writeValue(value: any): void {
     if (value === null || value === undefined || value === "") {
       this.data.searchText = null;
+      this.data.selectedValue = null;
     } else {
       this.data.searchText = value;
+      this.data.selectedValue = value;
     }
   }
 
@@ -68,30 +68,23 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
     this.data.searchText = fieldValue;
     this.onSelectionChange.emit();
     this.showOptions = false;
-    this.changeFormStatus(2);
   }
 
   onInteract() {
     if (!this.disabled) {
       this.data.selectedValue = null;
       this.openOptions();
-      if (this.data.searchText === '') this.changeFormStatus(0);
-      else this.changeFormStatus(1);
       this.onChange(this.data.searchText);
       this.onSearch.emit();
     }
   }
 
-  changeFormStatus(status: number /* 0 none, 1 invalid, 2 valid */) {
-    let statusMarkClass = this.formStatus.nativeElement.classList;
-    statusMarkClass.remove('status-invalid');
-    statusMarkClass.remove('status-valid');
-    if (status == 1) statusMarkClass.add('status-invalid');
-    else if (status == 2) statusMarkClass.add('status-valid');
+  dropSelected() {
+    this.onDropSelected.emit();
   }
 
   clicked() {
-    this.openOptions();
+    if (!this.disabled) this.openOptions();
   }
 
   openOptions() {

@@ -10,7 +10,7 @@
                    [(ngModel)]="data.name" autocomplete="off" required #name='ngModel'
                    [ngClass]="{'invalid': (name.invalid && name.touched) || f.submitted && name.invalid}">
             <label for="name" class="input">نام دستگاه</label>
-            <small class="text-danger ms-2" *ngIf="(name.invalid && name.touched) || f.submitted && name.invalid">
+            <small class="error text-danger" *ngIf="(name.invalid && name.touched) || f.submitted && name.invalid">
               پرکردن این فیلد الزامی است.
             </small>
           </div>
@@ -39,7 +39,7 @@
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [ngModel]="data.madeIn" autocomplete="off">
+            <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [(ngModel)]="data.madeIn" autocomplete="off">
             <label for="madeIn" class="input">کشور سازنده</label>
           </div>
         </div>
@@ -62,29 +62,20 @@
             <form id="operatorForm" #operatorForm=ngForm (ngSubmit)="onAddOperator()">
               <div class="row">
                 <div class="col-6" style="margin-top: 18px">
-                  <div class="d-flex">
-                    <div style="width: 100%">
-                      <app-search-select
-                              name="firstName" #fName='ngModel' required
-                              [data]="operatorSearchOptions"
-                              [(ngModel)]="pendingOperator.firstName"
-                              (onSelectionChange)="onSelectOperator()"
-                              (onSearch)="onSearchOperator()"
-                              [disabled]="operatorSearchOptions.selectedValue != null"
-                              [invalid]="(fName.touched && fName.invalid) || (operatorForm.submitted && fName.invalid)">
-                      </app-search-select>
-                      <small class="ms-2 text-danger"
-                             *ngIf="(fName.touched && fName.invalid) || (operatorForm.submitted && fName.invalid)">
-                        پرکردن این فیلد الزامی است.
-                      </small>
-                    </div>
-                    <div class="ms-2" style="width: 105px" *ngIf="pendingOperator.id != null">
-                      <button type="button" class="btn btn-small btn-outline-secondary"
-                              (click)="clearOperatorForm()" style="border-radius: 2px">
-                        لغو انتخاب <i class="fas fa-times-circle"></i>
-                      </button>
-                    </div>
-                  </div>
+                  <app-search-select
+                          name="firstName" #fName='ngModel' required
+                          [data]="operatorSearchOptions"
+                          [(ngModel)]="pendingOperator.firstName"
+                          (onSelectionChange)="onSelectOperator()"
+                          (onSearch)="onSearchOperator()"
+                          (onDropSelected)="clearOperatorForm()"
+                          [disabled]="operatorSearchOptions.selectedValue != null"
+                          [invalid]="(fName.touched && fName.invalid) || (operatorForm.submitted && fName.invalid)">
+                  </app-search-select>
+                  <small class="error text-danger"
+                         *ngIf="(fName.touched && fName.invalid) || (operatorForm.submitted && fName.invalid)">
+                    پرکردن این فیلد الزامی است.
+                  </small>
                 </div>
                 <div class="col-6">
                   <div class="input-field">
@@ -94,7 +85,7 @@
                            placeholder="." autocomplete="off" required #lName='ngModel'
                            [ngClass]="{'invalid': (lName.touched && lName.invalid) || (operatorForm.submitted && lName.invalid)}">
                     <label for="lastName" class="input">نام خانوادگی</label>
-                    <small class="ms-2 text-danger"
+                    <small class="error text-danger"
                            *ngIf="(lName.touched && lName.invalid) || (operatorForm.submitted && lName.invalid)">
                       پرکردن این فیلد الزامی است.
                     </small>
@@ -104,22 +95,31 @@
               <div class="row">
                 <div class="col-5">
                   <div class="input-field">
-                    <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr"
-                           [(ngModel)]="pendingOperator.nationalNumber"
-                           [disabled]="operatorSearchOptions.selectedValue != null"
-                           placeholder="." autocomplete="off" required #natId='ngModel'
+                    <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr"placeholder="." autocomplete="off"
+                           [(ngModel)]="pendingOperator.nationalNumber" maxlength="11"  pattern="^\d*$" required
+                           [disabled]="operatorSearchOptions.selectedValue != null" #natId='ngModel'
                            [ngClass]="{'invalid': (natId.touched && natId.invalid) || (operatorForm.submitted && natId.invalid)}">
                     <label for="nationalNumber" class="input">کد ملی</label>
-                    <small class="ms-2 text-danger"
-                           *ngIf="(natId.touched && natId.invalid) || (operatorForm.submitted && natId.invalid)">
-                      پرکردن این فیلد الزامی است.
-                    </small>
+                    <div *ngIf="(natId.touched && natId.invalid) || (operatorForm.submitted && natId.invalid)">
+                      <small class="error text-danger" *ngIf="natId.errors?.['required']">
+                        پرکردن این فیلد الزامی است.
+                      </small>
+                      <small class="error text-danger" *ngIf="natId.errors?.['pattern']">
+                        مقدار وارد شده معتبر نیست.
+                      </small>
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
                   <div class="input-field">
-                    <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" [(ngModel)]="pendingOperator.phoneNumber" [disabled]="operatorSearchOptions.selectedValue != null" placeholder="." autocomplete="off">
+                    <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="." autocomplete="off"
+                           [(ngModel)]="pendingOperator.phoneNumber" #phoneNum='ngModel' maxlength="14"  pattern="^\+?\d*$"
+                           [disabled]="operatorSearchOptions.selectedValue != null"
+                           [ngClass]="{'invalid': (phoneNum.invalid && phoneNum.touched) || (operatorForm.submitted && phoneNum.invalid)}">
                     <label for="phoneNumber" class="input">شماره تماس</label>
+                    <small class="error text-danger" *ngIf="(phoneNum.invalid && phoneNum.touched) || (operatorForm.submitted && phoneNum.invalid)">
+                      مقدار وارد شده معتبر نیست.
+                    </small>
                   </div>
                 </div>
                 <div class="col-2" style="margin-top: 18px">
@@ -136,14 +136,19 @@
                               [(ngModel)]="pendingOperator.type"
                               [invalid]="(oType.touched && oType.invalid) || (operatorForm.submitted && oType.invalid)">
                   </app-select>
-                  <small class="ms-2 text-danger"
+                  <small class="error text-danger"
                          *ngIf="(oType.touched && oType.invalid) || (operatorForm.submitted && oType.invalid)">
                     پرکردن این فیلد الزامی است.
                   </small>
                 </div>
               </div>
-              <div class="my-2" style="text-align: left">
-                <button type="submit" class="btn btn-outline-success btn-sm px-3">افزودن به لیست</button>
+              <div class="my-2 d-flex justify-content-between ltr">
+                <div>
+                  <button type="submit" class="btn btn-outline-success btn-sm px-3">افزودن به لیست</button>
+                </div>
+                <p class="small text-danger mb-0 ms-2 rtl" *ngIf="operatorForm.submitted && operatorForm.invalid">
+                  لطفاً خطا های فوق را اصلاح کرده و مجدداً امتحان کنید.
+                </p>
               </div>
             </form>
           </div>
@@ -160,10 +165,16 @@
       </div>
   </div>
 </div>
-<div mat-dialog-actions style="direction: ltr;">
-  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
-    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
-  <div>ثبت</div>
-  </button>
-  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+<div mat-dialog-actions class="d-flex justify-content-between ltr">
+  <div class="w-25 d-flex">
+    <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+      <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
+      <div>ثبت</div>
+    </button>
+    <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+  </div>
+  <p class="small text-danger mb-0 ms-2 rtl" *ngIf="f.submitted && f.invalid">
+    <i class="fas fa-exclamation-triangle"></i>
+    لطفاً خطا های فوق را اصلاح کرده و مجدداً امتحان کنید.
+  </p>
 </div>

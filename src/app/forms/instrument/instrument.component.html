@@ -46,7 +46,7 @@
         <div class="details-text"><strong>کشور سازنده:</strong>&nbsp;<span>{{ selectedInstrument.madeIn }}</span></div>
       </div>
       <div class="col-6">
-        <div class="details-text"><strong>وضعیت سرویس دهی:</strong>&nbsp;<span>{{ instrumentTableConfig.columns[4].transform(selectedInstrument.serviceable) }}</span></div>
+        <div class="details-text"><strong>وضعیت سرویس دهی:</strong>&nbsp;<span>{{ instrumentTableConfig.columns[3].transform(selectedInstrument.serviceable) }}</span></div>
       </div>
     </div>
     <div class="mb-4" *ngIf="selectedInstrument.operators.length > 0">
@@ -78,7 +78,7 @@
   </div>
 </div>
 <div class="card" *ngIf="selectedMaintenance !== null">
-  <div class="card-header py-1">جزئیات اقدام تعمیر و نگه‌داری دستگاه {{ selectedInstrument.name }} مورخ {{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</div>
+  <div class="card-header py-1">جزئیات اقدام تعمیر و نگه‌داری {{ selectedInstrument.name }} مورخ {{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</div>
   <div class="card-body">
     <div class="row mb-2">
       <div class="col-6">

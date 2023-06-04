@@ -115,7 +115,6 @@ export class JalaliDatePickerComponent implements OnInit, ControlValueAccessor {
   }
 
   openOptions(e: any) {
-    this.markAsTouched();
     if (!this.disabled) {
       this.showCalendar ? this.showCalendar = false : this.showCalendar = true;
       this.extractWeeks();
@@ -192,6 +191,7 @@ export class JalaliDatePickerComponent implements OnInit, ControlValueAccessor {
     this.focusFlag = false;
     setTimeout(() => {
       if (!this.focusFlag) {
+        this.markAsTouched();
         this.showCalendar = false;
         this.focusFlag = false;
       }

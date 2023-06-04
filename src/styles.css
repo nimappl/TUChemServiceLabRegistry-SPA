@@ -75,7 +75,7 @@ body {
     position: relative;
     margin-top: 18px;
 }
-.input-field > small { font-size: 12px }
+small.error, p.error { font-size: 12px }
 label.input {
     background-color: #fff;
     color: #666;
@@ -125,6 +125,7 @@ label.input {
     user-select: none;
 }
 .ltr { direction: ltr }
+.rtl { direction: rtl }
 .form-hr {
     margin-top: 18px;
     position: relative;
@@ -168,26 +169,6 @@ select.txt {
 }
 select.txt::before, select.txt::before {
     content: '';
-}
-.form-status {
-    position: absolute;
-    display: block;
-    padding: 0 12px;
-    top: -8px;
-    left: 20px;
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 16px 16px;
-}
-.status-valid {
-    background-color: #fff;
-    background-image: url("./assets/svg/tick.svg");
-}
-.status-invalid {
-    background-color: #fff;
-    background-image: url("./assets/svg/cross.svg");
 }
 
 .details-card {
@@ -242,7 +223,7 @@ select.txt::before, select.txt::before {
     position: relative;
     border: 1px solid #999;
     background-color: #1881500f;
-    margin: 22px 5px 12px 5px;
+    margin: 22px 5px 0 5px;
     padding-bottom: 10px;
 }
 

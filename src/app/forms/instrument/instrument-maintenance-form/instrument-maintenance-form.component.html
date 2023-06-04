@@ -10,13 +10,19 @@
                    [(ngModel)]="data.title" autocomplete="off" #title='ngModel' required
                    [ngClass]="{'invalid': (title.invalid && title.touched) || (f.submitted && title.invalid)}">
             <label for="title" class="input">عنوان</label>
-            <small class="text-danger ms-2" *ngIf="(title.invalid && title.touched) || (f.submitted && title.invalid)">
-              این فیلد الزامی است.
+            <small class="error text-danger" *ngIf="(title.invalid && title.touched) || (f.submitted && title.invalid)">
+              پرکردن این فیلد الزامی است.
             </small>
           </div>
         </div>
         <div class="col-4">
-          <app-jalali-date-picker [data]="dateOptions" name="date" [(ngModel)]="data.date"></app-jalali-date-picker>
+          <app-jalali-date-picker
+                  [data]="dateOptions" name="date" [(ngModel)]="data.date" #date='ngModel' required
+                  [invalid]="(date.invalid && date.touched) || (f.submitted && date.invalid)">
+          </app-jalali-date-picker>
+          <small class="error text-danger" *ngIf="(date.invalid && date.touched) || (f.submitted && date.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
         </div>
       </div>
       <div class="row">
@@ -28,8 +34,13 @@
         </div>
         <div class="col-6">
           <div class="input-field">
-            <input type="number" id="cost" name="cost" class="txt ltr" placeholder="pox" [(ngModel)]="data.totalCost" autocomplete="off">
-            <label for="cost" class="input">هزینه اقدام تعمیر و نگه‌داری (ریال)</label>
+            <input type="number" id="cost" name="cost" class="txt ltr" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.totalCost" #totalPrice='ngModel' min="0"
+                   [ngClass]="{'invalid': (totalPrice.invalid && totalPrice.touched) || (f.submitted && totalPrice.invalid)}">
+            <label for="cost" class="input">هزینه کل اقدام تعمیر و نگه‌داری (ریال)</label>
+            <small class="error text-danger" *ngIf="(totalPrice.invalid && totalPrice.touched) || (f.submitted && totalPrice.invalid)">
+              مقدار وارد شده مجاز نیست.
+            </small>
           </div>
         </div>
       </div>
@@ -44,52 +55,88 @@
         </div>
         <div class="group-content">
           <ng-template [ngIf]="data.usedMaterialList.length > 0" [ngIfElse]="noMaterials">
-            <div class="complex-field d-flex justify-content-around" *ngFor="let material of data.usedMaterialList, let i = index">
-              <div class="complex-field-label">ماده/قطعه {{i + 1}}</div>
-              <div style="width: 230px;">
-                <div class="input-field">
-                  <app-search-select
-                          [name]="'name'+i"
-                          [data]="materialOptions[i].searchOptions"
-                          [(ngModel)]="data.usedMaterialList[i].name"
-                          (onSearch)="onSearchMaterial(i)"
-                          (onSelectionChange)="onSelectMaterial(i)"
-                          [disabled]="data.usedMaterialList[i].id != null">
-                  </app-search-select>
-                </div>
+            <div *ngFor="let material of data.usedMaterialList, let i = index">
+              <div class="complex-field d-flex justify-content-around">
+                <div class="complex-field-label">ماده/قطعه {{i + 1}}</div>
+                  <div style="width: 230px;">
+                    <div class="input-field">
+                      <app-search-select
+                              [name]="'name'+i"
+                              [data]="materialOptions[i].searchOptions"
+                              [hasDropSelectionBtn]="false"
+                              [(ngModel)]="data.usedMaterialList[i].name" required
+                              #materialName='ngModel'
+                              (onSearch)="onSearchMaterial(i)"
+                              (onSelectionChange)="onSelectMaterial(i)"
+                              [disabled]="data.usedMaterialList[i].id != null"
+                              [invalid]="(materialName.touched && materialName.invalid) || (f.submitted && materialName.invalid)">
+                      </app-search-select>
+                    </div>
+                  </div>
+                  <div style="width: 98px;">
+                    <div class="input-field">
+                      <app-select [name]="'type-'+i" [data]="materialOptions[i].typeOptions" required #materialType='ngModel'
+                                  [(ngModel)]="data.usedMaterialList[i].type" [disabled]="data.usedMaterialList[i].id != null"
+                                  [invalid]="(materialType.touched && materialType.invalid) || (f.submitted && materialType.invalid)">
+                      </app-select>
+                    </div>
+                  </div>
+                  <div style="width: 170px;">
+                    <div class="input-field">
+                      <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt ltr" required min="0"
+                             [(ngModel)]="data.usedMaterialList[i].price" placeholder="pox" autocomplete="off"
+                             [disabled]="data.usedMaterialList[i].id != null" #materialPrice='ngModel'
+                             [ngClass]="{'invalid': (materialPrice.touched && materialPrice.invalid) || (f.submitted && materialPrice.invalid)}">
+                      <label class="input" [for]="'price-'+i">قیمت هر واحد</label>
+                    </div>
+                  </div>
+                  <div style="width: 170px;">
+                    <div class="input-field">
+                      <input type="text" [id]="'manufacturer-'+i" [name]="'manufacturer-'+i" class="txt" [(ngModel)]="data.usedMaterialList[i].manufacturer" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
+                      <label class="input" [for]="'manufacturer-'+i">تولید کننده</label>
+                    </div>
+                  </div>
+                  <div style="width: 110px;">
+                    <div class="input-field">
+                      <input type="number" [id]="'quantity-'+i" [name]="'quantity-'+i" class="txt ltr" placeholder="pox"
+                             [(ngModel)]="data.usedMaterialList[i].quantity" #materialQty='ngModel' required min="0"
+                             [disabled]="data.usedMaterialList[i].maintenanceId != null" autocomplete="off"
+                             [ngClass]="{'invalid': (materialQty.touched && materialQty.invalid) || (f.submitted && materialQty.invalid)}">
+                      <label class="input" [for]="'quantity-'+i">
+                        مقدار
+                        <ng-template [ngIf]="materialType.value != null">({{ getMaterialUnit(materialType.value) }})</ng-template>
+                      </label>
+                    </div>
+                  </div>
+                  <div style="width: 36px; margin-top: 14px">
+                    <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveMaterial(i)">حذف</button>
+                  </div>
               </div>
-              <div style="width: 98px;">
-                <div class="input-field">
-                  <app-select [name]="'type-'+i" [data]="materialOptions[i].typeOptions" [(ngModel)]="data.usedMaterialList[i].type" [disabled]="data.usedMaterialList[i].id != null"></app-select>
-                </div>
-              </div>
-              <div style="width: 170px;">
-                <div class="input-field">
-                  <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt ltr" [(ngModel)]="data.usedMaterialList[i].price" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
-                  <label class="input" [for]="'price-'+i">قیمت هر واحد</label>
-                </div>
-              </div>
-              <div style="width: 170px;">
-                <div class="input-field">
-                  <input type="text" [id]="'manufacturer-'+i" [name]="'manufacturer-'+i" class="txt" [(ngModel)]="data.usedMaterialList[i].manufacturer" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
-                  <label class="input" [for]="'manufacturer-'+i">تولید کننده</label>
-                </div>
-              </div>
-              <div style="width: 110px;">
-                <div class="input-field">
-                  <input type="number" [id]="'quantity-'+i" [name]="'quantity-'+i" class="txt ltr" [(ngModel)]="data.usedMaterialList[i].quantity" [disabled]="data.usedMaterialList[i].maintenanceId != null" placeholder="pox" autocomplete="off">
-                  <label class="input" [for]="'quantity-'+i">تعداد/مقدار</label>
-                </div>
-              </div>
-              <div style="width: 36px; margin-top: 14px">
-                <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveMaterial(i)">حذف</button>
+              <div *ngIf="((materialName.touched && materialName.invalid) || (f.submitted && materialName.invalid)) ||
+                   ((materialType.touched && materialType.invalid) || (f.submitted && materialType.invalid)) ||
+                   ((materialPrice.touched && materialPrice.invalid) || (f.submitted && materialPrice.invalid)) ||
+                   ((materialQty.touched && materialQty.invalid) || (f.submitted && materialQty.invalid))">
+                <p class="error text-danger ms-2 mb-0"
+                   *ngIf="materialName.errors?.['required'] || materialType.errors?.['required'] ||
+                          materialPrice.errors?.['required'] || materialQty.errors?.['required']">
+                  پرکردن فیلدهای "نام ماده/قطعه"، "نوع"، "قیمت" و "مقدار" الزامی است.
+                </p>
+                <p class="error text-danger ms-2 mb-0" *ngIf="materialPrice.errors?.['min']">
+                  مقدار وارد شده برای "قیمت" مجاز نمی‌باشد.
+                </p>
+                <p class="error text-danger ms-2 mb-0" *ngIf="materialQty.errors?.['min']">
+                  مقدار وارد شده برای "مقدار" مجاز نمی‌باشد.
+                </p>
               </div>
             </div>
-            <p class="small text-muted ms-2">هزینه کل موارد: {{ calculateMaterialsPrice() }} ریال</p>
+            <p class="small text-muted ms-2 my-2">هزینه کل موارد: {{ calculateMaterialsPrice() }} ریال</p>
           </ng-template>
           <ng-template #noMaterials>
             <p class="small text-muted mt-2 ms-2">خالی.</p>
           </ng-template>
+        </div>
+        <div class="group-footer">
+
         </div>
       </div>
       <div class="field-group">
@@ -99,42 +146,61 @@
         <div class="group-content">
           <div class="row">
             <div class="col-6" style="margin-top: 18px;">
-              <div class="d-flex">
-                <div style="width: 100%">
-                  <app-search-select
-                          [data]="personSearchOptions"
-                          name="firstName" [(ngModel)]="data.serviceman.firstName"
-                          (onSelectionChange)="onSelectPerson()"
-                          (onSearch)="onSearchPerson()"
-                          [disabled]="data.serviceman.id != null">
-                  </app-search-select>
-                </div>
-                <div class="ms-2" style="width: 105px" *ngIf="data.serviceman.id != null">
-                  <button type="button" class="btn btn-small btn-outline-secondary"
-                          (click)="onDropSelectedPerson()" style="border-radius: 2px">
-                    لغو انتخاب <i class="fas fa-times-circle"></i>
-                  </button>
-                </div>
-              </div>
+              <app-search-select
+                      [data]="personSearchOptions" #fName='ngModel'
+                      name="firstName" [(ngModel)]="data.serviceman.firstName"
+                      [required]="!isPersonFormEmpty()"
+                      (onSelectionChange)="onSelectPerson()"
+                      (onSearch)="onSearchPerson()"
+                      (onDropSelected)="onDropSelectedPerson()"
+                      [disabled]="data.serviceman.id != null"
+                      [invalid]="(fName.invalid && fName.touched) || (f.submitted && fName.invalid)">
+              </app-search-select>
+              <small class="error text-danger" *ngIf="(fName.invalid && fName.touched) || (f.submitted && fName.invalid)">
+                پرکردن این فیلد الزامی است.
+              </small>
             </div>
             <div class="col-6">
               <div class="input-field">
-                <input type="text" id="lastName" name="lastName" class="txt" [(ngModel)]="data.serviceman.lastName" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
+                <input type="text" id="lastName" name="lastName" class="txt"placeholder="." autocomplete="off"
+                       [(ngModel)]="data.serviceman.lastName" [disabled]="data.serviceman.id != null"
+                       #lName='ngModel' [required]="!isPersonFormEmpty()"
+                       [ngClass]="{'invalid': (lName.invalid && lName.touched) || (f.submitted && lName.invalid)}">
                 <label class="input" for="lastName">نام خانوادگی</label>
+                <small class="error text-danger" *ngIf="(lName.invalid && lName.touched) || (f.submitted && lName.invalid)">
+                  پرکردن این فیلد الزامی است.
+                </small>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-5">
               <div class="input-field">
-                <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" [(ngModel)]="data.serviceman.nationalNumber" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
+                <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.serviceman.nationalNumber" [disabled]="data.serviceman.id != null"
+                       #nationalNo='ngModel' [required]="!isPersonFormEmpty()" maxlength="11"  pattern="^\d*$"
+                       [ngClass]="{'invalid': (nationalNo.invalid && nationalNo.touched) || (f.submitted && nationalNo.invalid)}">
                 <label class="input" for="nationalNumber">کد ملی</label>
+              </div>
+              <div *ngIf="(nationalNo.invalid && nationalNo.touched) || (f.submitted && nationalNo.invalid)">
+                <small class="error text-danger" *ngIf="nationalNo.errors?.['required']">
+                  پرکردن این فیلد الزامی است.
+                </small>
+                <small class="error text-danger" *ngIf="nationalNo.errors?.['pattern']">
+                  مقدار وارد شده معتبر نیست.
+                </small>
               </div>
             </div>
             <div class="col-5">
               <div class="input-field">
-                <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" [(ngModel)]="data.serviceman.phoneNumber" [disabled]="data.serviceman.id != null" placeholder="." autocomplete="off">
+                <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.serviceman.phoneNumber" [disabled]="data.serviceman.id != null"
+                       #phoneNo='ngModel' maxlength="14" pattern="^\+?\d*$"
+                       [ngClass]="{'invalid': (phoneNo.invalid && phoneNo.touched) || (f.submitted && phoneNo.invalid)}">
                 <label class="input" for="phoneNumber">شماره تلفن</label>
+                <small class="error text-danger" *ngIf="(phoneNo.invalid && phoneNo.touched) || (f.submitted && phoneNo.invalid)">
+                  مقدار وارد شده معتبر نیست.
+                </small>
               </div>
             </div>
             <div class="col-2" style="margin-top: 18px;">
@@ -143,30 +209,38 @@
           </div>
         </div>
       </div>
-      <div class="row mt-2">
+      <div class="row mt-2" ngModelGroup="organizationGroup" #orgGroup='ngModelGroup'>
         <div class="col-7" style="margin-top: 18px">
-          <div class="d-flex">
-            <div style="width: 100%">
-              <app-search-select
-                      [data]="organizationSearchOptions"
-                      name="orgName" [(ngModel)]="data.servicingCompany.name"
-                      (onSearch)="onSearchOrganization()"
-                      (onSelectionChange)="onSelectOrganization()"
-                      [disabled]="data.servicingCompany.id != null">
-              </app-search-select>
-            </div>
-            <div class="ms-2" style="width: 105px" *ngIf="data.servicingCompany.id != null">
-              <button type="button" class="btn btn-small btn-outline-secondary"
-                      (click)="onDropSelectedOrganization()" style="border-radius: 2px">
-                لغو انتخاب <i class="fas fa-times-circle"></i>
-              </button>
-            </div>
-          </div>
+          <app-search-select
+                  [data]="organizationSearchOptions"
+                  name="orgName" [(ngModel)]="data.servicingCompany.name"
+                  #orgName='ngModel' [required]="!isOrgFormEmpty()"
+                  (onSearch)="onSearchOrganization()"
+                  (onSelectionChange)="onSelectOrganization()"
+                  (onDropSelected)="onDropSelectedOrganization()"
+                  [disabled]="data.servicingCompany.id != null"
+                  [invalid]="(orgName.invalid && orgName.touched) || (f.submitted && orgName.invalid)">
+          </app-search-select>
+          <small class="error text-danger" *ngIf="(orgName.invalid && orgName.touched) || (f.submitted && orgName.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
         </div>
         <div class="col-5">
           <div class="input-field">
-            <input type="text" id="nationalId" name="nationalId" class="txt ltr" [(ngModel)]="data.servicingCompany.nationalId" [disabled]="data.servicingCompany.id != null" placeholder="." autocomplete="off">
+            <input type="text" id="nationalId" name="nationalId" class="txt ltr" placeholder="." autocomplete="off"
+                   [(ngModel)]="data.servicingCompany.nationalId" #orgNationalId='ngModel'
+                   [disabled]="data.servicingCompany.id != null"
+                   [required]="!isOrgFormEmpty()" maxlength="12" pattern="^\d*$"
+                   [ngClass]="{'invalid': (orgNationalId.invalid && orgNationalId.touched) || (f.submitted && orgNationalId.invalid)}">
             <label class="input" for="nationalId">شناسه ملی شرکت</label>
+            <div *ngIf="(orgNationalId.invalid && orgNationalId.touched) || (f.submitted && orgNationalId.invalid)">
+              <small class="error text-danger" *ngIf="orgNationalId.errors?.['required']">
+                پرکردن این فیلد الزامی است.
+              </small>
+              <small class="error text-danger" *ngIf="orgNationalId.errors?.['pattern']">
+                مقدار وارد شده معتبر نیست.
+              </small>
+            </div>
           </div>
         </div>
       </div>
@@ -179,10 +253,16 @@
     </form>
   </div>
 </div>
-<div mat-dialog-actions style="direction: ltr;">
-  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
-    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
-    <div>ثبت</div>
-  </button>
-  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+<div mat-dialog-actions class="d-flex justify-content-between ltr">
+  <div class="w-25 d-flex">
+    <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+      <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
+      <div>ثبت</div>
+    </button>
+    <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+  </div>
+  <p class="small text-danger mb-0 ms-2 rtl" *ngIf="f.submitted && f.invalid">
+    <i class="fas fa-exclamation-triangle"></i>
+    لطفاً خطا های فوق را اصلاح کرده و مجدداً امتحان کنید.
+  </p>
 </div>
