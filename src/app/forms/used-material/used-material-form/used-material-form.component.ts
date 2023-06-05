@@ -33,7 +33,8 @@ export class UsedMaterialFormComponent {
     this.typeOptions.options = [
       {value: 0, title: 'قطعه'},
       {value: 1, title: 'مایع'},
-      {value: 2, title: 'گاز'}
+      {value: 2, title: 'گاز'},
+      {value: 3, title: 'جامد'}
     ];
   }
 

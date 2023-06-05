@@ -7,18 +7,13 @@
         جدید
         <i class="fas fa-plus ms-2"></i>
       </button>
-      <button class="btn btn-sm btn-secondary px-3" (click)="toggleSearch()">
-        جستجو
-        <i class="fas fa-search ms-2"></i>
-      </button>
     </div>
     <app-data-table
             [data]="discounts"
             [config]="table"
             (editItem)="openForm($event)"
             (removeItem)="onRemoveItem($event)"
-            (paramsChanged)="fetch()"
-            (buttonClicked)="buttonClicked($event)">
+            (paramsChanged)="fetch()">
     </app-data-table>
   </div>
 </div>

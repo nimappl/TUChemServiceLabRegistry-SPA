@@ -184,15 +184,15 @@ export class InstrumentMaintenanceFormComponent {
 
   isPersonFormEmpty(): boolean {
     return (!this.data.serviceman.firstName || this.data.serviceman.firstName === '') &&
-    (!this.data.serviceman.lastName || this.data.serviceman.lastName === '') &&
-    (!this.data.serviceman.nationalNumber || this.data.serviceman.nationalNumber === '') &&
-    (!this.data.serviceman.phoneNumber || this.data.serviceman.phoneNumber === '') &&
-    (this.data.serviceman.gender == null);
+           (!this.data.serviceman.lastName || this.data.serviceman.lastName === '') &&
+           (!this.data.serviceman.nationalNumber || this.data.serviceman.nationalNumber === '') &&
+           (!this.data.serviceman.phoneNumber || this.data.serviceman.phoneNumber === '') &&
+           (this.data.serviceman.gender == null);
   }
 
   isOrgFormEmpty(): boolean {
     return (!this.data.servicingCompany.name || this.data.servicingCompany.name === '') &&
-    (!this.data.servicingCompany.nationalId || this.data.servicingCompany.nationalId === '');
+           (!this.data.servicingCompany.nationalId || this.data.servicingCompany.nationalId === '');
   }
 
   onSubmit() {

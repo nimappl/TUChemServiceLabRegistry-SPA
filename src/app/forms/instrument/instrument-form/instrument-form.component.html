@@ -6,8 +6,8 @@
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="name" name="name" class="txt" placeholder="pox"
-                   [(ngModel)]="data.name" autocomplete="off" required #name='ngModel'
+            <input type="text" id="name" name="name" class="txt" placeholder="."
+                   [(ngModel)]="data.name" autocomplete="off" required #name='ngModel' maxlength="100"
                    [ngClass]="{'invalid': (name.invalid && name.touched) || f.submitted && name.invalid}">
             <label for="name" class="input">نام دستگاه</label>
             <small class="error text-danger" *ngIf="(name.invalid && name.touched) || f.submitted && name.invalid">
@@ -17,7 +17,7 @@
         </div>
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="model" name="model" class="txt" placeholder="pox" [(ngModel)]="data.model" autocomplete="off">
+            <input type="text" id="model" name="model" class="txt ltr" placeholder="." maxlength="80" [(ngModel)]="data.model" autocomplete="off">
             <label for="model" class="input">مدل دستگاه</label>
           </div>
         </div>
@@ -25,13 +25,13 @@
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="serial" name="serial" class="txt" placeholder="pox" [(ngModel)]="data.serial" autocomplete="off">
+            <input type="text" id="serial" name="serial" class="txt ltr" placeholder="." maxlength="40" [(ngModel)]="data.serial" autocomplete="off">
             <label for="serial" class="input">شماره سریال</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [(ngModel)]="data.manufacturer" autocomplete="off">
+            <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="." maxlength="70" [(ngModel)]="data.manufacturer" autocomplete="off">
             <label for="manufacturer" class="input">شرکت سازنده</label>
           </div>
         </div>
@@ -39,7 +39,7 @@
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="pox" [(ngModel)]="data.madeIn" autocomplete="off">
+            <input type="text" id="madeIn" name="madeIn" class="txt" placeholder="." maxlength="40" [(ngModel)]="data.madeIn" autocomplete="off">
             <label for="madeIn" class="input">کشور سازنده</label>
           </div>
         </div>
@@ -66,6 +66,7 @@
                           name="firstName" #fName='ngModel' required
                           [data]="operatorSearchOptions"
                           [(ngModel)]="pendingOperator.firstName"
+                          [maxLength]="50"
                           (onSelectionChange)="onSelectOperator()"
                           (onSearch)="onSearchOperator()"
                           (onDropSelected)="clearOperatorForm()"
@@ -80,7 +81,7 @@
                 <div class="col-6">
                   <div class="input-field">
                     <input type="text" id="lastName" name="lastName" class="txt"
-                           [(ngModel)]="pendingOperator.lastName"
+                           [(ngModel)]="pendingOperator.lastName" maxlength="50"
                            [disabled]="operatorSearchOptions.selectedValue != null"
                            placeholder="." autocomplete="off" required #lName='ngModel'
                            [ngClass]="{'invalid': (lName.touched && lName.invalid) || (operatorForm.submitted && lName.invalid)}">
@@ -96,7 +97,7 @@
                 <div class="col-5">
                   <div class="input-field">
                     <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr"placeholder="." autocomplete="off"
-                           [(ngModel)]="pendingOperator.nationalNumber" maxlength="11"  pattern="^\d*$" required
+                           [(ngModel)]="pendingOperator.nationalNumber" maxlength="10"  pattern="^\d*$" required
                            [disabled]="operatorSearchOptions.selectedValue != null" #natId='ngModel'
                            [ngClass]="{'invalid': (natId.touched && natId.invalid) || (operatorForm.submitted && natId.invalid)}">
                     <label for="nationalNumber" class="input">کد ملی</label>
@@ -113,7 +114,7 @@
                 <div class="col-5">
                   <div class="input-field">
                     <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="." autocomplete="off"
-                           [(ngModel)]="pendingOperator.phoneNumber" #phoneNum='ngModel' maxlength="14"  pattern="^\+?\d*$"
+                           [(ngModel)]="pendingOperator.phoneNumber" #phoneNum='ngModel' maxlength="14"  pattern="^\+?(\d| )*$"
                            [disabled]="operatorSearchOptions.selectedValue != null"
                            [ngClass]="{'invalid': (phoneNum.invalid && phoneNum.touched) || (operatorForm.submitted && phoneNum.invalid)}">
                     <label for="phoneNumber" class="input">شماره تماس</label>

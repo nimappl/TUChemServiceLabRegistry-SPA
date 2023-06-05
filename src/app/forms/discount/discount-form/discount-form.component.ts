@@ -30,7 +30,13 @@ export class DiscountFormComponent {
     this.title = (this.data.id == undefined) ? 'جدید' : 'ویرایش';
 
     this.typeOptions.label = 'نوع';
-    for (let i = 0; i < 5; i++) this.typeOptions.options.push({value: i, title: Discount.getType(i)});
+    this.typeOptions.options = [
+      {value: 0, title: 'دانشجویان و هیات عملی گروه شیمی دانشگاه تبریز'},
+      {value: 1, title: 'دانشجویان و هیات عملی دانشگاه تبریز'},
+      {value: 2, title: 'تعداد نمونه'},
+      {value: 3, title: 'مشتریان دائمی'},
+      {value: 4, title: 'نوع دیگر'}
+    ];
   }
 
   onSubmit() {

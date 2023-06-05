@@ -6,8 +6,8 @@
       <div class="row">
         <div class="col-8">
           <div class="input-field">
-            <input type="text" id="title" name="title" class="txt" placeholder="pox"
-                   [(ngModel)]="data.title" autocomplete="off" #title='ngModel' required
+            <input type="text" id="title" name="title" class="txt" placeholder="."
+                   [(ngModel)]="data.title" autocomplete="off" #title='ngModel' required maxlength="140"
                    [ngClass]="{'invalid': (title.invalid && title.touched) || (f.submitted && title.invalid)}">
             <label for="title" class="input">عنوان</label>
             <small class="error text-danger" *ngIf="(title.invalid && title.touched) || (f.submitted && title.invalid)">
@@ -28,13 +28,13 @@
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="invoiceNo" name="invoiceNo" class="txt ltr" placeholder="pox" [(ngModel)]="data.invoiceNo" autocomplete="off">
+            <input type="text" id="invoiceNo" name="invoiceNo" class="txt ltr" placeholder="." maxlength="20" [(ngModel)]="data.invoiceNo" autocomplete="off">
             <label for="invoiceNo" class="input">شماره فاکتور</label>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
-            <input type="number" id="cost" name="cost" class="txt ltr" placeholder="pox" autocomplete="off"
+            <input type="number" id="cost" name="cost" class="txt ltr" placeholder="." autocomplete="off"
                    [(ngModel)]="data.totalCost" #totalPrice='ngModel' min="0"
                    [ngClass]="{'invalid': (totalPrice.invalid && totalPrice.touched) || (f.submitted && totalPrice.invalid)}">
             <label for="cost" class="input">هزینه کل اقدام تعمیر و نگه‌داری (ریال)</label>
@@ -58,59 +58,59 @@
             <div *ngFor="let material of data.usedMaterialList, let i = index">
               <div class="complex-field d-flex justify-content-around">
                 <div class="complex-field-label">ماده/قطعه {{i + 1}}</div>
-                  <div style="width: 230px;">
-                    <div class="input-field">
-                      <app-search-select
-                              [name]="'name'+i"
-                              [data]="materialOptions[i].searchOptions"
-                              [hasDropSelectionBtn]="false"
-                              [(ngModel)]="data.usedMaterialList[i].name" required
-                              #materialName='ngModel'
-                              (onSearch)="onSearchMaterial(i)"
-                              (onSelectionChange)="onSelectMaterial(i)"
-                              [disabled]="data.usedMaterialList[i].id != null"
-                              [invalid]="(materialName.touched && materialName.invalid) || (f.submitted && materialName.invalid)">
-                      </app-search-select>
-                    </div>
+                <div style="width: 230px;">
+                  <div class="input-field">
+                    <app-search-select
+                            [name]="'name'+i"
+                            [data]="materialOptions[i].searchOptions"
+                            [hasDropSelectionBtn]="false"
+                            [(ngModel)]="data.usedMaterialList[i].name"
+                            #materialName='ngModel' required [maxLength]="90"
+                            (onSearch)="onSearchMaterial(i)"
+                            (onSelectionChange)="onSelectMaterial(i)"
+                            [disabled]="data.usedMaterialList[i].id != null"
+                            [invalid]="(materialName.touched && materialName.invalid) || (f.submitted && materialName.invalid)">
+                    </app-search-select>
                   </div>
-                  <div style="width: 98px;">
-                    <div class="input-field">
-                      <app-select [name]="'type-'+i" [data]="materialOptions[i].typeOptions" required #materialType='ngModel'
-                                  [(ngModel)]="data.usedMaterialList[i].type" [disabled]="data.usedMaterialList[i].id != null"
-                                  [invalid]="(materialType.touched && materialType.invalid) || (f.submitted && materialType.invalid)">
-                      </app-select>
-                    </div>
+                </div>
+                <div style="width: 98px;">
+                  <div class="input-field">
+                    <app-select [name]="'type-'+i" [data]="materialOptions[i].typeOptions" required #materialType='ngModel'
+                                [(ngModel)]="data.usedMaterialList[i].type" [disabled]="data.usedMaterialList[i].id != null"
+                                [invalid]="(materialType.touched && materialType.invalid) || (f.submitted && materialType.invalid)">
+                    </app-select>
                   </div>
-                  <div style="width: 170px;">
-                    <div class="input-field">
-                      <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt ltr" required min="0"
-                             [(ngModel)]="data.usedMaterialList[i].price" placeholder="pox" autocomplete="off"
-                             [disabled]="data.usedMaterialList[i].id != null" #materialPrice='ngModel'
-                             [ngClass]="{'invalid': (materialPrice.touched && materialPrice.invalid) || (f.submitted && materialPrice.invalid)}">
-                      <label class="input" [for]="'price-'+i">قیمت هر واحد</label>
-                    </div>
+                </div>
+                <div style="width: 170px;">
+                  <div class="input-field">
+                    <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt ltr" required min="0"
+                           [(ngModel)]="data.usedMaterialList[i].price" placeholder="." autocomplete="off"
+                           [disabled]="data.usedMaterialList[i].id != null" #materialPrice='ngModel'
+                           [ngClass]="{'invalid': (materialPrice.touched && materialPrice.invalid) || (f.submitted && materialPrice.invalid)}">
+                    <label class="input" [for]="'price-'+i">قیمت هر واحد</label>
                   </div>
-                  <div style="width: 170px;">
-                    <div class="input-field">
-                      <input type="text" [id]="'manufacturer-'+i" [name]="'manufacturer-'+i" class="txt" [(ngModel)]="data.usedMaterialList[i].manufacturer" [disabled]="data.usedMaterialList[i].id != null" placeholder="pox" autocomplete="off">
-                      <label class="input" [for]="'manufacturer-'+i">تولید کننده</label>
-                    </div>
+                </div>
+                <div style="width: 170px;">
+                  <div class="input-field">
+                    <input type="text" [id]="'manufacturer-'+i" [name]="'manufacturer-'+i" class="txt" maxlength="100" [(ngModel)]="data.usedMaterialList[i].manufacturer" [disabled]="data.usedMaterialList[i].id != null" placeholder="." autocomplete="off">
+                    <label class="input" [for]="'manufacturer-'+i">تولید کننده</label>
                   </div>
-                  <div style="width: 110px;">
-                    <div class="input-field">
-                      <input type="number" [id]="'quantity-'+i" [name]="'quantity-'+i" class="txt ltr" placeholder="pox"
-                             [(ngModel)]="data.usedMaterialList[i].quantity" #materialQty='ngModel' required min="0"
-                             [disabled]="data.usedMaterialList[i].maintenanceId != null" autocomplete="off"
-                             [ngClass]="{'invalid': (materialQty.touched && materialQty.invalid) || (f.submitted && materialQty.invalid)}">
-                      <label class="input" [for]="'quantity-'+i">
-                        مقدار
-                        <ng-template [ngIf]="materialType.value != null">({{ getMaterialUnit(materialType.value) }})</ng-template>
-                      </label>
-                    </div>
+                </div>
+                <div style="width: 110px;">
+                  <div class="input-field">
+                    <input type="number" [id]="'quantity-'+i" [name]="'quantity-'+i" class="txt ltr" placeholder="."
+                           [(ngModel)]="data.usedMaterialList[i].quantity" #materialQty='ngModel' required min="0"
+                           [disabled]="data.usedMaterialList[i].maintenanceId != null" autocomplete="off"
+                           [ngClass]="{'invalid': (materialQty.touched && materialQty.invalid) || (f.submitted && materialQty.invalid)}">
+                    <label class="input" [for]="'quantity-'+i">
+                      مقدار
+                      <ng-template [ngIf]="materialType.value != null">({{ getMaterialUnit(materialType.value) }})</ng-template>
+                    </label>
                   </div>
-                  <div style="width: 36px; margin-top: 14px">
-                    <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveMaterial(i)">حذف</button>
-                  </div>
+                </div>
+                <div style="width: 36px; margin-top: 14px">
+                  <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveMaterial(i)">حذف</button>
+                </div>
               </div>
               <div *ngIf="((materialName.touched && materialName.invalid) || (f.submitted && materialName.invalid)) ||
                    ((materialType.touched && materialType.invalid) || (f.submitted && materialType.invalid)) ||
@@ -147,9 +147,10 @@
           <div class="row">
             <div class="col-6" style="margin-top: 18px;">
               <app-search-select
-                      [data]="personSearchOptions" #fName='ngModel'
-                      name="firstName" [(ngModel)]="data.serviceman.firstName"
+                      [data]="personSearchOptions" #fName='ngModel' name="firstName"
+                      [(ngModel)]="data.serviceman.firstName"
                       [required]="!isPersonFormEmpty()"
+                      [maxLength]="50"
                       (onSelectionChange)="onSelectPerson()"
                       (onSearch)="onSearchPerson()"
                       (onDropSelected)="onDropSelectedPerson()"
@@ -162,9 +163,9 @@
             </div>
             <div class="col-6">
               <div class="input-field">
-                <input type="text" id="lastName" name="lastName" class="txt"placeholder="." autocomplete="off"
+                <input type="text" id="lastName" name="lastName" class="txt" placeholder="." autocomplete="off"
                        [(ngModel)]="data.serviceman.lastName" [disabled]="data.serviceman.id != null"
-                       #lName='ngModel' [required]="!isPersonFormEmpty()"
+                       #lName='ngModel' [required]="!isPersonFormEmpty()" maxlength="50"
                        [ngClass]="{'invalid': (lName.invalid && lName.touched) || (f.submitted && lName.invalid)}">
                 <label class="input" for="lastName">نام خانوادگی</label>
                 <small class="error text-danger" *ngIf="(lName.invalid && lName.touched) || (f.submitted && lName.invalid)">
@@ -178,7 +179,7 @@
               <div class="input-field">
                 <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="." autocomplete="off"
                        [(ngModel)]="data.serviceman.nationalNumber" [disabled]="data.serviceman.id != null"
-                       #nationalNo='ngModel' [required]="!isPersonFormEmpty()" maxlength="11"  pattern="^\d*$"
+                       #nationalNo='ngModel' [required]="!isPersonFormEmpty()" maxlength="10"  pattern="^\d*$"
                        [ngClass]="{'invalid': (nationalNo.invalid && nationalNo.touched) || (f.submitted && nationalNo.invalid)}">
                 <label class="input" for="nationalNumber">کد ملی</label>
               </div>
@@ -195,7 +196,7 @@
               <div class="input-field">
                 <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="." autocomplete="off"
                        [(ngModel)]="data.serviceman.phoneNumber" [disabled]="data.serviceman.id != null"
-                       #phoneNo='ngModel' maxlength="14" pattern="^\+?\d*$"
+                       #phoneNo='ngModel' maxlength="14" pattern="^\+?(\d| )*$"
                        [ngClass]="{'invalid': (phoneNo.invalid && phoneNo.touched) || (f.submitted && phoneNo.invalid)}">
                 <label class="input" for="phoneNumber">شماره تلفن</label>
                 <small class="error text-danger" *ngIf="(phoneNo.invalid && phoneNo.touched) || (f.submitted && phoneNo.invalid)">
@@ -212,9 +213,10 @@
       <div class="row mt-2" ngModelGroup="organizationGroup" #orgGroup='ngModelGroup'>
         <div class="col-7" style="margin-top: 18px">
           <app-search-select
+                  name="orgName" #orgName='ngModel'
                   [data]="organizationSearchOptions"
-                  name="orgName" [(ngModel)]="data.servicingCompany.name"
-                  #orgName='ngModel' [required]="!isOrgFormEmpty()"
+                  [(ngModel)]="data.servicingCompany.name"
+                  [required]="!isOrgFormEmpty()"
                   (onSearch)="onSearchOrganization()"
                   (onSelectionChange)="onSelectOrganization()"
                   (onDropSelected)="onDropSelectedOrganization()"
@@ -246,7 +248,7 @@
       </div>
       <div class="row">
         <div class="input-field">
-          <textarea name="description" id="description" class="txt" rows="5" [(ngModel)]="data.description"></textarea>
+          <textarea name="description" id="description" class="txt" rows="5" maxlength="700" [(ngModel)]="data.description"></textarea>
           <label class="input" for="description">توضیحات</label>
         </div>
       </div>

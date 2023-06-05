@@ -29,8 +29,7 @@ export class TestComponent {
 
   ngOnInit() {
     this.table.columns = [
-      {for: 'name', dbName: 'TName', title: 'نام آزمون', sortable: true, hasSearch: true},
-      {for: 'description', dbName: 'TDescription', title: 'توضیح', sortable: true, hasSearch: true},
+      {for: 'name', dbName: 'TName', title: 'نام آزمون', sortable: true, hasSearch: true}
     ];
     this.table.buttonTitles = ['جزئیات'];
     this.table.buttons = [{title: 'مشاهده جزئیات', id: 1, altText: ''}];
@@ -47,6 +46,11 @@ export class TestComponent {
       this.table.loading = false;
       this.table.sorting = false;
       this.tests = res;
+      this.tests.records.forEach(t => {
+        let discounts = [];
+        t.discounts.forEach(d => discounts.push(new Discount(d)));
+        t.discounts = discounts;
+      });
     }, err => {
       this.table.loading = false;
       this.table.sorting = false;
@@ -104,7 +108,7 @@ export class TestComponent {
       {for: 'price', dbName: 'TPrepPrice', title: 'هزینه', sortable: false, hasSearch: false}
     ];
     this.testDiscountsTable.columns = [
-      {for: 'type', dbName: 'TDType', title: 'عنوان', sortable: false, hasSearch: false, transform: value => Discount.getType(value)},
+      {for: 'getType', dbName: 'TDType', title: 'عنوان تخفیف', sortable: false, hasSearch: false, isFunction: true},
       {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false}
     ];
   }

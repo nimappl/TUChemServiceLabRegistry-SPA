@@ -43,11 +43,8 @@
       <ng-template [ngIf]="!config.sorting && !config.loadingFailed && data.records.length > 0">
       <tr *ngFor="let record of data.records; let i = index">
         <th>{{ i + (data.pageNumber - 1) * data.pageSize + 1 }}</th>
-        <td *ngFor="let col of config.columns">
-          <ng-template [ngIf]="col.transform" [ngIfElse]="normal">
-            {{ col.transform(record[col.for]) }}
-          </ng-template>
-          <ng-template #normal>{{ record[col.for] }}</ng-template>
+        <td *ngFor="let col of config.columns; let colIndex = index">
+          {{ getCellValue(col, record) }}
         </td>
         <td *ngFor="let btn of config.buttons" class="py-1 edit">
           <div class="d-flex justify-content-center align-items-center buttons">

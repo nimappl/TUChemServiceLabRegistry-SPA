@@ -116,8 +116,9 @@ export class JalaliDatePickerComponent implements OnInit, ControlValueAccessor {
 
   openOptions(e: any) {
     if (!this.disabled) {
-      this.showCalendar ? this.showCalendar = false : this.showCalendar = true;
-      this.extractWeeks();
+      if (this.showCalendar) this.markAsTouched();
+      if (!this.showCalendar) this.extractWeeks();
+      this.showCalendar = !this.showCalendar;
     }
   }
 

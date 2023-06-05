@@ -6,7 +6,7 @@
       <div class="col">
         <div class="input-field">
           <input type="text" id="name" name="name" class="txt" placeholder="pox"
-                 [(ngModel)]="data.name" autocomplete="off" #name='ngModel' required
+                 [(ngModel)]="data.name" autocomplete="off" #name='ngModel' required maxlength="90"
                  [ngClass]="{'invalid': (name.invalid && name.touched) || (name.invalid && f.submitted)}">
           <label for="name" class="input">نام گروه آموزشی</label>
           <small class="error text-danger ms-2" *ngIf="(name.invalid && name.touched) || (name.invalid && f.submitted)">

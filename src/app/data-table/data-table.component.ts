@@ -75,6 +75,12 @@ export class DataTableComponent {
     this.paramsChanged.emit();
   }
 
+  getCellValue(column: any, record: any) {
+    if (column.isFunction) return record[column.for]();
+    if (column.transform) return column.transform(record[column.for]);
+    return record[column.for];
+  }
+
   btnClick(btnId: number, record: any) {
     this.buttonClicked.emit({btnId, record});
   }

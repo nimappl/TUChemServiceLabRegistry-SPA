@@ -4,30 +4,66 @@
   <div class="container-fluid">
     <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
       <div class="row">
-        <div class="col-6">
+        <div class="col-8">
           <div class="input-field">
             <input type="text" id="name" name="name" class="txt" placeholder="pox" autocomplete="off"
-                   [(ngModel)]="data.name" #testName='ngModel' required
-                   [ngClass]="{'invalid': (testName.invalid && testName.invalid) || (f.submitted && testName.invalid)}">
+                   [(ngModel)]="data.name" #testName='ngModel' required maxlength="120"
+                   [ngClass]="{'invalid': (testName.touched && testName.invalid) || (f.submitted && testName.invalid)}">
             <label class="input" for="name">نام آزمون</label>
-          </div>
-          <div style="padding-top: 18px">
-            <app-select [data]="instOptions" name="instrumentId" [(ngModel)]="data.instrumentId"></app-select>
+            <small class="error text-danger" *ngIf="(testName.touched && testName.invalid) || (f.submitted && testName.invalid)">
+              پرکردن این فیلد الزامی است.
+            </small>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <div class="input-field">
-            <input type="text" id="shortName" name="shortName" class="txt" placeholder="pox" [(ngModel)]="data.shortName" autocomplete="off">
-            <label class="input" for="shortName">نام کوتاه (حداکثر ۴ کاراکتر)</label>
+            <input type="text" id="shortName" name="shortName" class="txt" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.shortName" #shortName='ngModel' required maxlength="10"
+                   [ngClass]="{'invalid': (shortName.touched && shortName.invalid) || (f.submitted && shortName.invalid)}">
+            <label class="input" for="shortName">نام کوتاه آزمون</label>
+            <small class="error text-danger" *ngIf="(shortName.touched && shortName.invalid) || (f.submitted && shortName.invalid)">
+              پرکردن این فیلد الزامی است.
+            </small>
           </div>
-          <div style="padding-top: 18px">
-            <app-select [data]="statusOptions" name="tActive" [(ngModel)]="data.tActive"></app-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8" style="padding-top: 18px">
+          <app-select
+                  [data]="instOptions" name="instrumentId"
+                  [(ngModel)]="data.instrumentId" #instId='ngModel' required
+                  (onSelect)="onSelectInstrument()"
+                  [invalid]="(instId.touched && instId.invalid) || (f.submitted && instId.invalid)">
+          </app-select>
+          <small class="error text-danger" *ngIf="(instId.touched && instId.invalid) || (f.submitted && instId.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
+        </div>
+        <div class="col-4" style="padding-top: 18px">
+          <app-select [data]="statusOptions" name="tActive" [(ngModel)]="data.tActive"></app-select>
+        </div>
+      </div>
+      <div class="w-75 mt-2" *ngIf="data.instrument != null">
+        <div class="row">
+          <div class="col-6">
+            <div class="details-text"><strong>نام دستگاه:</strong>&nbsp;<span>{{ data.instrument.name }}</span></div>
+          </div>
+          <div class="col-6">
+            <div class="details-text"><strong>مدل دستگاه:</strong>&nbsp;<span>{{ data.instrument.model }}</span></div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-6">
+            <div class="details-text"><strong>شرکت سازنده:</strong>&nbsp;<span>{{ data.instrument.manufacturer }}</span></div>
+          </div>
+          <div class="col-6">
+            <div class="details-text"><strong>وضعیت سرویس‌دهی:</strong>&nbsp;<span>{{ instrumentServiceability(data.instrument.serviceable) }}</span></div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
-          <textarea name="description" id="description" rows="2" class="txt" [(ngModel)]="data.description"></textarea>
+          <textarea name="description" id="description" rows="2" class="txt" maxlength="250" [(ngModel)]="data.description"></textarea>
           <label class="input" for="description">توضیح</label>
         </div>
       </div>
@@ -41,26 +77,48 @@
           </div>
         </div>
         <div class="group-content">
-          <ng-template [ngIf]="data.fees && data.fees.length != 0" [ngIfElse]="noFees">
-            <div class="complex-field d-flex justify-content-around" *ngFor="let fee of data.fees, let i = index">
-              <div class="complex-field-label">تعرفه {{i + 1}}</div>
-              <div style="width: 190px; padding-top: 14px">
-                <app-select [data]="feeTypeOptions[i]" [name]="'type'+i" [(ngModel)]="fee.type"></app-select>
-              </div>
-              <div style="width: 190px;">
-                <div class="input-field">
-                  <input type="number" [id]="'step-'+i" [name]="'step-'+i" class="txt" placeholder="pox" [(ngModel)]="fee.step" autocomplete="off" [disabled]="fee.type === 0">
-                  <label class="input" [for]="'step-'+i">گام افزایش</label>
+          <ng-template [ngIf]="data.fees && data.fees.length > 0" [ngIfElse]="noFees">
+            <div *ngFor="let fee of data.fees, let i = index">
+              <div class="complex-field d-flex justify-content-around">
+                <div class="complex-field-label">تعرفه {{i + 1}}</div>
+                <div style="padding-top: 14px" [ngStyle]="{'width': feeType.value == 1 ? '190px' : '380px'}">
+                  <app-select [data]="feeTypeOptions[i]" [name]="'type'+i" [(ngModel)]="fee.type" #feeType='ngModel' required
+                              [invalid]="(feeType.touched && feeType.invalid) || (f.submitted && feeType.invalid)">
+                  </app-select>
+                </div>
+                <div style="width: 190px" [ngStyle]="{'display': feeType.value == 1 ? 'block' : 'none'}">
+                  <div class="input-field">
+                    <input type="number" [id]="'step-'+i" [name]="'step-'+i" class="txt" placeholder="pox" autocomplete="off"
+                           [(ngModel)]="fee.step" #feeStep='ngModel' [required]="feeType.value == 1" min="0"
+                           [ngClass]="{'invalid': (feeStep.touched && feeStep.invalid) || (f.submitted && feeStep.invalid)}">
+                    <label class="input" [for]="'step-'+i">گام افزایش (دقیقه)</label>
+                  </div>
+                </div>
+                <div style="width: 380px">
+                  <div class="input-field">
+                    <input type="number" [id]="'amount-'+i" [name]="'amount-'+i" class="txt" placeholder="pox" autocomplete="off"
+                           [(ngModel)]="fee.amount" #feeAmount='ngModel' required min="0"
+                           [ngClass]="{'invalid': (feeAmount.touched && feeAmount.invalid) || (f.submitted && feeAmount.invalid)}">
+                    <label class="input" [for]="'amount-'+i">مبلغ (ریال)</label>
+                  </div>
+                </div>
+                <div style="width: 36px; margin-top: 14px">
+                  <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveFee(i)">حذف</button>
                 </div>
               </div>
-              <div style="width: 380px;">
-                <div class="input-field">
-                  <input type="number" [id]="'amount-'+i" [name]="'amount-'+i" class="txt" placeholder="pox" [(ngModel)]="fee.amount" autocomplete="off">
-                  <label class="input" [for]="'amount-'+i">مبلغ (ریال)</label>
-                </div>
-              </div>
-              <div style="width: 36px; margin-top: 14px">
-                <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveFee(i)">حذف</button>
+              <div *ngIf="((feeType.touched && feeType.invalid) || (f.submitted && feeType.invalid)) ||
+                          ((feeStep.touched && feeStep.invalid) || (f.submitted && feeStep.invalid)) ||
+                          ((feeAmount.touched && feeAmount.invalid) || (f.submitted && feeAmount.invalid))">
+                <p class="error text-danger small ms-2 mb-0"
+                   *ngIf="feeType.errors?.['required'] || feeStep.errors?.['required'] || feeAmount.errors?.['required']">
+                  پرکردن همه‌ی فیلدها الزامی است.
+                </p>
+                <p class="error text-danger small ms-2 mb-0" *ngIf="feeStep.errors?.['min']">
+                  مقدار وارد شده برای "گام افزایش" مجاز نیست.
+                </p>
+                <p class="error text-danger small ms-2 mb-0" *ngIf="feeAmount.errors?.['min']">
+                  مقدار وارد شده برای "مبلغ" مجاز نیست.
+                </p>
               </div>
             </div>
           </ng-template>
@@ -85,22 +143,38 @@
         </div>
         <div class="group-content">
           <ng-template [ngIf]="data.samplePreparations && data.samplePreparations.length != 0" [ngIfElse]="noPreps">
-            <div class="complex-field d-flex justify-content-around" *ngFor="let prep of data.samplePreparations, let i = index">
-              <div class="complex-field-label">آماده‌سازی نمونه  {{i + 1}}</div>
-              <div style="width: 480px">
-                <div class="input-field">
-                  <input type="text" [id]="'type-'+i" [name]="'type-'+i" class="txt" placeholder="pox" [(ngModel)]="prep.type" autocomplete="off">
-                  <label class="input" [for]="'type-'+i">عنوان</label>
+            <div *ngFor="let prep of data.samplePreparations, let i = index">
+              <div class="complex-field d-flex justify-content-around">
+                <div class="complex-field-label">آماده‌سازی نمونه  {{i + 1}}</div>
+                <div style="width: 550px">
+                  <div class="input-field">
+                    <input type="text" [id]="'type-'+i" [name]="'type-'+i" class="txt" placeholder="pox" autocomplete="off"
+                           [(ngModel)]="prep.type" #prepName='ngModel' required maxlength="120"
+                           [ngClass]="{'invalid': (prepName.invalid && prepName.touched) || (f.submitted && prepName.invalid)}">
+                    <label class="input" [for]="'type-'+i">عنوان</label>
+                  </div>
+                </div>
+                <div style="width: 240px">
+                  <div class="input-field">
+                    <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt" placeholder="pox" autocomplete="off"
+                           [(ngModel)]="prep.price" #prepPrice='ngModel' required min="0"
+                           [ngClass]="{'invalid': (prepPrice.invalid && prepPrice.touched) || (f.submitted && prepPrice.invalid)}">
+                    <label class="input" [for]="'price-'+i">هزینه (ریال)</label>
+                  </div>
+                </div>
+                <div style="width: 36px; margin-top: 14px">
+                  <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemovePrep(i)">حذف</button>
                 </div>
               </div>
-              <div style="width: 310px">
-                <div class="input-field">
-                  <input type="number" [id]="'price-'+i" [name]="'price-'+i" class="txt" placeholder="pox" [(ngModel)]="prep.price" autocomplete="off">
-                  <label class="input" [for]="'price-'+i">هزینه (ریال)</label>
-                </div>
-              </div>
-              <div style="width: 36px; margin-top: 14px">
-                <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemovePrep(i)">حذف</button>
+              <div *ngIf="((prepName.invalid && prepName.touched) || (f.submitted && prepName.invalid)) ||
+                          ((prepPrice.invalid && prepPrice.touched) || (f.submitted && prepPrice.invalid))">
+                <p class="error small text-danger ms-2 mb-0"
+                   *ngIf="prepName.errors?.['required'] || prepPrice.errors?.['required']">
+                  پرکردن هر دو فیلد الزامی است.
+                </p>
+                <p class="error small text-danger ms-2 mb-0" *ngIf="prepPrice.errors?.['min']">
+                  مبلغ وارد شده مجاز نیست.
+                </p>
               </div>
             </div>
           </ng-template>
@@ -115,31 +189,22 @@
           <div class="group-title">تخفیف‌های آزمون</div>
         </div>
         <div class="group-content">
-          <div class="d-flex justify-content-start my-2">
-            <div style="width: 400px" class="me-3">
-              <app-select [data]="discountOptions" (onSelect)="onSelectDiscount()" name="discount" [(ngModel)]="discountOptions.selectedValue"></app-select>
-            </div>
-            <div style="width: 200px; margin-top: 3px">
-              <button type="button" class="btn btn-success btn-sm px-3" (click)="onAddDiscount()" [disabled]="discountOptions.selectedValue === null">
-                افزودن تخفیف
-              </button>
-            </div>
+          <div class="my-2" style="width: 400px">
+            <app-select [data]="discountOptions" (onSelect)="onSelectDiscount($event)" name="discount" [(ngModel)]="discountOptions.selectedValue"></app-select>
           </div>
           <div class="mx-3 py-2" *ngIf="selectedDiscount != null">
             <div class="row mb-1">
-              <div class="col">
-                <div class="details-text"><strong>نوع تخفیف:</strong>&nbsp;<span>{{ selectedDiscount.typeString }}</span></div>
+              <div class="col-6">
+                <div class="details-text mt-1"><strong>نوع تخفیف:</strong>&nbsp;<span>{{ selectedDiscount.getType() }}</span></div>
               </div>
-              <div class="col">
-                <div class="details-text"><strong>درصد تخفیف:</strong>&nbsp;<span>{{ selectedDiscount.percent }}</span></div>
+              <div class="col-2">
+                <div class="details-text mt-1"><strong>درصد تخفیف:</strong>&nbsp;<span>{{ selectedDiscount.percent }}</span></div>
               </div>
-            </div>
-            <div class="row mb1">
-              <div class="col">
-                <div class="details-text"><strong>حداقل تعداد نمونه:</strong>&nbsp;<span>{{ selectedDiscount.minSamples }}</span></div>
-              </div>
-              <div class="col">
-                <div class="details-text"><strong>عنوان تخفیف</strong>&nbsp;<span>{{ selectedDiscount.name }}</span></div>
+              <div class="col-4">
+                <button type="button" class="btn btn-sm btn-outline-success" style="padding: 3px 20px" (click)="onAddDiscount()">
+                  افزودن تخفیف
+                  <i class="fas fa-plus"></i>
+                </button>
               </div>
             </div>
           </div>

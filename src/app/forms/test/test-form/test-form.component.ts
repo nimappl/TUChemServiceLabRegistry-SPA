@@ -26,14 +26,16 @@ export class TestFormComponent {
   discountTableConfig = new TableConfig(0);
   discountOptions = new CustomFieldData();
   selectedDiscount: Discount = null;
+  selectedDiscountIndex: number;
   @ViewChild('f') form: NgForm;
+  instrumentServiceability = Instrument.getServiceability;
 
   constructor(
     private dialogRef: MatDialogRef<TestFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Test,
     private testApiSrv: TestService,
-    private instrumentApiSrv: InstrumentService,
-    private discountApiSrv: DiscountService
+    private instrumentService: InstrumentService,
+    private discountService: DiscountService
   ) {}
 
   ngOnInit() {
@@ -55,15 +57,14 @@ export class TestFormComponent {
       options.label = 'مبنای تعرفه';
       options.options = [
         {value: 0, title: 'تعداد نمونه'},
-        {value: 1, title: 'زمان (دقیقه)'}
+        {value: 1, title: 'زمان آزمون'}
       ];
       this.feeTypeOptions.push(options);
     });
     this.discountData.records = this.data.discounts;
     this.discountTableConfig.hasDelete = true;
     this.discountTableConfig.columns = [
-      {for: 'type', dbName: 'TDType', title: 'عنوان', sortable: false, hasSearch: false, transform: value => Discount.getType(value)},
-      {for: 'minSamples', dbName: 'TDMinSamples', title: 'حداقل تعداد نمونه', sortable: false, hasSearch: false},
+      {for: 'getType', dbName: 'TDType', title: 'عنوان', sortable: false, hasSearch: false, isFunction: true},
       {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false}
     ];
 
@@ -75,7 +76,7 @@ export class TestFormComponent {
     this.instOptions.loading = true;
     let params: Data<Instrument> = new Data();
     params.pageSize = 100;
-    this.instrumentApiSrv.get(params).subscribe(res => {
+    this.instrumentService.get(params).subscribe(res => {
       this.instOptions.loading = false;
       res.records.forEach(instrument =>
         this.instOptions.options.push({value: instrument.id, title: instrument.name})
@@ -89,12 +90,13 @@ export class TestFormComponent {
   getDiscountOptions() {
     this.discountOptions.loading = true;
     let params: Data<Discount> = new Data();
-    params.pageSize = 100;
-    this.discountApiSrv.get(params).subscribe(res => {
+    params.pageSize = null;
+    this.discountService.get(params).subscribe(res => {
       this.discountOptions.loading = false;
-      res.records.forEach(discnt =>
-        this.discountOptions.options.push({value: discnt.id, title: `${Discount.getType(discnt.type)}، ${discnt.name}، ${discnt.percent} درصد`})
-      );
+      res.records.forEach(discnt => {
+        discnt = new Discount(discnt);
+        this.discountOptions.options.push({value: discnt.id, title: `${discnt.getType()}، ${discnt.percent} درصد`});
+      });
     }, err => {
       this.discountOptions.loading = false;
       this.discountOptions.loadingFailed = true;
@@ -109,7 +111,7 @@ export class TestFormComponent {
     options.label = 'مبنای تعرفه';
     options.options = [
       {value: 0, title: 'تعداد نمونه'},
-      {value: 1, title: 'زمان (دقیقه)'}
+      {value: 1, title: 'زمان'}
     ];
     this.data.fees.push(newFee);
     this.feeTypeOptions.push(options);
@@ -121,18 +123,26 @@ export class TestFormComponent {
     this.data.samplePreparations.push(newPrep);
   }
 
-  onSelectDiscount() {
-    this.discountApiSrv.getById(this.discountOptions.selectedValue).subscribe( res => {
-      this.selectedDiscount = res;
-      console.log(res)
-      this.selectedDiscount.typeString = Discount.getType(this.selectedDiscount.type);
+  onSelectDiscount(index: number) {
+    this.selectedDiscountIndex = index;
+    this.discountService.getById(this.discountOptions.selectedValue).subscribe( res => {
+      this.selectedDiscount = new Discount(res);
     });
   }
 
+  onSelectInstrument() {
+    this.instrumentService.getById(this.instOptions.selectedValue).subscribe(res => {
+      this.data.instrument = res;
+      this.data.tActive = res.serviceable;
+    })
+  }
+
   onAddDiscount() {
+    this.discountOptions.options.splice(this.selectedDiscountIndex, 1);
     this.data.discounts.push(this.selectedDiscount);
     this.selectedDiscount = null;
     this.discountOptions.selectedValue = null;
+    this.selectedDiscountIndex = null;
   }
 
   onRemoveFee(index: number) {
@@ -145,12 +155,16 @@ export class TestFormComponent {
   }
 
   onRemoveDiscount(index: number) {
+    this.discountOptions.options.push({
+      value: this.data.discounts[index].id,
+      title: this.data.discounts[index].getType() + '، ' + this.data.discounts[index].percent + ' درصد'
+    });
     this.data.discounts.splice(index, 1);
   }
 
   onSubmit() {
-    if (this.form.valid && this.data.fees.length != 0)
-      this.submit();
+    console.log(this.data)
+    if (this.form.valid && this.data.fees.length != 0) this.submit();
   }
 
   submit() {

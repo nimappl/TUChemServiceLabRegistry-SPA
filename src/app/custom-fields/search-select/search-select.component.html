@@ -11,6 +11,7 @@
          (input)="onInteract()"
          (focusin)="clicked()"
          (focusout)="focusout()"
+         [maxlength]="maxLength"
          placeholder="df" autocomplete="off">
   <label [for]="inputId" class="input">{{ data.label }}</label>
   <em (click)="clicked()"></em>

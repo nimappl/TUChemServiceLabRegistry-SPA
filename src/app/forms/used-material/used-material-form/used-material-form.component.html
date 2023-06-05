@@ -5,8 +5,8 @@
     <div class="row">
       <div class="col-6">
         <div class="input-field">
-          <input type="text" id="name" name="name" class="txt" placeholder="pox"
-                 [(ngModel)]="data.name" #name='ngModel' autocomplete="off" required
+          <input type="text" id="name" name="name" class="txt" placeholder="."
+                 [(ngModel)]="data.name" #name='ngModel' autocomplete="off" required maxlength="90"
                  [ngClass]="{'invalid': (name.invalid && name.touched) || (f.submitted && name.invalid)}">
           <label class="input" for="name">عنوان</label>
           <small class="error text-danger" *ngIf="(name.invalid && name.touched) || (f.submitted && name.invalid)">
@@ -26,13 +26,13 @@
     <div class="row">
       <div class="col-6">
         <div class="input-field">
-          <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="pox" [(ngModel)]="data.manufacturer" autocomplete="off">
+          <input type="text" id="manufacturer" name="manufacturer" class="txt" placeholder="." maxlength="100" [(ngModel)]="data.manufacturer" autocomplete="off">
           <label class="input" for="manufacturer">سازنده</label>
         </div>
       </div>
       <div class="col-6">
         <div class="input-field">
-          <input type="number" id="price" name="price" class="txt" placeholder="pox"
+          <input type="number" id="price" name="price" class="txt" placeholder="."
                  [(ngModel)]="data.price" #price='ngModel' autocomplete="off" required min="0"
                  [ngClass]="{'invalid': (price.invalid && price.touched) || (f.submitted && price.invalid)}">
           <label class="input" for="price">

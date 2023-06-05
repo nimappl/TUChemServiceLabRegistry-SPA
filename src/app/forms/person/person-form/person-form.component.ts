@@ -64,9 +64,9 @@ export class PersonFormComponent implements OnInit {
     ];
     this.organizationTableConfig.hasDelete = true;
     this.organizationTableConfig.columns = [
-      {for: 'name', dbName: 'OrgName', title: 'نام', sortable: true, hasSearch: true},
-      {for: 'nationalId', dbName: 'OrgNationalID', title: 'شناسه ملی', sortable: true, hasSearch: true},
-      {for: 'contractNo', dbName: 'OrgContractNo', title: 'شماره قرارداد', sortable: true, hasSearch: true}
+      {for: 'name', dbName: 'OrgName', title: 'نام', sortable: false, hasSearch: false},
+      {for: 'nationalId', dbName: 'OrgNationalID', title: 'شناسه ملی', sortable: false, hasSearch: false},
+      {for: 'registrationNo', dbName: 'OrgRegistrationNo', title: 'کد ثبت', sortable: false, hasSearch: false}
     ];
 
     this.onSelectType();
@@ -106,9 +106,8 @@ export class PersonFormComponent implements OnInit {
         if (this.eduGroupOptions.selectedValue && !inList)
           inList = this.eduGroupOptions.selectedValue === eduGroup.id;
       });
-      if (this.eduGroupOptions.selectedValue && !inList) {
+      if (this.eduGroupOptions.selectedValue && !inList)
         this.eduGroupOptions.options.push({value: this.data.profEduGroup.id, title: this.data.profEduGroup.name});
-      }
     }, err => {
       this.eduGroupOptions.loading = false;
       this.eduGroupOptions.loadingFailed = true;
@@ -138,8 +137,17 @@ export class PersonFormComponent implements OnInit {
     if (this.data.typeOrg) this.getOrganizationOptions();
   }
 
-  onSelectEduGroup() {
-    this.data.profEduGroup = this.eduGroupOptions.selectedValue;
+  isLabPrsnlFormEmpty(): boolean {
+    return ((!this.data.labPersonnelCode) || (this.data.labPersonnelCode == '')) &&
+           ((!this.data.labPost) || (this.data.labPost == ''));
+  }
+
+  isProfFormEmpty(): boolean {
+    return ((!this.data.profPersonnelCode) || (this.data.profPersonnelCode == '')) && !this.data.profEduGroupId;
+  }
+
+  isStdnFormEmpty(): boolean {
+    return ((!this.data.stdnCode) || (this.data.stdnCode == '')) && !this.data.stdnEduLevel && !this.data.stdnEduFieldId;
   }
 
   onSelectOrganization(index: number) {
@@ -147,17 +155,29 @@ export class PersonFormComponent implements OnInit {
   }
 
   onAddOrganization() {
-    this.data.orgRepOrganizations.push(this.organizations[this.pendingOrgIndex]);
+    this.organizations.forEach(org => {
+      if (this.organizationOptions.options[this.pendingOrgIndex].value == org.id)
+        this.data.orgRepOrganizations.push(org);
+    });
+    this.organizationOptions.options.splice(this.pendingOrgIndex, 1);
     this.pendingOrgIndex = null;
     this.organizationOptions.selectedValue = null;
   }
 
-  onRemoveOrganization() {
-    this.data.orgRepOrganizations.splice(this.pendingOrgIndex, 1);
+  onRemoveOrganization(index: number) {
+    for (let i = 0; i < this.organizations.length; i++){
+      const org = this.organizations[i];
+      if (org.id == this.data.orgRepOrganizations[index].id) {
+        this.organizationOptions.options.splice(i, 0, {value: org.id, title: org.name});
+        break;
+      }
+    }
+    this.data.orgRepOrganizations.splice(index, 1);
   }
 
   onSubmit() {
-    this.submit();
+    console.log(this.data)
+    if (this.form.valid) this.submit();
   }
 
   submit() {

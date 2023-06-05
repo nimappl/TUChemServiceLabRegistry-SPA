@@ -54,7 +54,8 @@ export class SelectComponent implements ControlValueAccessor {
 
   openOptions(e: any) {
     if (!this.disabled) {
-      this.showOptions ? this.showOptions = false : this.showOptions = true;
+      if (this.showOptions) this.markAsTouched();
+      this.showOptions = !this.showOptions;
     }
   }
 

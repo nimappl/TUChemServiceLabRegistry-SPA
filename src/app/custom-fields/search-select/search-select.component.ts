@@ -20,6 +20,7 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   @Input() data: CustomFieldData;
   @Input() invalid: boolean;
   @Input() hasDropSelectionBtn: boolean = true;
+  @Input() maxLength: number = 150;
   @Output() onSelectionChange: EventEmitter<any> = new EventEmitter();
   @Output() onSearch: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDropSelected: EventEmitter<any> = new EventEmitter<any>();

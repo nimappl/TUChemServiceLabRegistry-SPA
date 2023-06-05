@@ -14,7 +14,6 @@ import swal from "sweetalert";
 export class DiscountComponent {
   discounts: Data<Discount> = new Data<Discount>;
   table: TableConfig = new TableConfig(1);
-  selectedItem: Discount = null;
 
   constructor(private apiService: DiscountService,
               public dialog: MatDialog) {}
@@ -23,14 +22,7 @@ export class DiscountComponent {
     this.table.buttons = null;
     this.table.buttonTitles = null;
     this.table.columns = [
-      {for: 'type',
-        dbName: 'TDType',
-        title: 'نوع',
-        sortable: true,
-        hasSearch: false,
-        transform: value => Discount.getType(value)
-      },
-      {for: 'name', dbName: 'TDName', title: 'عنوان', sortable: true, hasSearch: true},
+      {for: 'getType', dbName: 'TDType', title: 'عنوان تخفیف', sortable: true, hasSearch: false, isFunction: true},
       {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: true, hasSearch: true}
     ];
 
@@ -43,9 +35,12 @@ export class DiscountComponent {
     this.table.loading = true;
     this.table.sorting = tableLoading;
     this.apiService.get(options).subscribe(res => {
+      let pox = [];
+      res.records.forEach(d => pox.push(new Discount(d)));
+      this.discounts = res;
+      this.discounts.records = pox;
       this.table.loading = false;
       this.table.sorting = false;
-      this.discounts = res;
     }, err => {
       this.table.loading = false;
       this.table.sorting = false;
@@ -67,19 +62,6 @@ export class DiscountComponent {
     dialogRef.afterClosed().subscribe(submitted => {
       if(submitted) this.fetch(true);
     });
-  }
-
-  toggleSearch() {
-    if (this.table.showSearch) {
-      this.discounts.filters = [];
-      this.fetch();
-    }
-
-    this.table.showSearch = !this.table.showSearch;
-  }
-
-  buttonClicked(item: {btnId: number, record: Discount}) {
-    this.selectedItem = item.record;
   }
 
   onRemoveItem(index: number) {
