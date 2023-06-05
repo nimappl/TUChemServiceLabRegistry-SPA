@@ -78,7 +78,20 @@ export class InstrumentFormComponent implements OnInit{
     this.instrumentService.getCandidateOperators(this.operatorSearchOptions.searchText).subscribe(res => {
       this.operatorSearchOptions.loading = false;
       res.forEach(candidate => {
-        this.operatorSearchOptions.options.push({value: candidate.id, title: `${candidate.firstName} ${candidate.lastName}`, fieldValue: candidate.firstName});
+        let isInList = false;
+        for (let operatorInList of this.data.operators) {
+          if (operatorInList.id === candidate.id) {
+            isInList = true;
+            break;
+          }
+        }
+        if (!isInList) {
+          this.operatorSearchOptions.options.push({
+            value: candidate.id,
+            title: `${candidate.firstName} ${candidate.lastName}`,
+            fieldValue: candidate.firstName
+          });
+        }
       });
     }, err => {
       this.operatorSearchOptions.loading = false;
@@ -97,6 +110,7 @@ export class InstrumentFormComponent implements OnInit{
       this.data.operators.push(this.pendingOperator);
       this.clearOperatorForm();
       this.showOperatorForm = false;
+      this.operatorForm.resetForm();
     }
   }
 

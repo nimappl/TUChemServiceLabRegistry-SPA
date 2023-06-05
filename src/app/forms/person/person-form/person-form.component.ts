@@ -123,7 +123,14 @@ export class PersonFormComponent implements OnInit {
       this.organizationOptions.loading = false;
       this.organizations = result.records;
       result.records.forEach(org => {
-        this.organizationOptions.options.push({value: org.id, title: org.name});
+        let isInList = false;
+        for (let orgInList of this.data.orgRepOrganizations) {
+          if (org.id === orgInList.id) {
+            isInList = true;
+            break;
+          }
+        }
+        if (!isInList) this.organizationOptions.options.push({value: org.id, title: org.name});
       });
     }, err => {
       this.organizationOptions.loading = false;
@@ -150,33 +157,32 @@ export class PersonFormComponent implements OnInit {
     return ((!this.data.stdnCode) || (this.data.stdnCode == '')) && !this.data.stdnEduLevel && !this.data.stdnEduFieldId;
   }
 
-  onSelectOrganization(index: number) {
-    this.pendingOrgIndex = index;
+  onSelectOrganization() {
+    this.organizations.forEach((org, i) => {
+      if (org.id === this.organizationOptions.selectedValue)
+        this.pendingOrgIndex = i;
+    });
   }
 
   onAddOrganization() {
-    this.organizations.forEach(org => {
-      if (this.organizationOptions.options[this.pendingOrgIndex].value == org.id)
-        this.data.orgRepOrganizations.push(org);
+    this.data.orgRepOrganizations.push(this.organizations[this.pendingOrgIndex]);
+    this.organizationOptions.options.forEach((opt, i) => {
+      if (opt.value === this.organizations[this.pendingOrgIndex].id)
+        this.organizationOptions.options.splice(i, 1);
     });
-    this.organizationOptions.options.splice(this.pendingOrgIndex, 1);
     this.pendingOrgIndex = null;
     this.organizationOptions.selectedValue = null;
   }
 
   onRemoveOrganization(index: number) {
-    for (let i = 0; i < this.organizations.length; i++){
-      const org = this.organizations[i];
-      if (org.id == this.data.orgRepOrganizations[index].id) {
-        this.organizationOptions.options.splice(i, 0, {value: org.id, title: org.name});
-        break;
-      }
-    }
+    this.organizationOptions.options.push({
+      value: this.data.orgRepOrganizations[index].id,
+      title: this.data.orgRepOrganizations[index].name
+    });
     this.data.orgRepOrganizations.splice(index, 1);
   }
 
   onSubmit() {
-    console.log(this.data)
     if (this.form.valid) this.submit();
   }
 

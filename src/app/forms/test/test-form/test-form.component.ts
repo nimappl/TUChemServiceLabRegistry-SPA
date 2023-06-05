@@ -95,7 +95,19 @@ export class TestFormComponent {
       this.discountOptions.loading = false;
       res.records.forEach(discnt => {
         discnt = new Discount(discnt);
-        this.discountOptions.options.push({value: discnt.id, title: `${discnt.getType()}، ${discnt.percent} درصد`});
+        let isInList = false;
+        for (let discntInList of this.data.discounts) {
+          if (discntInList.id === discnt.id) {
+            isInList = true;
+            break;
+          }
+        }
+        if (!isInList) {
+          this.discountOptions.options.push({
+            value: discnt.id,
+            title: `${discnt.getType()}، ${discnt.percent} درصد`
+          });
+        }
       });
     }, err => {
       this.discountOptions.loading = false;

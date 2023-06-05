@@ -2,32 +2,52 @@
 <app-progress *ngIf="reachingOut"></app-progress>
 <div style="overflow: scroll; max-height: 81vh">
   <div class="container-fluid">
-    <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+    <form id="form" #f='ngForm' (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="name" name="name" class="txt" placeholder="pox" [(ngModel)]="data.name" autocomplete="off">
+            <input type="text" id="name" name="name" class="txt" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.name" #orgName='ngModel' required maxlength="70"
+                   [ngClass]="{'invalid': (orgName.touched && orgName.invalid) || (f.submitted && orgName.invalid)}">
             <label class="input" for="name">نام شرکت/سازمان</label>
+            <small class="error text-danger" *ngIf="(orgName.touched && orgName.invalid) || (f.submitted && orgName.invalid)">
+              پرکردن این فیلد الزامی است.
+            </small>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="contractNo" name="contractNo" class="txt" placeholder="pox" [(ngModel)]="data.contractNo" autocomplete="off">
+            <input type="text" id="contractNo" name="contractNo" class="txt ltr" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.contractNo" #contractNo='ngModel' pattern="^\d*$" maxlength="15"
+                   [ngClass]="{'invalid': (contractNo.touched && contractNo.invalid) || (f.submitted && contractNo.invalid)}">
             <label class="input" for="contractNo">شماره قرارداد</label>
+            <small class="error text-danger" *ngIf="(contractNo.touched && contractNo.invalid) || (f.submitted && contractNo.invalid)">
+              مقدار وارد شده معتبر نیست.
+            </small>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="nationalId" name="nationalId" class="txt" placeholder="pox" [(ngModel)]="data.nationalId" autocomplete="off">
+            <input type="text" id="nationalId" name="nationalId" class="txt ltr" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.nationalId" #orgNatId='ngModel' pattern="^\d*$" maxlength="15"
+                   [ngClass]="{'invalid': (orgNatId.touched && orgNatId.invalid) || (f.submitted && orgNatId.invalid)}">
             <label class="input" for="nationalId">شناسه ملی</label>
+            <small class="error text-danger" *ngIf="(orgNatId.touched && orgNatId.invalid) || (f.submitted && orgNatId.invalid)">
+              مقدار وارد شده معتبر نیست.
+            </small>
           </div>
         </div>
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="registrationNo" name="registrationNo" class="txt" placeholder="pox" [(ngModel)]="data.registrationNo" autocomplete="off">
+            <input type="text" id="registrationNo" name="registrationNo" class="txt ltr" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.registrationNo" #regNo='ngModel' pattern="^\d*$" maxlength="15"
+                   [ngClass]="{'invalid': (regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)}">
             <label class="input" for="registrationNo">شماره ثبت</label>
+            <small class="error text-danger" *ngIf="(regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)">
+              مقدار وارد شده معتبر نیست.
+            </small>
           </div>
         </div>
       </div>
@@ -42,22 +62,37 @@
         </div>
         <div class="group-content">
           <ng-template [ngIf]="data.phoneNumbers && data.phoneNumbers.length != 0" [ngIfElse]="noNumbers">
-            <div class="complex-field d-flex justify-content-around" *ngFor="let phone of data.phoneNumbers, let i = index">
-              <div class="complex-field-label">شماره تلفن  {{i + 1}}</div>
-              <div style="width: 250px">
-                <div class="input-field">
-                  <input type="text" [id]="'type-'+i" [name]="'type-'+i" class="txt ltr" placeholder="pox" [(ngModel)]="phone.number" autocomplete="off">
-                  <label class="input" [for]="'type-'+i">شماره تلفن</label>
+            <div *ngFor="let phone of data.phoneNumbers, let i = index">
+              <div class="complex-field d-flex justify-content-around">
+                <div class="complex-field-label">شماره تلفن  {{i + 1}}</div>
+                <div style="width: 250px">
+                  <div class="input-field">
+                    <input type="text" [id]="'orgPhoneNum-'+i" [name]="'orgPhoneNum-'+i" class="txt ltr" placeholder="pox" autocomplete="off"
+                           [(ngModel)]="phone.number" #orgPhoneNum='ngModel' required pattern="^(\d| )*$" maxlength="12"
+                           [ngClass]="{'invalid': (orgPhoneNum.touched && orgPhoneNum.invalid) || (f.submitted && orgPhoneNum.invalid)}">
+                    <label class="input" [for]="'orgPhoneNum-'+i">شماره تلفن</label>
+                  </div>
+                </div>
+                <div style="width: 450px">
+                  <div class="input-field">
+                    <input type="text" [id]="'orgPhoneSec-'+i" [name]="'orgPhoneSec-'+i" class="txt" placeholder="pox" autocomplete="off"
+                           [(ngModel)]="phone.section" #orgPhoneSec='ngModel' required maxlength="60"
+                           [ngClass]="{'invalid': (orgPhoneSec.touched && orgPhoneSec.invalid) || (f.submitted && orgPhoneSec.invalid)}">
+                    <label class="input" [for]="'orgPhoneSec-'+i">توضیح</label>
+                  </div>
+                </div>
+                <div  style="width: 36px; margin-top: 14px">
+                  <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveNumber(i)">حذف</button>
                 </div>
               </div>
-              <div style="width: 450px">
-                <div class="input-field">
-                  <input type="text" [id]="'price-'+i" [name]="'price-'+i" class="txt" placeholder="pox" [(ngModel)]="phone.section" autocomplete="off">
-                  <label class="input" [for]="'price-'+i">توضیح</label>
-                </div>
-              </div>
-              <div  style="width: 36px; margin-top: 14px">
-                <button type="button" class="btn btn-outline-danger btn-small" (click)="onRemoveNumber(i)">حذف</button>
+              <div *ngIf="(orgPhoneNum.touched && orgPhoneNum.invalid) || (f.submitted && orgPhoneNum.invalid) ||
+                          (orgPhoneSec.touched && orgPhoneSec.invalid) || (f.submitted && orgPhoneSec.invalid)">
+                <p class="small error text-danger mb-0 ms-2" *ngIf="orgPhoneNum.errors?.['required'] || orgPhoneSec.errors?.['required']">
+                  پرکردن هردو فیلد الزامی است.
+                </p>
+                <p class="small error text-danger mb-0 ms-2" *ngIf="orgPhoneNum.errors?.['pattern']">
+                  شماره وارد شده معتبر نیست.
+                </p>
               </div>
             </div>
           </ng-template>
@@ -65,8 +100,9 @@
             <p class="small text-muted mt-2 ms-2">شماره تلفنی برای این شرکت تعریف نشده است.</p>
           </ng-template>
         </div>
-        <div class="group-footer"></div>
       </div>
+    </form>
+    <form #repForm='ngForm' (ngSubmit)="onAddRepresentative()">
       <div class="field-group">
         <div class="field-group-header">
           <div class="group-title">نماینده‌ها</div>
@@ -79,53 +115,75 @@
         <div class="group-content">
           <div *ngIf="showRepresentativeForm">
             <div class="row">
-              <div class="col-4" style="margin-top: 18px;">
+              <div class="col-6" style="margin-top: 18px;">
                 <app-search-select
-                        name="firstName"
+                        name="firstName" #fName='ngModel'
                         [data]="selectPersonData"
+                        maxLength="50" required
                         [(ngModel)]="pendingRepresentative.firstName"
                         (onSearch)="onSearchPerson()"
                         (onSelectionChange)="onSelectPerson()"
                         (onDropSelected)="clearPersonForm()"
+                        [invalid]="(fName.touched && fName.invalid) || (repForm.submitted && fName.invalid)"
                         [disabled]="repSelectedFromDb">
                 </app-search-select>
+                <small class="error text-danger" *ngIf="(fName.touched && fName.invalid) || (repForm.submitted && fName.invalid)">
+                  پرکردن این فیلد الزامی است.
+                </small>
               </div>
-              <div class="col-4">
+              <div class="col-6">
                 <div class="input-field">
-                  <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" [(ngModel)]="pendingRepresentative.lastName" [disabled]="repSelectedFromDb" autocomplete="off">
+                  <input type="text" id="lastName" name="lastName" class="txt" placeholder="pox" autocomplete="off" maxlength="50"
+                         [(ngModel)]="pendingRepresentative.lastName" [disabled]="repSelectedFromDb" #lName='ngModel' required
+                         [ngClass]="{'invalid': (lName.touched && lName.invalid) || (repForm.submitted && lName.invalid)}">
                   <label class="input" for="lastName">نام خانوادگی</label>
+                  <small class="error text-danger" *ngIf="(lName.touched && lName.invalid) || (repForm.submitted && lName.invalid)">
+                    پرکردن این فیلد الزامی است.
+                  </small>
                 </div>
               </div>
-              <div class="col-4">
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <div class="input-field">
+                  <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="pox" autocomplete="off" maxlength="10"
+                         [(ngModel)]="pendingRepresentative.nationalNumber" [disabled]="repSelectedFromDb" #repNatId='ngModel' required pattern="^\d*$"
+                         [ngClass]="{'invalid': (repNatId.touched && repNatId.invalid) || (repForm.submitted && repNatId.invalid)}">
+                  <label class="input" for="nationalNumber">کد ملی</label>
+                  <div *ngIf="(repNatId.touched && repNatId.invalid) || (repForm.submitted && repNatId.invalid)">
+                    <p class="small text-danger error mb-0" *ngIf="repNatId.errors?.['required']">
+                      پرکردن این فیلد الزامی است.
+                    </p>
+                    <p class="small text-danger error mb-0" *ngIf="repNatId.errors?.['pattern']">
+                      کد ملی وارد شده معتبر نیست.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="input-field">
+                  <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="pox" autocomplete="off" maxlength="14"
+                         [(ngModel)]="pendingRepresentative.phoneNumber" [disabled]="repSelectedFromDb" #repPhoneNum='ngModel' pattern="^\+?(\d| )*$"
+                         [ngClass]="{'invalid': (repPhoneNum.touched && repPhoneNum.invalid) || (repForm.submitted && repPhoneNum.invalid)}">
+                  <label class="input" for="phoneNumber">شماره تلفن</label>
+                  <small class="error text-danger" *ngIf="(repPhoneNum.touched && repPhoneNum.invalid) || (repForm.submitted && repPhoneNum.invalid)">
+                    شماره وارد شده معتبر نیست.
+                  </small>
+                </div>
+              </div>
+              <div class="col-2">
                 <div class="input-field" style="margin-top: 18px">
                   <app-select [data]="genderOptions" name="gender" [(ngModel)]="pendingRepresentative.gender" [disabled]="repSelectedFromDb"></app-select>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-4">
-                <div class="input-field">
-                  <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.nationalNumber" [disabled]="repSelectedFromDb" autocomplete="off">
-                  <label class="input" for="nationalNumber">کد ملی</label>
-                </div>
+            <div class="my-2 d-flex justify-content-between ltr">
+              <div>
+                <button type="submit" class="btn btn-outline-success btn-sm px-3">افزودن به لیست</button>
               </div>
-              <div class="col-4">
-                <div class="input-field">
-                  <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.phoneNumber" [disabled]="repSelectedFromDb" autocomplete="off">
-                  <label class="input" for="phoneNumber">شماره تلفن</label>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="input-field">
-                  <input type="text" id="email" name="email" class="txt ltr" placeholder="pox" [(ngModel)]="pendingRepresentative.email" [disabled]="repSelectedFromDb" autocomplete="off">
-                  <label class="input" for="email">ایمیل</label>
-                </div>
-              </div>
-            </div>
-            <div class="my-2 ltr" style="text-align: left">
-              <button type="button" class="btn btn-outline-success btn-sm px-3" (click)="onAddRepresentative()">
-                افزودن به لیست نمایندگان
-              </button>
+              <p class="small text-danger mb-0 ms-2 rtl" *ngIf="repForm.submitted && repForm.invalid">
+                لطفاً خطا های فوق را اصلاح کرده و مجدداً امتحان کنید.
+              </p>
             </div>
           </div>
           <ng-template [ngIf]="data.representatives.length > 0" [ngIfElse]="noRepresentatives">
@@ -141,10 +199,16 @@
     </form>
   </div>
 </div>
-<div mat-dialog-actions style="direction: ltr;">
-  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
-    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
-    <div>ثبت</div>
-  </button>
-  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+<div mat-dialog-actions class="d-flex justify-content-between ltr">
+  <div class="w-25 d-flex">
+    <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+      <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
+      <div>ثبت</div>
+    </button>
+    <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+  </div>
+  <p class="small text-danger mb-0 ms-2 rtl" *ngIf="f.submitted && f.invalid">
+    <i class="fas fa-exclamation-triangle"></i>
+    لطفاً خطا های فوق را اصلاح کرده و مجدداً امتحان کنید.
+  </p>
 </div>

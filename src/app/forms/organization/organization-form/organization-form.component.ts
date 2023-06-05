@@ -19,6 +19,7 @@ export class OrganizationFormComponent {
   reachingOut: boolean = false;
   submitted: boolean = false;
   @ViewChild('f') form: NgForm;
+  @ViewChild('repForm') repForm: NgForm;
   selectPersonData: CustomFieldData = new CustomFieldData();
   genderOptions: CustomFieldData = new CustomFieldData();
   representativesTableConfig: TableConfig = new TableConfig(0);
@@ -61,9 +62,22 @@ export class OrganizationFormComponent {
       this.personService.queryByFullName(this.pendingRepresentative.firstName).subscribe(res => {
         this.selectPersonData.loading = false;
         this.selectPersonData.options = [];
-        res.forEach(item =>
-          this.selectPersonData.options.push({value: item.id, title: `${item.firstName} ${item.lastName}`, fieldValue: item.firstName})
-        );
+        res.forEach(item => {
+          let isInList = false;
+          for (let repInList of this.data.representatives) {
+            if (repInList.id === item.id) {
+              isInList = true;
+              break;
+            }
+          }
+          if (!isInList) {
+            this.selectPersonData.options.push({
+              value: item.id,
+              title: `${item.firstName} ${item.lastName}`,
+              fieldValue: item.firstName
+            });
+          }
+        });
       }, err => {
         this.selectPersonData.loading = false;
         this.selectPersonData.loadingFailed = true;
@@ -87,10 +101,14 @@ export class OrganizationFormComponent {
   }
 
   onAddRepresentative() {
-    this.pendingRepresentative.typeOrg = true;
-    this.data.representatives.push(<OrgRepresentative>this.pendingRepresentative);
-    this.clearPersonForm();
-    this.showRepresentativeForm = false;
+    console.log(this.repForm);
+    if (!this.repForm.invalid) {
+      this.pendingRepresentative.typeOrg = true;
+      this.data.representatives.push(<OrgRepresentative>this.pendingRepresentative);
+      this.clearPersonForm();
+      this.showRepresentativeForm = false;
+      this.repForm.resetForm();
+    }
   }
 
   onRemoveRepresentative(index: number) {
@@ -105,7 +123,7 @@ export class OrganizationFormComponent {
   }
 
   onSubmit() {
-    this.submit();
+    if (this.form.valid) this.submit();
   }
 
   submit() {

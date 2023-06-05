@@ -109,12 +109,21 @@ export class InstrumentMaintenanceFormComponent {
     this.usedMaterialService.queryByName(this.materialOptions[index].searchOptions.searchText).subscribe(res => {
       this.materialOptions[index].searchOptions.loading = false;
       res.forEach(material => {
-        let title = material.name;
-        if (material.manufacturer !== null) title += `, ${material.manufacturer}`;
-        this.materialOptions[index].searchOptions.options.push({
-          title: title,
-          value: material.id
-        });
+        let isInList = false;
+        for (let materialInList of this.data.usedMaterialList) {
+          if (material.id === materialInList.id) {
+            isInList = true;
+            break;
+          }
+        }
+        if (!isInList) {
+          let title = material.name;
+          if (material.manufacturer !== null) title += `, ${material.manufacturer}`;
+          this.materialOptions[index].searchOptions.options.push({
+            title: title,
+            value: material.id
+          });
+        }
       });
     }, err => {
       this.materialOptions[index].searchOptions.loading = false;

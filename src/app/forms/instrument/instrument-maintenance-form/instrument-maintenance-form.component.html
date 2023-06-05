@@ -214,6 +214,7 @@
         <div class="col-7" style="margin-top: 18px">
           <app-search-select
                   name="orgName" #orgName='ngModel'
+                  maxLength="70"
                   [data]="organizationSearchOptions"
                   [(ngModel)]="data.servicingCompany.name"
                   [required]="!isOrgFormEmpty()"
@@ -230,9 +231,8 @@
         <div class="col-5">
           <div class="input-field">
             <input type="text" id="nationalId" name="nationalId" class="txt ltr" placeholder="." autocomplete="off"
-                   [(ngModel)]="data.servicingCompany.nationalId" #orgNationalId='ngModel'
-                   [disabled]="data.servicingCompany.id != null"
-                   [required]="!isOrgFormEmpty()" maxlength="12" pattern="^\d*$"
+                   [(ngModel)]="data.servicingCompany.nationalId" #orgNationalId='ngModel' [disabled]="data.servicingCompany.id != null"
+                   [required]="!isOrgFormEmpty()" maxlength="15" pattern="^\d*$"
                    [ngClass]="{'invalid': (orgNationalId.invalid && orgNationalId.touched) || (f.submitted && orgNationalId.invalid)}">
             <label class="input" for="nationalId">شناسه ملی شرکت</label>
             <div *ngIf="(orgNationalId.invalid && orgNationalId.touched) || (f.submitted && orgNationalId.invalid)">
