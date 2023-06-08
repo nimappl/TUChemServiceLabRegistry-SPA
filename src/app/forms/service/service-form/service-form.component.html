@@ -1,0 +1,22 @@
+<h1 mat-dialog-title class="pt-1 pb-0">{{ title }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div style="overflow: scroll; max-height: 81vh">
+  <div class="container-fluid">
+    <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-between ltr">
+  <div class="w-25 d-flex">
+    <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+      <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
+      <div>ثبت</div>
+    </button>
+    <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+  </div>
+  <p class="small text-danger mb-0 ms-2 rtl" *ngIf="f.submitted && f.invalid">
+    <i class="fas fa-exclamation-triangle"></i>
+    لطفاً خطا های فوق را اصلاح کرده و مجدداً امتحان کنید.
+  </p>
+</div>

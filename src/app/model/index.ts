@@ -1,6 +1,7 @@
 export { default as Data } from './data';
 export { default as Filter } from './filter';
-export { default as Customer } from './account';
+export { default as Account } from './account';
+export { default as CustomerCandidate } from './customer-candidate';
 export { default as Discount } from './discount';
 export { default as EduField } from './edu-field';
 export { default as EduGroup } from './edu-group';
@@ -16,6 +17,7 @@ export { default as Payment } from './payment';
 export { default as Person } from './person';
 export { default as PersonGeneral } from './person-general';
 export { default as Service } from './service';
+export { default as TService } from './tservice';
 export { default as ServiceResultFile } from './service-result-file';
 export { default as Test } from './test';
 export { default as TestFee } from './test-fee';

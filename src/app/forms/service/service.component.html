@@ -1,0 +1,24 @@
+<div class="card">
+  <div class="card-header py-1">خدمات</div>
+  <app-progress *ngIf="serviceTable.loading"></app-progress>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-sm btn-success me-2 px-3" (click)="openForm()">
+        جدید
+        <i class="fas fa-plus ms-2"></i>
+      </button>
+      <button class="btn btn-sm btn-secondary px-3" (click)="toggleSearch()">
+        جستجو
+        <i class="fas fa-search ms-2"></i>
+      </button>
+    </div>
+    <app-data-table
+            [data]="services"
+            [config]="serviceTable"
+            (editItem)="openForm($event)"
+            (removeItem)="onRemoveItem($event)"
+            (buttonClicked)="showDetailsOf($event)"
+            (paramsChanged)="fetch()">
+    </app-data-table>
+  </div>
+</div>

@@ -40,6 +40,10 @@ import { OrganizationComponent } from './forms/organization/organization.compone
 import { OrganizationFormComponent } from './forms/organization/organization-form/organization-form.component';
 import { InstrumentMaintenanceFormComponent } from './forms/instrument/instrument-maintenance-form/instrument-maintenance-form.component';
 import { DeletePersonFormComponent } from './forms/person/delete-person-form/delete-person-form.component';
+import { ServiceComponent } from './forms/service/service.component';
+import { ServiceFormComponent } from './forms/service/service-form/service-form.component';
+import { PaymentComponent } from './forms/payment/payment.component';
+import { PaymentFormComponent } from './forms/payment/payment-form/payment-form.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +78,11 @@ import { DeletePersonFormComponent } from './forms/person/delete-person-form/del
     OrganizationComponent,
     OrganizationFormComponent,
     InstrumentMaintenanceFormComponent,
-    DeletePersonFormComponent
+    DeletePersonFormComponent,
+    ServiceComponent,
+    ServiceFormComponent,
+    PaymentComponent,
+    PaymentFormComponent
   ],
   imports: [
     BrowserModule,

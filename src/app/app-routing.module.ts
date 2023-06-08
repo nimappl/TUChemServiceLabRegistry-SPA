@@ -9,6 +9,8 @@ import {DiscountComponent} from "./forms/discount/discount.component";
 import {ProfessorGrantComponent} from "./forms/professor-grant/professor-grant.component";
 import {UsedMaterialComponent} from "./forms/used-material/used-material.component";
 import {OrganizationComponent} from "./forms/organization/organization.component";
+import {ServiceComponent} from "./forms/service/service.component";
+import {PaymentComponent} from "./forms/payment/payment.component";
 
 const routes: Routes = [
   { path: 'instrument', component: InstrumentComponent },
@@ -19,7 +21,9 @@ const routes: Routes = [
   { path: 'edu-field', component: EduFieldComponent },
   { path: 'test', component: TestComponent },
   { path: 'discount', component: DiscountComponent },
-  { path: 'professor-grant', component: ProfessorGrantComponent }
+  { path: 'professor-grant', component: ProfessorGrantComponent },
+  { path: 'service', component: ServiceComponent },
+  { path: 'payment', component: PaymentComponent }
 ];
 
 @NgModule({

@@ -79,7 +79,10 @@ export class TestFormComponent {
     this.instrumentService.get(params).subscribe(res => {
       this.instOptions.loading = false;
       res.records.forEach(instrument =>
-        this.instOptions.options.push({value: instrument.id, title: instrument.name})
+        this.instOptions.options.push({
+          value: instrument.id,
+          title: instrument.name + (instrument.model ?  ' (مدل ' + instrument.model + ')' : '')
+        })
       );
     }, err => {
       this.instOptions.loading = false;
