@@ -15,7 +15,7 @@
     <app-data-table
             [data]="services"
             [config]="serviceTable"
-            (editItem)="openForm($event)"
+            (editItem)="onEditItem($event)"
             (removeItem)="onRemoveItem($event)"
             (buttonClicked)="showDetailsOf($event)"
             (paramsChanged)="fetch()">

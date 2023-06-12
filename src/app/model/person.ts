@@ -11,7 +11,23 @@ export default class Person {
   typeLab: boolean = false;
   typeOrg: boolean = false;
 
-  setPersonInfo(person: Person): void {
+  constructor(data?: any) {
+    if (data) {
+      this.id = data.id;
+      this.nationalNumber = data.nationalNumber;
+      this.firstName = data.firstName;
+      this.lastName = data.lastName;
+      this.phoneNumber = data.phoneNumber;
+      this.email = data.email;
+      this.gender = data.gender;
+      this.typeStdn = data.typeStdn;
+      this.typeProf = data.typeProf;
+      this.typeLab = data.typeLab;
+      this.typeOrg = data.typeOrg;
+    }
+  }
+
+  setPersonInfo(person: Person) {
     this.id = person.id;
     this.nationalNumber = person.nationalNumber;
     this.firstName = person.firstName;

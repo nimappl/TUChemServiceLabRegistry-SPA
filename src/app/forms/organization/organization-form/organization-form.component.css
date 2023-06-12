@@ -3,3 +3,10 @@ h1 { font-family: Vazir, sans-serif !important; }
 .col-4 {
     padding: 0 7px;
 }
+.checkbox-label {
+    user-select: none;
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-left: 7px;
+}

@@ -158,7 +158,7 @@ export class InstrumentComponent {
     this.maintenanceTableConfig.columns = [
       {for: 'title', title: 'عنوان', dbName: 'IMTitle', hasSearch: true, sortable: true},
       {for: 'date', title: 'تاریخ', dbName: 'IMDate', hasSearch: true, sortable: true, transform: d => DateConvertor.dateStringToJalali(d)},
-      {for: 'totalCost', title: 'هزینه کل اقدامات', dbName: 'IMCost', hasSearch: true, sortable: true},
+      {for: 'totalCost', title: 'هزینه کل اقدامات', dbName: 'IMTotalCost', hasSearch: true, sortable: true},
       {for: 'invoiceNo', title: 'شماره فاکتور', dbName: 'IMInvoiceNo', hasSearch: true, sortable: true}
     ];
     this.fetchMaintenance(true);

@@ -21,14 +21,12 @@ export class ServiceComponent {
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.serviceTable.buttons = null;
-    this.serviceTable.buttonTitles = null;
     this.serviceTable.columns = [
       {for: 'testName', dbName: 'TestName', title: 'عنوان آزمون', sortable: true, hasSearch: true},
       {for: 'sampleQuantity', dbName: 'SSampleQuantity', title: 'تعداد نمونه', sortable: true, hasSearch: true},
       {for: 'customerName', dbName: 'CustomerName', title: 'نام متقاضی', sortable: true, hasSearch: true},
       {for: 'date', dbName: 'SDate', title: 'تاریخ', sortable: true, hasSearch: false, transform: d => DateConvertor.dateStringToJalali(d)},
-      {for: 'testName', dbName: 'TestName', title: 'هزینه کل', sortable: true, hasSearch: true}
+      {for: 'totalPrice', dbName: 'STotalPrice', title: 'هزینه کل', sortable: true, hasSearch: true}
     ];
 
     this.fetch(true);
@@ -47,6 +45,14 @@ export class ServiceComponent {
       this.serviceTable.loading = false;
       this.serviceTable.sorting = false;
       this.serviceTable.loadingFailed = true;
+    });
+  }
+
+  onEditItem(item: TService) {
+    let service: Service;
+    this.apiService.getById(item.id).subscribe(res => {
+      service = new Service(res);
+      this.openForm(service);
     });
   }
 

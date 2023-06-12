@@ -20,7 +20,7 @@ export class DataTableComponent {
 
   toggleSortFor(colIndex: number) {
     let col = this.config.columns[colIndex];
-    if (col.hasSearch) {
+    if (col.sortable) {
       this.data.pageNumber = 1;
       if (this.data.sortBy !== col.dbName) {
         this.data.sortType = SortType.Asc;

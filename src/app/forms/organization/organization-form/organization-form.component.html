@@ -17,11 +17,11 @@
         </div>
         <div class="col-6">
           <div class="input-field">
-            <input type="text" id="contractNo" name="contractNo" class="txt ltr" placeholder="pox" autocomplete="off"
-                   [(ngModel)]="data.contractNo" #contractNo='ngModel' pattern="^\d*$" maxlength="15"
-                   [ngClass]="{'invalid': (contractNo.touched && contractNo.invalid) || (f.submitted && contractNo.invalid)}">
-            <label class="input" for="contractNo">شماره قرارداد</label>
-            <small class="error text-danger" *ngIf="(contractNo.touched && contractNo.invalid) || (f.submitted && contractNo.invalid)">
+            <input type="text" id="registrationNo" name="registrationNo" class="txt ltr" placeholder="pox" autocomplete="off"
+                   [(ngModel)]="data.registrationNo" #regNo='ngModel' pattern="^\d*$" maxlength="15"
+                   [ngClass]="{'invalid': (regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)}">
+            <label class="input" for="registrationNo">شماره ثبت</label>
+            <small class="error text-danger" *ngIf="(regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)">
               مقدار وارد شده معتبر نیست.
             </small>
           </div>
@@ -39,15 +39,15 @@
             </small>
           </div>
         </div>
-        <div class="col-6">
-          <div class="input-field">
-            <input type="text" id="registrationNo" name="registrationNo" class="txt ltr" placeholder="pox" autocomplete="off"
-                   [(ngModel)]="data.registrationNo" #regNo='ngModel' pattern="^\d*$" maxlength="15"
-                   [ngClass]="{'invalid': (regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)}">
-            <label class="input" for="registrationNo">شماره ثبت</label>
-            <small class="error text-danger" *ngIf="(regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)">
-              مقدار وارد شده معتبر نیست.
-            </small>
+        <div class="col-6" style="margin-top: 25px">
+          <div class="d-flex mt-1">
+            <div>
+              <label for="hasContract" class="checkbox-label">دارای قرارداد (شامل تخفیف)</label>
+            </div>
+            <div style="width: 40px">
+              <input type="checkbox" class="slide-toggle" name="hasContract" id="hasContract"
+                     [(ngModel)]="data.hasContract">
+            </div>
           </div>
         </div>
       </div>

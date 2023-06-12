@@ -1,9 +1,433 @@
 <h1 mat-dialog-title class="pt-1 pb-0">{{ title }}</h1>
 <app-progress *ngIf="reachingOut"></app-progress>
-<div style="overflow: scroll; max-height: 81vh">
+<div style="overflow: scroll; min-height: 220px; max-height: 81vh">
   <div class="container-fluid">
     <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
-
+      <div class="row">
+        <div class="col-6" style="margin-top: 18px">
+          <app-select name="test" required [(ngModel)]="data.testId" #test='ngModel'
+                      [data]="testOptions" (onSelect)="onSelectTest($event)"
+                      [invalid]="(test.touched && test.invalid) || (f.submitted && test.invalid)">
+          </app-select>
+          <small class="error text-danger" *ngIf="(test.touched && test.invalid) || (f.submitted && test.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
+        </div>
+        <div class="col-6" style="margin-top: 18px" *ngIf="test.value != null">
+          <app-select name="testFee" [(ngModel)]="data.testFeeId" #testFee='ngModel' required
+                      [data]="testFeeOptions" (onSelect)="onSelectTestFee($event)"
+                      [invalid]="(testFee.touched && testFee.invalid) || (f.submitted && testFee.invalid)">
+          </app-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3" style="margin-top: 18px"
+             *ngIf="test.value != null && data.test.samplePreparations != null && data.test.samplePreparations.length > 0">
+          <app-select name="hasPrep" [data]="hasPrepOptions" [(ngModel)]="hasPrep">
+          </app-select>
+        </div>
+        <div class="col-4" *ngIf="data.testFee != null">
+          <ng-template [ngIf]="data.testFee.type === 0" [ngIfElse]="feePerTestTime">
+            <div class="input-field">
+              <input type="number" id="sampleQty" name="sampleQty" class="txt ltr" min="1" required placeholder="."
+                     [(ngModel)]="data.sampleQuantity" #sampleQty='ngModel' (input)="data.calculateTotalPrice(); setDiscounts()"
+                     [ngClass]="{'invalid': (sampleQty.touched && sampleQty.invalid) || (f.submitted && sampleQty.invalid)}">
+              <label for="sampleQty" class="input">تعداد نمونه</label>
+              <div *ngIf="(sampleQty.touched && sampleQty.invalid) || (f.submitted && sampleQty.invalid)">
+                <small class="error text-danger" *ngIf="sampleQty.errors?.['required']">
+                  پرکردن این فیلد الزامی است.
+                </small>
+                <small class="error text-danger" *ngIf="sampleQty.errors?.['min']">
+                  مقدار وارد شده مجاز نیست.
+                </small>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #feePerTestTime>
+            <div class="input-field">
+              <input type="number" id="testTime" name="testTime" class="txt ltr" [min]="data.testFee.step" required
+                     (input)="data.calculateTotalPrice()" (focusout)="data.normalizeTestTime()"
+                     [(ngModel)]="data.testTime" #testTime='ngModel' placeholder="." [step]="data.testFee.step"
+                     [ngClass]="{'invalid': (testTime.touched && testTime.invalid) || (f.submitted && testTime.invalid)}">
+              <label for="testTime" class="input">زمان آزمون</label>
+              <div *ngIf="(testTime.touched && testTime.invalid) || (f.submitted && testTime.invalid)">
+                <small class="error text-danger" *ngIf="testTime.errors?.['required']">
+                  پرکردن این فیلد الزامی است.
+                </small>
+                <small class="error text-danger" *ngIf="testTime.errors?.['min']">
+                  مقدار وارد شده مجاز نیست.
+                </small>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <div class="col-4"></div>
+      </div>
+      <div class="row" *ngIf="hasPrep">
+        <div class="col">
+          <table class="table table-bordered table-hover my-2">
+            <thead><tr><th></th><th><span>عنوان نمونه سازی نمونه</span></th><th><span>هزینه</span></th></tr></thead>
+            <tbody>
+              <tr *ngFor="let prep of samplePreps; let i=index" [ngClass]="{'table-success': prepOpt.value}">
+                <td style="width: 20px">
+                  <input type="checkbox" [name]="'samplePrep-' + i" [id]="'samplePrep-' + i" class="form-check-input"
+                         #prepOpt='ngModel' [(ngModel)]="prep.included" (change)="checkSamplePreps(0)">
+                </td>
+                <td><label class="d-block" [for]="'samplePrep-' + i">{{ prep.prep.type }}</label></td>
+                <td><label class="d-block" [for]="'samplePrep-' + i">{{ prep.prep.price + ' ریال'}}</label></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6" style="margin-top: 18px">
+          <app-select name="servingPrsnl" #servingPrsnl='ngModel' [data]="personnelOptions" required
+                      [(ngModel)]="data.servingPersonnelId" (onSelect)="selectServingPersonnel($event)"
+                      [invalid]="(servingPrsnl.touched && servingPrsnl.invalid) || (f.submitted && servingPrsnl.invalid)">
+          </app-select>
+          <small class="error text-danger" *ngIf="(servingPrsnl.touched && servingPrsnl.invalid) || (f.submitted && servingPrsnl.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
+        </div>
+        <div class="col-6">
+          <app-jalali-date-picker name="date" #date='ngModel' [(ngModel)]="data.date" required [data]="dateOptions"
+                                  [invalid]="(date.touched && date.invalid) || (f.submitted && date.invalid)">
+          </app-jalali-date-picker>
+          <small class="error text-danger" *ngIf="(date.touched && date.invalid) || (f.submitted && date.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
+        </div>
+      </div>
+      <div id="personnel-info" class="mb-2" *ngIf="personnelOptions.selectedValue != null">
+        <div class="row mb-1">
+          <div class="col-4">
+            <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ data.servingPersonnel.firstName }}</span></div>
+          </div>
+          <div class="col-4">
+            <div class="details-text"><strong>نام خانوادگی:</strong>&nbsp;<span>{{ data.servingPersonnel.lastName }}</span></div>
+          </div>
+          <div class="col-4">
+            <div class="details-text"><strong>کد ملی:</strong>&nbsp;<span>{{ data.servingPersonnel.nationalNumber }}</span></div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-4">
+            <div class="details-text"><strong>تلفن تماس:</strong>&nbsp;<span>{{ data.servingPersonnel.phoneNumber }}</span></div>
+          </div>
+          <div class="col-4">
+            <div class="details-text"><strong>کد پرسنلی:</strong>&nbsp;<span>{{ data.servingPersonnel.personnelCode }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="details-text"><strong>سمت:</strong>&nbsp;<span>{{ data.servingPersonnel.post }}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="group-title mt-3">مشخصات متقاضی</div>
+      <div class="d-flex">
+        <div class="" style="margin-top: 10px; width: 260px">
+          <app-search-select name="customerCandidate" #customer='ngModel' ngModel
+                             [data]="customerOptions"
+                             (onSearch)="getCustomerCandidateOptions()"
+                             (onSelectionChange)="onSelectCustomer($event)"
+                             [disabled]="mode === 1"
+                             (onDropSelected)="dropSelectedCustomer()">
+          </app-search-select>
+        </div>
+        <div class="ms-3" style="margin-top: 10px; width: 170px">
+          <app-select name="customerType" [(ngModel)]="data.customerAccount.type" [data]="customerTypeOptions" (onSelect)="setDiscounts()"
+                      [disabled]="data.customerAccount.custOrganization?.id != null || data.customerAccount.custPerson?.id != null">
+          </app-select>
+        </div>
+        <div class="d-flex flex-wrap" *ngIf="this.data.customerAccount?.type === 1">
+          <div class="ms-3 mt-3">
+            <input type="checkbox" class="btn-check" id="typeProf" [disabled]="data.customerAccount?.custPerson?.id != null"
+                   name="typeProf" #typeProf='ngModel' [(ngModel)]="data.customerAccount?.custPerson.typeProf" (change)="setDiscounts()">
+            <label for="typeProf" class="toggle-btn d-flex">
+              <i class="fas" [ngClass]="{'fa-check': typeProf.value, 'fa-x': !typeProf.value}"></i>
+              <p>هیأت عملی دانشگاه تبریز</p>
+            </label>
+          </div>
+          <div class="ms-2 mt-3">
+            <input type="checkbox" class="btn-check" id="typeStdn" [disabled]="data.customerAccount?.custPerson?.id != null"
+                   name="typeStdn" #typeStdn='ngModel' [(ngModel)]="data.customerAccount?.custPerson.typeStdn" (change)="setDiscounts()">
+            <label for="typeStdn" class="toggle-btn d-flex">
+              <i class="fas" [ngClass]="{'fa-check': typeStdn.value, 'fa-x': !typeStdn.value}"></i>
+              <p>دانشجوی دانشگاه تبریز</p>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="f.submitted && data.customerAccount.type == null">
+        <p class="small text-danger mb-0 mt-1">
+          <i class="fas fa-exclamation-triangle"></i>
+          اطلاعات متقاضی وارد نشده است.
+        </p>
+      </div>
+      <div *ngIf="data.customerAccount?.type != null">
+        <ng-template [ngIf]="data.customerAccount.type == 1" [ngIfElse]="organization">
+          <div class="row">
+            <div class="col-5">
+              <div class="input-field">
+                <input type="text" id="firstName" name="firstName" class="txt"
+                       [(ngModel)]="data.customerAccount.custPerson.firstName" maxlength="50"
+                       placeholder="." autocomplete="off" required #fName='ngModel'
+                       [disabled]="data.customerAccount.custPerson?.id != null"
+                       [ngClass]="{'invalid': (fName.touched && fName.invalid) || (f.submitted && fName.invalid)}">
+                <label for="firstName" class="input">نام متقاضی</label>
+                  <small class="error text-danger"
+                         *ngIf="(fName.touched && fName.invalid) || (f.submitted && fName.invalid)">
+                    پرکردن این فیلد الزامی است.
+                  </small>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="input-field">
+                <input type="text" id="lastName" name="lastName" class="txt"
+                       [(ngModel)]="data.customerAccount.custPerson.lastName" maxlength="50"
+                       placeholder="." autocomplete="off" required #lName='ngModel'
+                       [disabled]="data.customerAccount.custPerson?.id != null"
+                       [ngClass]="{'invalid': (lName.touched && lName.invalid) || (f.submitted && lName.invalid)}">
+                <label for="lastName" class="input">نام خانوادگی</label>
+                <small class="error text-danger"
+                       *ngIf="(lName.touched && lName.invalid) || (f.submitted && lName.invalid)">
+                  پرکردن این فیلد الزامی است.
+                </small>
+              </div>
+            </div>
+            <div class="col-2" style="margin-top: 18px">
+              <app-select [data]="genderOptions" name="gender" [(ngModel)]="data.customerAccount.custPerson.gender"
+                          [disabled]="data.customerAccount.custPerson?.id != null">
+              </app-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="input-field">
+                <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.customerAccount.custPerson.nationalNumber" maxlength="10"  pattern="^\d*$"
+                       [disabled]="data.customerAccount.custPerson?.id != null" required #natId='ngModel'
+                       [ngClass]="{'invalid': (natId.touched && natId.invalid) || (f.submitted && natId.invalid)}">
+                <label for="nationalNumber" class="input">کد ملی</label>
+                <div *ngIf="(natId.touched && natId.invalid) || (f.submitted && natId.invalid)">
+                  <small class="error text-danger" *ngIf="natId.errors?.['required']">
+                    پرکردن این فیلد الزامی است.
+                  </small>
+                  <small class="error text-danger" *ngIf="natId.errors?.['pattern']">
+                    مقدار وارد شده معتبر نیست.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-field">
+                <input type="text" id="phoneNumber" name="phoneNumber" class="txt ltr" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.customerAccount.custPerson.phoneNumber" #phoneNum='ngModel' maxlength="14"
+                       [disabled]="data.customerAccount.custPerson?.id != null"  pattern="^\+?(\d| )*$"
+                       [ngClass]="{'invalid': (phoneNum.invalid && phoneNum.touched) || (f.submitted && phoneNum.invalid)}">
+                <label for="phoneNumber" class="input">شماره تماس</label>
+                <small class="error text-danger" *ngIf="(phoneNum.invalid && phoneNum.touched) || (f.submitted && phoneNum.invalid)">
+                  مقدار وارد شده معتبر نیست.
+                </small>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-field">
+                <input type="text" id="email" name="email" class="txt ltr" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.customerAccount.custPerson.email" #email='ngModel' maxlength="30"
+                       [disabled]="data.customerAccount.custPerson?.id != null" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+                       [ngClass]="{'invalid': (email.invalid && email.touched) || (f.submitted && email.invalid)}">
+                <label for="phoneNumber" class="input">ایمیل</label>
+                <small class="error text-danger" *ngIf="(email.invalid && email.touched) || (f.submitted && email.invalid)">
+                  مقدار وارد شده معتبر نیست.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex" *ngIf="data.customerAccount.custPerson.typeProf">
+            <div style="width: 350px">
+              <div class="input-field">
+                <input type="text" id="profCode" name="profCode" class="txt ltr" required
+                       [(ngModel)]="data.customerAccount.custPerson.profPersonnelCode" #profCode='ngModel' pattern="^\d*$"
+                       [disabled]="data.customerAccount.custPerson?.id != null" placeholder="." autocomplete="off" maxlength="10"
+                       [ngClass]="{'invalid': (profCode.touched && profCode.invalid) || (f.submitted && profCode.invalid)}">
+                <label for="profCode" class="input">کد پرسنلی</label>
+                <div *ngIf="(profCode.touched && profCode.invalid) || (f.submitted && profCode.invalid)">
+                  <small class="error text-danger" *ngIf="profCode.errors?.['required']">
+                    پرکردن این فیلد الزامی است.
+                  </small>
+                  <small class="error text-danger" *ngIf="profCode.errors?.['pattern']">
+                    مقدار وارد شده معتبر نیست.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="ms-3" style="width: 350px; margin-top: 18px">
+              <app-select [data]="eduGroupOptions" [(ngModel)]="this.data.customerAccount.custPerson.profEduGroupId" (onSelect)="onSelectEduGroup($event)"
+                          [disabled]="data.customerAccount.custPerson?.id != null" #eduGroup='ngModel' name="profEduGroup" required
+                          [invalid]="(eduGroup.touched && eduGroup.invalid) || (f.submitted && eduGroup.invalid)">
+              </app-select>
+              <small class="error text-danger" *ngIf="(eduGroup.touched && eduGroup.invalid) || (f.submitted && eduGroup.invalid)">
+                پرکردن این فیلد الزامی است.
+              </small>
+            </div>
+          </div>
+          <div class="d-flex" *ngIf="data.customerAccount.custPerson.typeStdn">
+            <div style="width: 280px">
+              <div class="input-field">
+                <input type="text" id="stdnCode" name="stdnCode" class="txt ltr" required maxlength="12"
+                       [(ngModel)]="data.customerAccount.custPerson.stdnCode" #stdnCode='ngModel' pattern="^\d*$"
+                       [disabled]="data.customerAccount.custPerson?.id != null" placeholder="." autocomplete="off"
+                       [ngClass]="{'invalid': (stdnCode.touched && stdnCode.invalid) || (f.submitted && stdnCode.invalid)}">
+                <label for="profCode" class="input">شماره دانشجویی</label>
+                <div *ngIf="(stdnCode.touched && stdnCode.invalid) || (f.submitted && stdnCode.invalid)">
+                  <small class="error text-danger" *ngIf="stdnCode.errors?.['required']">
+                    پرکردن این فیلد الزامی است.
+                  </small>
+                  <small class="error text-danger" *ngIf="stdnCode.errors?.['pattern']">
+                    مقدار وارد شده معتبر نیست.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="ms-3" style="width:160px; margin-top: 18px">
+              <app-select [data]="eduLevelOptions" [(ngModel)]="this.data.customerAccount.custPerson.stdnEduLevel"
+                          [disabled]="data.customerAccount.custPerson?.id != null" name="eduLevel" required #eduLevel='ngModel'
+                          [invalid]="(eduLevel.touched && eduLevel.invalid) || (f.submitted && eduLevel.invalid)">
+              </app-select>
+              <small class="error text-danger" *ngIf="(eduLevel.touched && eduLevel.invalid) || (f.submitted && eduLevel.invalid)">
+                پرکردن این فیلد الزامی است.
+              </small>
+            </div>
+            <div class="ms-3" style="width: 260px; margin-top: 18px">
+              <app-select [data]="eduFieldOptions" [(ngModel)]="this.data.customerAccount.custPerson.stdnEduFieldId" (onSelect)="onSelectEduField($event)"
+                          [disabled]="data.customerAccount.custPerson?.id != null" name="eduField" required #eduField='ngModel'
+                          [invalid]="(eduField.touched && eduField.invalid) || (f.submitted && eduField.invalid)">
+              </app-select>
+              <small class="error text-danger" *ngIf="(eduField.touched && eduField.invalid) || (f.submitted && eduField.invalid)">
+                پرکردن این فیلد الزامی است.
+              </small>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #organization>
+          <div class="row">
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" id="name" name="name" class="txt" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.customerAccount.custOrganization.name" #orgName='ngModel' required maxlength="70"
+                       [disabled]="data.customerAccount.custOrganization?.id != null"
+                       [ngClass]="{'invalid': (orgName.touched && orgName.invalid) || (f.submitted && orgName.invalid)}">
+                <label class="input" for="name">نام شرکت/سازمان</label>
+                <small class="error text-danger" *ngIf="(orgName.touched && orgName.invalid) || (f.submitted && orgName.invalid)">
+                  پرکردن این فیلد الزامی است.
+                </small>
+              </div>
+            </div>
+            <div class="col-6" style="margin-top: 25px">
+              <div class="d-flex mt-1">
+                <div>
+                  <label for="hasContract" class="checkbox-label">دارای قرارداد (شامل تخفیف)</label>
+                </div>
+                <div style="width: 40px">
+                  <input type="checkbox" class="slide-toggle" name="hasContract" id="hasContract"
+                         [(ngModel)]="data.customerAccount.custOrganization.hasContract" (change)="setDiscounts()"
+                         [disabled]="data.customerAccount.custOrganization?.id != null">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" id="nationalId" name="nationalId" class="txt ltr" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.customerAccount.custOrganization.nationalId" #orgNatId='ngModel' pattern="^\d*$" maxlength="15"
+                       [disabled]="data.customerAccount.custOrganization?.id != null"
+                       [ngClass]="{'invalid': (orgNatId.touched && orgNatId.invalid) || (f.submitted && orgNatId.invalid)}">
+                <label class="input" for="nationalId">شناسه ملی</label>
+                <small class="error text-danger" *ngIf="(orgNatId.touched && orgNatId.invalid) || (f.submitted && orgNatId.invalid)">
+                  مقدار وارد شده معتبر نیست.
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-field">
+                <input type="text" id="registrationNo" name="registrationNo" class="txt ltr" placeholder="." autocomplete="off"
+                       [(ngModel)]="data.customerAccount.custOrganization.registrationNo" #regNo='ngModel' pattern="^\d*$" maxlength="15"
+                       [disabled]="data.customerAccount.custOrganization?.id != null"
+                       [ngClass]="{'invalid': (regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)}">
+                <label class="input" for="registrationNo">شماره ثبت</label>
+                <small class="error text-danger" *ngIf="(regNo.touched && regNo.invalid) || (f.submitted && regNo.invalid)">
+                  مقدار وارد شده معتبر نیست.
+                </small>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="field-group" *ngIf="data.customerAccount?.type != null">
+        <div class="field-group-header">
+          <div class="group-title">تخفیف</div>
+          <div class="group-buttons">
+            <input type="checkbox" class="form-check-input" name="customDiscount" id="customDiscount"
+                   [(ngModel)]="customDiscount" (change)="setCustomDiscount()">
+            <label for="customDiscount" class="checkbox-label d-inline ms-2">وارد کردن تخفیف به‌صورت دستی</label>
+          </div>
+        </div>
+        <div class="group-content">
+          <div class="d-flex flex-wrap" *ngIf="discounts?.length > 0 && !customDiscount">
+            <div class="me-2 mt-2" *ngFor="let discount of discounts; let i = index">
+              <input [id]="'discnt-'+i" type="checkbox" class="btn-check" #discnt='ngModel'
+                     [(ngModel)]="discounts[i].included" [name]="'discnt-'+i" (change)="checkDiscounts(0)">
+              <label [for]="'discnt-'+i" class="toggle-btn d-flex">
+                <i class="fas" [ngClass]="{'fa-check': discnt.value, 'fa-x': !discnt.value}"></i>
+                <p>{{ discount.discount.getType() + ' - ' + discount.discount.percent + '٪' }}</p>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="data.test != null">
+        <div class="col-4">
+          <div class="input-field">
+            <input id="additionalCosts" name="additionalCosts" type="number" class="txt ltr" min="0" placeholder="."
+                   [(ngModel)]="data.additionalCosts" #addtnCosts='ngModel' (input)="data.calculateTotalPrice()"
+                   [ngClass]="{'invalid': (addtnCosts.touched && addtnCosts.invalid) || (f.submitted && addtnCosts.invalid)}">
+            <label class="input" for="additionalCosts">هزینه های دیگر</label>
+            <small class="error text-danger" *ngIf="(addtnCosts.touched && addtnCosts.invalid) || (f.submitted && addtnCosts.invalid)">
+              مبلغ وارد شده مجاز نیست.
+            </small>
+          </div>
+        </div>
+        <div class="col-4">
+          <ng-template [ngIf]="data.discounts.length > 0 && data.customerAccount.type != null">
+            <div class="input-field" *ngIf="data.discounts[0].type === 10; else discountSum">
+              <input id="discount" name="discount" type="number" class="txt ltr" min="0" max="100" placeholder="."
+                     [(ngModel)]="data.discounts[0].percent" #discount='ngModel' (input)="data.calculateTotalPrice()"
+                     [ngClass]="{'invalid': (discount.touched && discount.invalid) || (f.submitted && discount.invalid)}">
+              <label class="input" for="discount">تخفیف</label>
+              <small class="error text-danger" *ngIf="(discount.touched && discount.invalid) || (f.submitted && discount.invalid)">
+                درصد وارد شده مجاز نیست.
+              </small>
+            </div>
+            <ng-template #discountSum>
+              <div class="details-text mt-4">
+                <strong>مجموع تخفیف:</strong>&nbsp;<span>{{ getDiscountSum() + ' درصد' }}</span>
+              </div>
+            </ng-template>
+          </ng-template>
+        </div>
+        <div id="totalPrice" class="col-4" style="text-align: end">
+          <div class="details-text mt-4"><strong>هزینه کل:</strong>&nbsp;<strong>{{ data.totalPrice + ' ریال' }}</strong></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field">
+          <textarea name="considerations" id="considerations" rows="4" class="txt" maxlength="400" [(ngModel)]="data.considerations"></textarea>
+          <label class="input" for="considerations">ملاحظات</label>
+        </div>
+      </div>
     </form>
   </div>
 </div>

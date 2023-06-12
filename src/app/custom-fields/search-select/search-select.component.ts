@@ -64,16 +64,15 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  select(value: number, fieldValue: string) {
+  select(index: number, value: number, fieldValue: string) {
     this.data.selectedValue = value;
     this.data.searchText = fieldValue;
-    this.onSelectionChange.emit();
+    this.onSelectionChange.emit(index);
     this.showOptions = false;
   }
 
   onInteract() {
     if (!this.disabled) {
-      this.data.selectedValue = null;
       this.openOptions();
       this.onChange(this.data.searchText);
       this.onSearch.emit();

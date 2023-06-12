@@ -18,9 +18,9 @@
   <ul class="options" [ngStyle]="{'display': showOptions ? 'block' : 'none'}" (mousedown)="clicked()">
     <ng-template [ngIf]="!loading && !loadingFailed && data.options.length > 0">
       <li tabindex="-33" class="option"
-          *ngFor="let opt of data.options"
+          *ngFor="let opt of data.options; let i = index"
           title="{{ opt.title }}"
-          (click)="select(opt.value, opt.fieldValue)">
+          (click)="select(i, opt.value, opt.fieldValue)">
         {{ opt.title }}
       </li>
 <!--      {{ setTitleOfSelectedValue() }}-->

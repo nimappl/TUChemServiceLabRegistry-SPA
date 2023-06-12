@@ -7,6 +7,5 @@ export default class Payment {
   labsnetTransactionCode: string;
   cashBasisType: number;
   cashBasisTrackingNo: string;
-  profGrantVerificationStatus: any;
   grantProfessorId: number;
 }

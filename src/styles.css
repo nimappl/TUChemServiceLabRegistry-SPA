@@ -59,7 +59,70 @@ body {
 .slide-toggle:checked:before { left: 20px; }
 
 .slide-toggle:hover { cursor: pointer; }
-
+.slide-toggle:checked:disabled {
+    background-color: #319b6a;
+    cursor: default;
+}
+.slide-toggle:checked:disabled:before { background-color: #eee }
+.slide-toggle:disabled {
+    background-color: #a6a6a6;
+    cursor: default;
+}
+.slide-toggle:disabled:before { background-color: #eee }
+.toggle-btn {
+    display: flex;
+    border: 1px solid #aaa;
+    border-radius: 15px;
+    padding: 2px;
+    font-size: 14px;
+    cursor: pointer;
+    width: max-content;
+}
+.btn-check:checked ~ .toggle-btn {
+    background-color: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+.btn-check:checked ~ .toggle-btn i {
+    color: #198754;
+    background-color: #fff;
+    border-color: #fff;
+}
+.btn-check:checked ~ .toggle-btn p {
+    color: #fff
+}
+.toggle-btn i {
+    border: 1px solid #aaa;
+    padding: 3px;
+    width: 22px;
+    color: #999;
+    border-radius: 15px;
+    text-align: center
+}
+.toggle-btn p {
+    font-size: 13px;
+    color: #666;
+    margin: 0 5px;
+    user-select: none;
+}
+.btn-check:disabled ~ .toggle-btn {
+    border-color: #bbb;
+    cursor: default;
+}
+.btn-check:disabled ~ .toggle-btn i {
+    border-color: #bbb;
+    color: #aaa;
+}
+.btn-check:disabled ~ .toggle-btn p { color: #999 }
+.btn-check:checked:disabled ~ .toggle-btn p { color: #fff }
+.btn-check:checked:disabled ~ .toggle-btn {
+    background-color: #4ea27b;
+    border-color: #4ea27b;
+}
+.btn-check:checked:disabled ~ .toggle-btn i {
+    border-color: #4ea27b;
+    color: #4ea27b;
+}
 .loading { background-image: url("./assets/svg/spinner-0.5s-50px.svg") }
 .loading-double-ring { background-image: url("./assets/svg/double-ring-0.8s-50px.svg") }
 .loading, .loading-double-ring {
@@ -70,10 +133,9 @@ body {
 }
 
 .input-field {
-    margin: 0 auto;
     box-sizing: border-box;
     position: relative;
-    margin-top: 18px;
+    margin: 18px auto 0;
 }
 small.error, p.error { font-size: 12px }
 label.input {
@@ -231,7 +293,7 @@ select.txt::before, select.txt::before {
     position: absolute;
     top: -18px;
     right: 12px;
-    background-color: #188150;
+    background-color: #198754;
     color: #fff;
     font-size: 12px;
     padding: 0 15px;

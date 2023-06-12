@@ -17,7 +17,7 @@ export default class Discount {
     }
   }
 
-  getType(): string {
+  public getType(): string {
     switch(this.type) {
       case 0: return 'دانشجویان و هیات عملی گروه شیمی دانشگاه تبریز';
       case 1: return 'دانشجویان و هیات عملی دانشگاه تبریز';

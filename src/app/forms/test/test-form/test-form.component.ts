@@ -8,6 +8,7 @@ import swal from "sweetalert";
 import {InstrumentService} from "../../../services/instrument.service";
 import {TableConfig} from "../../../data-table/table-config";
 import {DiscountService} from "../../../services/discount.service";
+import {TestFeeType} from "../../../model/enums/test-fee-type";
 
 @Component({
   selector: 'app-test-form',
@@ -56,8 +57,8 @@ export class TestFormComponent {
       let options: CustomFieldData = new CustomFieldData();
       options.label = 'مبنای تعرفه';
       options.options = [
-        {value: 0, title: 'تعداد نمونه'},
-        {value: 1, title: 'زمان آزمون'}
+        {value: TestFeeType.perSample, title: 'تعداد نمونه'},
+        {value: TestFeeType.perTestTime, title: 'زمان آزمون'}
       ];
       this.feeTypeOptions.push(options);
     });
@@ -125,8 +126,8 @@ export class TestFormComponent {
     newFee.testId = this.data.id;
     options.label = 'مبنای تعرفه';
     options.options = [
-      {value: 0, title: 'تعداد نمونه'},
-      {value: 1, title: 'زمان'}
+      {value: TestFeeType.perSample, title: 'تعداد نمونه'},
+      {value: TestFeeType.perTestTime, title: 'زمان آزمون'}
     ];
     this.data.fees.push(newFee);
     this.feeTypeOptions.push(options);

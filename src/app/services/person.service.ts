@@ -23,6 +23,10 @@ export class PersonService {
     return this.http.get<Person>(`${this.apiUrl}/${id}`);
   }
 
+  getGeneralById(id: number):Observable<PersonGeneral> {
+    return this.http.get<PersonGeneral>(`${this.apiUrl}/general/${id}`);
+  }
+
   create(person: PersonGeneral):Observable<Object> {
     return this.http.post(`${this.apiUrl}/new`, person);
   }

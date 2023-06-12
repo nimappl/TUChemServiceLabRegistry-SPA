@@ -27,7 +27,6 @@ export class OrganizationComponent {
     this.table.columns = [
       {for: 'name', dbName: 'OrgName', title: 'نام', sortable: true, hasSearch: true},
       {for: 'nationalId', dbName: 'OrgNationalID', title: 'شناسه ملی', sortable: true, hasSearch: true},
-      {for: 'contractNo', dbName: 'OrgContractNo', title: 'شماره قرارداد', sortable: true, hasSearch: true}
     ];
 
     this.fetch(true);

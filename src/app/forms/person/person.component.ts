@@ -5,7 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 import { PersonFormComponent } from "./person-form/person-form.component";
 import {Data, Filter, LabPersonnel, Organization, OrgRepresentative, PersonGeneral, TUStudent} from "../../model";
 import {CustomFieldData} from "../../custom-fields/custom-field-data";
-import {PersonType} from "./person-type";
+import {PersonType} from "../../model/enums/person-type";
 import {DeletePersonFormComponent} from "./delete-person-form/delete-person-form.component";
 
 @Component({

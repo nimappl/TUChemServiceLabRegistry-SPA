@@ -96,7 +96,7 @@
               <div class="row">
                 <div class="col-5">
                   <div class="input-field">
-                    <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr"placeholder="." autocomplete="off"
+                    <input type="text" id="nationalNumber" name="nationalNumber" class="txt ltr" placeholder="." autocomplete="off"
                            [(ngModel)]="pendingOperator.nationalNumber" maxlength="10"  pattern="^\d*$" required
                            [disabled]="operatorSearchOptions.selectedValue != null" #natId='ngModel'
                            [ngClass]="{'invalid': (natId.touched && natId.invalid) || (operatorForm.submitted && natId.invalid)}">
