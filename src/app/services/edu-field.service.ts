@@ -19,8 +19,8 @@ export class EduFieldService {
     return this.http.get<EduField>(`${this.apiUrl}/${id}`);
   }
 
-  create(eduField: EduField):Observable<Object> {
-    return this.http.post(`${this.apiUrl}/new`, eduField);
+  create(eduField: EduField):Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/new`, eduField);
   }
 
   update(eduField: EduField):Observable<Object> {

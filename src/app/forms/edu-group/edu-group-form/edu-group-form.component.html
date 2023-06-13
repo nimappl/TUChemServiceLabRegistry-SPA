@@ -1,7 +1,7 @@
 <h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
 <app-progress *ngIf="reachingOut"></app-progress>
 <div class="container-fluid">
-  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+  <form id="eduGroupForm" #f=ngForm (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col">
         <div class="input-field">
@@ -18,9 +18,9 @@
   </form>
 </div>
 <div mat-dialog-actions style="direction: ltr;">
-  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+  <button type="submit" form="eduGroupForm" class="btn btn-success btn-sm d-flex px-3">
     <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
     <div>ثبت</div>
   </button>
-  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="null">انصراف</button>
 </div>

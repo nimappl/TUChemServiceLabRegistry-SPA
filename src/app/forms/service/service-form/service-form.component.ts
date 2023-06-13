@@ -1,6 +1,6 @@
 import {Component, Inject, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {
   Account, CustomerCandidate, Data, Discount, EduField, EduGroup, Filter,
   PersonGeneral, Service, Test, TestFee, TestPrep
@@ -16,6 +16,8 @@ import {CustomerType} from "../../../model/enums/customer-type";
 import {EduGroupService} from "../../../services/edu-group.service";
 import {EduFieldService} from "../../../services/edu-field.service";
 import {AccountService} from "../../../services/account.service";
+import {EduGroupFormComponent} from "../../edu-group/edu-group-form/edu-group-form.component";
+import {EduFieldFormComponent} from "../../edu-field/edu-field-form/edu-field-form.component";
 
 enum origin { user, code }
 
@@ -56,7 +58,9 @@ export class ServiceFormComponent {
     private testService: TestService,
     private discountService: DiscountService,
     private eduGroupService: EduGroupService,
+    private eduGroupDialog: MatDialog,
     private eduFieldService: EduFieldService,
+    private eduFieldDialog: MatDialog,
     private accountService: AccountService
   ) {}
 
@@ -300,7 +304,7 @@ export class ServiceFormComponent {
         if (this.data.customerAccount?.type === CustomerType.person) {
           let customer = this.data.customerAccount.custPerson;
           if (customer.typeStdn || customer.typeProf) {
-            if (d.type === 0 && (customer.profEduGroup?.name === 'شیمی' || customer.stdnEduField?.eduGroup.name === 'شیمی'))
+            if (d.type === 0 && (customer.profEduGroup?.name === 'شیمی' || customer.stdnEduField?.eduGroup?.name === 'شیمی'))
               this.data.discounts.push(new Discount(d));
             else if (d.type === 1)
               this.data.discounts.push(new Discount(d));
@@ -309,6 +313,15 @@ export class ServiceFormComponent {
           if (this.data.customerAccount.custOrganization.hasContract && d.type === 3)
             this.data.discounts.push(new Discount(d))
         }
+        let d0 = false, d1 = false, d1Index;
+        this.data.discounts.forEach((d, i) => {
+          if (d.type === 0) d0 = true;
+          else if (d.type === 1) {
+            d1 = true;
+            d1Index = i;
+          }
+        });
+        if (d0 && d1) this.data.discounts.splice(d1Index, 1);
         if (d.minSamples && this.data.sampleQuantity > d.minSamples)
           this.data.discounts.push(new Discount(d));
       });
@@ -378,6 +391,46 @@ export class ServiceFormComponent {
   onSelectEduField(index: number) {
     this.data.customerAccount.custPerson.stdnEduField = this.eduFieldOptions.options[index].data;
     this.setDiscounts();
+  }
+
+  openEduGroupForm() {
+    let data: EduGroup = new EduGroup();
+
+    const dialogRef = this.eduGroupDialog.open(EduGroupFormComponent, {
+      width: '650px',
+      direction: 'rtl',
+      disableClose: true,
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(eg => {
+      if(eg) {
+        this.eduGroupOptions.options.push({value: eg.id, title: eg.name, data: eg});
+        this.data.customerAccount.custPerson.profEduGroupId = eg.id;
+        this.data.customerAccount.custPerson.profEduGroup = eg;
+        this.setDiscounts();
+      }
+    });
+  }
+
+  openEduFieldForm() {
+    let data: EduField = new EduField();
+
+    const dialogRef = this.eduFieldDialog.open(EduFieldFormComponent, {
+      width: '850px',
+      direction: 'rtl',
+      disableClose: true,
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(ef => {
+      if(ef) {
+        this.eduFieldOptions.options.push({value: ef.id, title: ef.name, data: ef});
+        this.data.customerAccount.custPerson.stdnEduFieldId = ef.id;
+        this.data.customerAccount.custPerson.stdnEduField = ef;
+        this.setDiscounts();
+      }
+    });
   }
 
   dropSelectedCustomer() {

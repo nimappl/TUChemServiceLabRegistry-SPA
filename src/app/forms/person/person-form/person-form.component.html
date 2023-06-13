@@ -142,8 +142,8 @@
                 </small>
               </div>
             </div>
-            <div class="col-6">
-              <div class="input-field">
+            <div class="col-6 d-flex">
+              <div class="input-field me-2" style="width: 85%">
                 <app-select name="profEduGroup" [data]="eduGroupOptions"
                             [(ngModel)]="data.profEduGroupId" #profEduGrpId='ngModel' required
                             [invalid]="(profEduGrpId.touched && profEduGrpId.invalid) || (f.submitted && profEduGrpId.invalid)">
@@ -151,6 +151,12 @@
                 <small class="error text-danger" *ngIf="(profEduGrpId.touched && profEduGrpId.invalid) || (f.submitted && profEduGrpId.invalid)">
                   پرکردن این فیلد الزامی است.
                 </small>
+              </div>
+              <div style="width: content-box; margin-top: 5px">
+                <button type="button" class="btn btn-outline-success btn-small" (click)="openEduGroupForm()">
+                  جدید
+                  <i class="fas fa-plus"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -192,8 +198,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
-              <div class="input-field">
+            <div class="col-6 d-flex">
+              <div class="input-field me-2" style="width: 85%">
                 <app-select name="stdnEduField" #eduField='ngModel'
                             [data]="eduFieldOptions"
                             [(ngModel)]="data.stdnEduFieldId" required
@@ -202,6 +208,12 @@
                 <small class="error text-danger" *ngIf="(eduField.touched && eduField.invalid) || (f.submitted && eduField.invalid)">
                   پرکردن این فیلد الزامی است.
                 </small>
+              </div>
+              <div style="width: content-box; margin-top: 18px">
+                <button type="button" class="btn btn-outline-success btn-small" (click)="openEduFieldForm()">
+                  جدید
+                  <i class="fas fa-plus"></i>
+                </button>
               </div>
             </div>
             <div class="col-6">

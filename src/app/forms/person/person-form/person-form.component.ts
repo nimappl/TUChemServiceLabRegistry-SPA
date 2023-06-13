@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import swal from "sweetalert";
 import { PersonService } from "../../../services/person.service";
 import {Data, EduField, EduGroup, Filter, Organization, PersonGeneral} from "../../../model";
@@ -9,6 +9,8 @@ import {TableConfig} from "../../../data-table/table-config";
 import {EduGroupService} from "../../../services/edu-group.service";
 import {OrganizationService} from "../../../services/organization.service";
 import {EduFieldService} from "../../../services/edu-field.service";
+import {EduGroupFormComponent} from "../../edu-group/edu-group-form/edu-group-form.component";
+import {EduFieldFormComponent} from "../../edu-field/edu-field-form/edu-field-form.component";
 
 @Component({
   selector: 'app-person-form',
@@ -35,7 +37,9 @@ export class PersonFormComponent implements OnInit {
     private dialogRef: MatDialogRef<PersonFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PersonGeneral,
     private personService: PersonService,
+    private eduGroupDialog: MatDialog,
     private eduGroupService: EduGroupService,
+    private eduFieldDialog: MatDialog,
     private eduFieldService: EduFieldService,
     private organizationService: OrganizationService
   ) {}
@@ -142,6 +146,44 @@ export class PersonFormComponent implements OnInit {
     if (this.data.typeProf) this.getEduGroupOptions();
     if (this.data.typeStdn) this.getEduFieldOptions();
     if (this.data.typeOrg) this.getOrganizationOptions();
+  }
+
+  openEduGroupForm() {
+    let data: EduGroup = new EduGroup();
+
+    const dialogRef = this.eduGroupDialog.open(EduGroupFormComponent, {
+      width: '650px',
+      direction: 'rtl',
+      disableClose: true,
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(eg => {
+      if(eg) {
+        this.eduGroupOptions.options.push({value: eg.id, title: eg.name});
+        this.data.profEduGroupId = eg.id;
+        this.data.profEduGroup = eg;
+      }
+    });
+  }
+
+  openEduFieldForm() {
+    let data: EduField = new EduField();
+
+    const dialogRef = this.eduFieldDialog.open(EduFieldFormComponent, {
+      width: '850px',
+      direction: 'rtl',
+      disableClose: true,
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(ef => {
+      if(ef) {
+        this.eduGroupOptions.options.push({value: ef.id, title: ef.name});
+        this.data.stdnEduFieldId = ef.id;
+        this.data.stdnEduField = ef;
+      }
+    });
   }
 
   isLabPrsnlFormEmpty(): boolean {

@@ -14,7 +14,6 @@ export class EduGroupFormComponent {
   mode: number; // 0: new, 1: edit
   title: string;
   reachingOut: boolean = false;
-  submitted: boolean = false;
   @ViewChild('f') form: NgForm;
 
   constructor(
@@ -37,9 +36,9 @@ export class EduGroupFormComponent {
     if (this.mode === 0) {
       this.apiService.create(this.data).subscribe(res => {
         this.reachingOut = false;
-        this.submitted = true;
+        this.data.id = res;
         swal({title: 'موفق', text: `گروه آموزشی جدید با موفقیت ثبت شد.`, icon: 'success'}).then(() => {
-          this.dialogRef.close(this.submitted)
+          this.dialogRef.close(this.data);
         });
       }, err => {
         this.reachingOut = false;
@@ -48,9 +47,8 @@ export class EduGroupFormComponent {
     } else {
       this.apiService.update(this.data).subscribe(res => {
         this.reachingOut = false;
-        this.submitted = true;
         swal({title: 'موفق', text: `عملیات بروزرسانی با موفقیت انجام شد.`, icon: 'success'}).then(() => {
-          this.dialogRef.close(this.submitted)
+          this.dialogRef.close(null);
         });
       }, err => {
         this.reachingOut = false;

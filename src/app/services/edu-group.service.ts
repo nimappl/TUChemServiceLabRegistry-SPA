@@ -19,8 +19,8 @@ export class EduGroupService {
     return this.http.get<EduGroup>(`${this.apiUrl}/${id}`);
   }
 
-  create(eduGroup: EduGroup):Observable<Object> {
-    return this.http.post(`${this.apiUrl}/new`, eduGroup);
+  create(eduGroup: EduGroup):Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/new`, eduGroup);
   }
 
   update(eduGroup: EduGroup):Observable<Object> {
