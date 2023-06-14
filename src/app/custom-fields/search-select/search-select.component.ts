@@ -21,6 +21,7 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   @Input() invalid: boolean;
   @Input() hasDropSelectionBtn: boolean = true;
   @Input() maxLength: number = 150;
+  @Input() valueId: boolean = false;
   @Output() onSelectionChange: EventEmitter<any> = new EventEmitter();
   @Output() onSearch: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDropSelected: EventEmitter<any> = new EventEmitter<any>();
@@ -52,7 +53,7 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
       this.data.searchText = null;
       this.data.selectedValue = null;
     } else {
-      this.data.searchText = value;
+      if (!this.valueId) this.data.searchText = value;
       this.data.selectedValue = value;
     }
   }
@@ -67,6 +68,9 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   select(index: number, value: number, fieldValue: string) {
     this.data.selectedValue = value;
     this.data.searchText = fieldValue;
+    if (this.valueId) {
+      this.onChange(this.data.selectedValue);
+    }
     this.onSelectionChange.emit(index);
     this.showOptions = false;
   }
@@ -74,13 +78,15 @@ export class SearchSelectComponent implements ControlValueAccessor, OnInit {
   onInteract() {
     if (!this.disabled) {
       this.openOptions();
-      this.onChange(this.data.searchText);
+      if (!this.valueId) this.onChange(this.data.searchText);
       this.onSearch.emit();
     }
   }
 
   dropSelected() {
     this.onDropSelected.emit();
+    this.data.selectedValue = null;
+    if (this.valueId) this.onChange(null);
   }
 
   clicked() {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Data, Account} from "../model";
+import {Data, Account, VAccount} from "../model";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
@@ -13,6 +13,10 @@ export class AccountService {
 
   get(options: Data<Account>):Observable<Data<Account>> {
     return this.http.get<Data<Account>>(`${this.apiUrl}?queryParams=${JSON.stringify(options)}`);
+  }
+
+  getOptions(filter: string):Observable<Array<VAccount>> {
+    return this.http.get<Array<VAccount>>(`${this.apiUrl}/get-options/${filter}`);
   }
 
   getById(id: number):Observable<Account> {

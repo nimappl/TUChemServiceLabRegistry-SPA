@@ -1,1 +1,111 @@
-<p>payment-form works!</p>
+<h1 mat-dialog-title class="pt-2 pb-0">{{ title }}</h1>
+<app-progress *ngIf="reachingOut"></app-progress>
+<div class="container-fluid">
+  <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-6">
+        <div class="input-field">
+          <input id="amount" type="number" class="txt ltr" name="amount" placeholder="." required min="1"
+                 [(ngModel)]="data.amount" #amount='ngModel'
+                 [ngClass]="{'invalid': (amount.touched && amount.invalid) || (f.submitted && amount.invalid)}">
+          <label for="amount" class="input">مبلغ (ریال)</label>
+          <div *ngIf="(amount.touched && amount.invalid) || (f.submitted && amount.invalid)">
+            <small class="error text-danger" *ngIf="amount.errors?.['required']">
+              پرکردن این فیلد الزامی است.
+            </small>
+            <small class="error text-danger" *ngIf="amount.errors?.['min']">
+              مبلغ وارد شده مجاز نیست.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <app-jalali-date-picker [data]="dateOptions" name="date" [(ngModel)]="data.date" #date="ngModel" required
+                                [invalid]="(date.touched && date.invalid) || (f.submitted && date.invalid)">
+        </app-jalali-date-picker>
+        <small class="error text-danger" *ngIf="(date.touched && date.invalid) || (f.submitted && date.invalid)">
+          پرکردن این فیلد الزامی است.
+        </small>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6" style="margin-top: 18px">
+        <app-search-select [data]="accountOptions" name="account" [(ngModel)]="data.accountId"
+                           (onSearch)="getAccountOptions()" #account='ngModel' required [valueId]="true"
+                           [invalid]="(account.touched && account.invalid) || (f.submitted && account.invalid)">
+        </app-search-select>
+        <small class="error text-danger" *ngIf="(account.touched && account.invalid) || (f.submitted && account.invalid)">
+          پرکردن این فیلد الزامی است.
+        </small>
+      </div>
+      <div class="col-6" style="margin-top: 18px">
+        <app-select [data]="typeOptions" name="type" [(ngModel)]="data.type" #type='ngModel' required
+                    [invalid]="(type.touched && type.invalid) || (f.submitted && type.invalid)">
+        </app-select>
+        <small class="error text-danger" *ngIf="(type.touched && type.invalid) || (f.submitted && type.invalid)">
+          پرکردن این فیلد الزامی است.
+        </small>
+      </div>
+    </div>
+    <div class="row" *ngIf="data.type === 0">
+      <div class="col-6" style="margin-top: 18px">
+        <app-select [data]="cashTypeOptions" name="cashType" [(ngModel)]="data.cashBasisType" #cashType='ngModel' required
+                    [invalid]="(cashType.touched && cashType.invalid) || (f.submitted && cashType.invalid)">
+        </app-select>
+        <small class="error text-danger" *ngIf="(cashType.touched && cashType.invalid) || (f.submitted && cashType.invalid)">
+          پرکردن این فیلد الزامی است.
+        </small>
+      </div>
+      <div class="col-6">
+        <div class="input-field">
+          <input id="trackingNo" type="text" class="txt ltr" name="trackingNo" placeholder="." autocomplete="off"
+                 [(ngModel)]="data.cashBasisTrackingNo" #trackingNo='ngModel' required maxlength="20"
+                 [ngClass]="{'invalid': (trackingNo.touched && trackingNo.invalid) || (f.submitted && trackingNo.invalid)}">
+          <label for="trackingNo" class="input">کد رهگیری</label>
+          <small class="error text-danger" *ngIf="(trackingNo.touched && trackingNo.invalid) || (f.submitted && trackingNo.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="data.type === 1">
+      <div class="col-7" style="margin-top: 18px">
+        <app-search-select [data]="profOptions" name="prof" [valueId]="true" (onSearch)="getProfOptions()"
+                           [(ngModel)]="data.grantProfessorId" #prof='ngModel' required
+                           [invalid]="(prof.touched && prof.invalid) || (f.submitted && prof.invalid)">
+        </app-search-select>
+        <small class="error text-danger" *ngIf="(prof.touched && prof.invalid) || (f.submitted && prof.invalid)">
+          پرکردن این فیلد الزامی است.
+        </small>
+      </div>
+    </div>
+    <div class="row" *ngIf="data.type === 2">
+      <div class="col-6">
+        <div class="input-field">
+          <input id="plnTransCode" type="text" class="txt ltr" name="plnTransCode" placeholder="." autocomplete="off"
+                 [(ngModel)]="data.labsnetTransactionCode" #plnTransCode='ngModel' required maxlength="20"
+                 [ngClass]="{'invalid': (plnTransCode.touched && plnTransCode.invalid) || (f.submitted && plnTransCode.invalid)}">
+          <label for="plnTransCode" class="input">کد رهگیری</label>
+          <small class="error text-danger"
+                 *ngIf="(plnTransCode.touched && plnTransCode.invalid) || (f.submitted && plnTransCode.invalid)">
+            پرکردن این فیلد الزامی است.
+          </small>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="input-field">
+          <input id="plnCreditTitle" type="text" class="txt"placeholder="." autocomplete="off"
+                 [(ngModel)]="data.labsnetCreditTitle" name="plnCreditTitle"  maxlength="45">
+          <label for="plnCreditTitle" class="input">عنوان اعتبار</label>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions style="direction: ltr;">
+  <button type="submit" form="form" class="btn btn-success btn-sm d-flex px-3">
+    <span class="loading-double-ring ms-1" *ngIf="reachingOut"></span>
+    <div>ثبت</div>
+  </button>
+  <button class="btn btn-secondary btn-sm px-3 me-2" [mat-dialog-close]="submitted">انصراف</button>
+</div>

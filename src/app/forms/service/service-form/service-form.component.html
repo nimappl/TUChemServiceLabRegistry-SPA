@@ -273,7 +273,8 @@
               </small>
             </div>
             <div class="ms-2" style="width: content-box; margin-top: 18px">
-              <button type="button" class="btn btn-outline-success btn-small" (click)="openEduGroupForm()">
+              <button type="button" class="btn btn-outline-success btn-small"
+                      [disabled]="data.customerAccount.custPerson?.id != null" (click)="openEduGroupForm()">
                 جدید
                 <i class="fas fa-plus"></i>
               </button>
@@ -316,7 +317,8 @@
               </small>
             </div>
             <div class="ms-2" style="width: content-box; margin-top: 18px">
-              <button type="button" class="btn btn-outline-success btn-small" (click)="openEduFieldForm()">
+              <button type="button" class="btn btn-outline-success btn-small"
+                      [disabled]="data.customerAccount.custPerson?.id != null" (click)="openEduFieldForm()">
                 جدید
                 <i class="fas fa-plus"></i>
               </button>

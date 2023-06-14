@@ -1,6 +1,7 @@
 export { default as Data } from './data';
 export { default as Filter } from './filter';
 export { default as Account } from './account';
+export { default as VAccount } from './vaccount';
 export { default as CustomerCandidate } from './customer-candidate';
 export { default as Discount } from './discount';
 export { default as EduField } from './edu-field';
@@ -14,6 +15,7 @@ export { default as OrgPhoneNumber } from './org-phone-number';
 export { default as OrgRepresentative } from './org-representative';
 export { default as Organization } from './organization';
 export { default as Payment } from './payment';
+export { default as TPayment } from './tpayment';
 export { default as Person } from './person';
 export { default as PersonGeneral } from './person-general';
 export { default as Service } from './service';

@@ -1,1 +1,24 @@
-<p>payment works!</p>
+<div class="card">
+  <div class="card-header py-1">پرداخت ها</div>
+  <app-progress *ngIf="table.loading"></app-progress>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-sm btn-success me-2 px-3" (click)="openForm()">
+        جدید
+        <i class="fas fa-plus ms-2"></i>
+      </button>
+      <button class="btn btn-sm btn-secondary px-3" (click)="toggleSearch()">
+        جستجو
+        <i class="fas fa-search ms-2"></i>
+      </button>
+    </div>
+    <app-data-table
+            [data]="payments"
+            [config]="table"
+            (editItem)="onEditItem($event)"
+            (buttonClicked)="onSelectItem($event)"
+            (removeItem)="onRemoveItem($event)"
+            (paramsChanged)="fetch()">
+    </app-data-table>
+  </div>
+</div>

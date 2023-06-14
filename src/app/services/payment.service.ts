@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Data, Payment} from "../model";
+import {Data, Payment, TPayment} from "../model";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -11,8 +11,8 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
-  get(options: Data<Payment>):Observable<Data<Payment>> {
-    return this.http.get<Data<Payment>>(`${this.apiUrl}?queryParams=${JSON.stringify(options)}`);
+  get(options: Data<TPayment>):Observable<Data<TPayment>> {
+    return this.http.get<Data<TPayment>>(`${this.apiUrl}?queryParams=${JSON.stringify(options)}`);
   }
 
   getById(id: number):Observable<Payment> {

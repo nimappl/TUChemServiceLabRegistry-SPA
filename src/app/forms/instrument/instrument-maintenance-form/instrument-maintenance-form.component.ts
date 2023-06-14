@@ -29,7 +29,6 @@ export class InstrumentMaintenanceFormComponent {
   personSelectedFromDB: boolean = false;
   companySelectedFromDB: boolean = false;
   @ViewChild('f') form: NgForm;
-  getMaterialType = IMUsedMaterial.getType;
   getMaterialUnit = IMUsedMaterial.getTypeUnit;
 
   constructor(

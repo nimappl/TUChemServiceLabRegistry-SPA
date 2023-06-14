@@ -100,6 +100,7 @@ export class ServiceFormComponent {
     this.getLabPersonnelOptions();
     this.getDiscounts();
     if (this.mode === 1) {
+      console.log(this.data)
       if (this.data.testPreps?.length > 0) this.hasPrep = true;
       if (this.data.test.samplePreparations)
         this.data.test.samplePreparations.forEach(prep => this.samplePreps.push({included: false, prep: prep}));
@@ -404,7 +405,7 @@ export class ServiceFormComponent {
     });
 
     dialogRef.afterClosed().subscribe(eg => {
-      if(eg) {
+      if (eg) {
         this.eduGroupOptions.options.push({value: eg.id, title: eg.name, data: eg});
         this.data.customerAccount.custPerson.profEduGroupId = eg.id;
         this.data.customerAccount.custPerson.profEduGroup = eg;
