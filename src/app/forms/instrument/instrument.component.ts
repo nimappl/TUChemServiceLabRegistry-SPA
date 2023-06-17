@@ -158,7 +158,7 @@ export class InstrumentComponent {
     this.maintenanceTableConfig.columns = [
       {for: 'title', title: 'عنوان', dbName: 'IMTitle', hasSearch: true, sortable: true},
       {for: 'date', title: 'تاریخ', dbName: 'IMDate', hasSearch: true, sortable: true, transform: d => DateConvertor.dateStringToJalali(d)},
-      {for: 'totalCost', title: 'هزینه کل اقدامات', dbName: 'IMTotalCost', hasSearch: true, sortable: true},
+      {for: 'totalCost', title: 'هزینه کل اقدامات', dbName: 'IMTotalCost', hasSearch: true, sortable: true, transform: a => a + ' ریال'},
       {for: 'invoiceNo', title: 'شماره فاکتور', dbName: 'IMInvoiceNo', hasSearch: true, sortable: true}
     ];
     this.fetchMaintenance(true);
@@ -170,7 +170,7 @@ export class InstrumentComponent {
     this.usedMaterialTableConfig.columns = [
       {for: 'name', dbName: '', title: 'نام قطعه/ماده', sortable: false, hasSearch: false},
       {for: 'type', dbName: '', title: 'نوع', sortable: false, hasSearch: false, transform: m => IMUsedMaterial.getType(m)},
-      {for: 'price', dbName: '', title: 'قیمت هر واحد', sortable: false, hasSearch: false},
+      {for: 'price', dbName: '', title: 'قیمت هر واحد', sortable: false, hasSearch: false, transform: a => a + ' ریال'},
       {for: 'quantity', dbName: '', title: 'تعداد/مقدار', sortable: false, hasSearch: false},
       {for: 'manufacturer', dbName: '', title: 'تولید کننده', sortable: false, hasSearch: false}
     ];

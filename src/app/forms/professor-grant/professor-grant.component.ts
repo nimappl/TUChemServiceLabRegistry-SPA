@@ -21,28 +21,14 @@ export class ProfessorGrantComponent {
               public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.table.buttons = null;
-    this.table.buttonTitles = null;
+    this.table.hasEdit = false;
+    this.table.hasDelete = false;
+    this.professors.pageSize = 20;
     this.table.columns = [
       {for: 'firstName', dbName: 'PFirstName', title: 'نام استاد', sortable: true, hasSearch: true},
       {for: 'lastName', dbName: 'PLastName', title: 'نام خانوادگی استاد', sortable: true, hasSearch: true},
-      {
-        for: 'grantIssueDate',
-        dbName: 'ProfGrantIssueDate',
-        title: 'تاریخ تخصیص',
-        sortable: false,
-        hasSearch: false,
-        transform: value => DateConvertor.dateStringToJalali(value)
-      },
-      {for: 'grantAmount', dbName: 'ProfGrantAmount', title: 'مبلغ', sortable: true, hasSearch: true},
-      {
-        for: 'grantCredibleUntil',
-        dbName: 'ProfGrantCredibleUntil',
-        title: 'تاریخ انقضا',
-        sortable: false,
-        hasSearch: false,
-        transform: value => DateConvertor.dateStringToJalali(value)
-      },
+      {for: 'grantBalance', dbName: 'ProfGrantBalance', title: 'تراز اعتبار', sortable: true, hasSearch: false, transform: a => a + ' ریال'},
+      {for: 'getGrantStatus', dbName: '', title: 'وضعیت', sortable: true, hasSearch: false, isFunction: true}
     ];
 
     this.fetch(true);
@@ -54,29 +40,15 @@ export class ProfessorGrantComponent {
     this.table.loading = true;
     this.table.sorting = tableLoading;
     this.apiService.getGrantList(options).subscribe(res => {
+      this.professors = JSON.parse(JSON.stringify(res));
+      this.professors.records = [];
+      res.records.forEach(prof => this.professors.records.push(new TUProfessor(prof)));
       this.table.loading = false;
       this.table.sorting = false;
-      this.professors = res;
     }, err => {
       this.table.loading = false;
       this.table.sorting = false;
       this.table.loadingFailed = true;
-    });
-  }
-
-  openForm(item?: any): void {
-    let data: TUProfessor;
-    if (item) data = item; else data = new TUProfessor();
-
-    const dialogRef = this.dialog.open(ProfessorGrantFormComponent, {
-      width: '850px',
-      direction: 'rtl',
-      disableClose: true,
-      data: data
-    });
-
-    dialogRef.afterClosed().subscribe(submitted => {
-      if(submitted) this.fetch(true);
     });
   }
 

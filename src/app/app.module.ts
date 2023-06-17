@@ -44,6 +44,7 @@ import { ServiceComponent } from './forms/service/service.component';
 import { ServiceFormComponent } from './forms/service/service-form/service-form.component';
 import { PaymentComponent } from './forms/payment/payment.component';
 import { PaymentFormComponent } from './forms/payment/payment-form/payment-form.component';
+import { CustomerComponent } from './forms/customer/customer.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { PaymentFormComponent } from './forms/payment/payment-form/payment-form.
     ServiceComponent,
     ServiceFormComponent,
     PaymentComponent,
-    PaymentFormComponent
+    PaymentFormComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,

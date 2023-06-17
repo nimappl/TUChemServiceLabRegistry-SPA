@@ -11,6 +11,7 @@ import {UsedMaterialComponent} from "./forms/used-material/used-material.compone
 import {OrganizationComponent} from "./forms/organization/organization.component";
 import {ServiceComponent} from "./forms/service/service.component";
 import {PaymentComponent} from "./forms/payment/payment.component";
+import {CustomerComponent} from "./forms/customer/customer.component";
 
 const routes: Routes = [
   { path: 'instrument', component: InstrumentComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'discount', component: DiscountComponent },
   { path: 'professor-grant', component: ProfessorGrantComponent },
   { path: 'service', component: ServiceComponent },
-  { path: 'payment', component: PaymentComponent }
+  { path: 'payment', component: PaymentComponent },
+  { path: 'customer-account', component: CustomerComponent }
 ];
 
 @NgModule({

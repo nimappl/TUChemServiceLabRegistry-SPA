@@ -11,6 +11,7 @@ export default class PersonGeneral extends Person {
   profPersonnelCode: string;
   profEduGroupId: number;
   profEduGroup: EduGroup;
+  profGrantBalance: number;
   stdnCode: string;
   stdnEduLevel: number;
   stdnEduFieldId: number;
@@ -26,6 +27,7 @@ export default class PersonGeneral extends Person {
       this.profPersonnelCode = data.profPersonnelCode;
       this.profEduGroupId = data.profEduGroupId;
       this.profEduGroup = data.profEduGroup;
+      this.profGrantBalance = data.profGrantBalance;
       this.stdnCode = data.stdnCode;
       this.stdnEduLevel = data.stdnEduLevel;
       this.stdnEduFieldId = data.stdnEduFieldId;

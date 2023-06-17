@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-header">گرنت هیأت علمی</div>
+  <div class="card-header">حساب متقاضیان</div>
   <app-progress *ngIf="table.loading"></app-progress>
   <div class="card-body">
     <div class="mb-3">
@@ -9,11 +9,11 @@
       </button>
     </div>
     <app-data-table
-            [data]="professors"
+            [data]="customers"
             [config]="table"
+            (buttonClicked)="showDetailsOf($event)"
             (removeItem)="onRemoveItem($event)"
-            (paramsChanged)="fetch()"
-            (buttonClicked)="buttonClicked($event)">
+            (paramsChanged)="fetch()">
     </app-data-table>
   </div>
 </div>

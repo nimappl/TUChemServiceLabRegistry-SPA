@@ -100,16 +100,16 @@ export class TestComponent {
     this.testFeesTable.columns = [
       {for: 'type', dbName: 'TFBase', title: 'مبنای تعرفه', sortable: false, hasSearch: false, transform: value => TestFee.getType(value)},
       {for: 'step', dbName: 'TFStep', title: 'گام افزایش تعرفه', sortable: false, hasSearch: false},
-      {for: 'amount', dbName: 'TFAmount', title: 'مبلغ', sortable: false, hasSearch: false},
+      {for: 'amount', dbName: 'TFAmount', title: 'مبلغ', sortable: false, hasSearch: false, transform: a => a + ' ریال'},
       {for: 'date', dbName: 'TFDate', title: 'تاریخ ایجاد', sortable: false, hasSearch: false, transform: value => DateConvertor.dateStringToJalali(value)}
     ];
     this.testSamplePrepsTable.columns = [
       {for: 'type', dbName: 'TPrepType', title: 'عنوان', sortable: false, hasSearch: false},
-      {for: 'price', dbName: 'TPrepPrice', title: 'هزینه', sortable: false, hasSearch: false}
+      {for: 'price', dbName: 'TPrepPrice', title: 'هزینه', sortable: false, hasSearch: false, transform: a => a + ' ریال'}
     ];
     this.testDiscountsTable.columns = [
       {for: 'getType', dbName: 'TDType', title: 'عنوان تخفیف', sortable: false, hasSearch: false, isFunction: true},
-      {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false}
+      {for: 'percent', dbName: 'TDPercent', title: 'درصد', sortable: false, hasSearch: false, transform: a => a + ' %'}
     ];
   }
 

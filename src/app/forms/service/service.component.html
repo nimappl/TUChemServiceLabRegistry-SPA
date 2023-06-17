@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-header py-1">خدمات</div>
+  <div class="card-header">خدمات</div>
   <app-progress *ngIf="serviceTable.loading"></app-progress>
   <div class="card-body">
     <div class="mb-3">
@@ -20,5 +20,151 @@
             (buttonClicked)="showDetailsOf($event)"
             (paramsChanged)="fetch()">
     </app-data-table>
+  </div>
+</div>
+<div class="card" *ngIf="loadingDetails || loadingDetailsFailed || selectedItem != null">
+  <div class="card-header">
+    جزئیات خدمت
+  </div>
+  <app-progress *ngIf="loadingDetails"></app-progress>
+  <div class="card-body">
+    <div *ngIf="!loadingDetailsFailed && !loadingDetails">
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>عنوان آزمون:</strong>&nbsp;<span>{{ selectedItem.test.name }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>تعرفه:</strong>&nbsp;<span>{{ selectedItem.testFee.getTitle() }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text">
+            <strong>{{ selectedItem.testFee.type == 0 ? 'تعداد نمونه:' : 'زمان آزمون:' }}</strong>&nbsp;
+            <span>{{ selectedItem.testFee.type == 0 ? selectedItem.sampleQuantity : selectedItem.testTime + ' دقیقه' }}</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>تاریخ:</strong>&nbsp;<span>{{ convertDate(selectedItem.date) }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>نام دستگاه:</strong>&nbsp;<span>{{ selectedItem.test.instrument.name }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>مدل دستگاه:</strong>&nbsp;<span>{{ selectedItem.test.instrument.model }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>آماده سازی نمونه:</strong>&nbsp;<span>{{ selectedItem.testPreps.length > 0 ? 'دارد' : 'ندارد' }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>نام ارائه دهنده خدمت:</strong>&nbsp;<span>{{ selectedItem.servingPersonnel.firstName + ' ' + selectedItem.servingPersonnel.lastName }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>هزینه های اضافی:</strong>&nbsp;<span>{{ (!selectedItem.additionalCosts ? 0 : selectedItem.additionalCosts)  + ' ریال'}}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>هزینه کل:</strong>&nbsp;<span>{{ selectedItem.totalPrice + ' ریال'}}</span></div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6">
+          <div class="details-text"><strong>ملاحظات:</strong>&nbsp;<p [innerHTML]="formatDescription(selectedItem.considerations)"></p></div>
+        </div>
+      </div>
+      <div class="mt-3" *ngIf="this.selectedItem.testPreps.length > 0">
+        <div class="form-hr mb-3"><span>آماده سازی های نمونه</span><div></div></div>
+        <app-data-table [data]="samplePrepsData" [config]="samplePrepsTable"></app-data-table>
+      </div>
+      <div class="form-hr mb-3"><span>مشخصات متقاضی</span><div></div></div>
+      <div class="row mb-2 col-6">
+        <div class="details-text"><strong>نوع متقاضی:</strong>&nbsp;
+          <span>
+            {{ selectedItem.customerAccount.type === 1 ? 'شخص ' + (
+              (selectedItem.customerAccount.custPerson.typeStdn ? '(دانشجوی دانشگاه تبریز)' : '') +
+              (selectedItem.customerAccount.custPerson.typeProf ? '(هیأت علمی دانشگاه تبریز)' : '')) : 'شرکت/سازمان' }}
+          </span>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="selectedItem.customerAccount.type == 1">
+        <div class="col">
+          <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.firstName }}</span></div>
+        </div>
+        <div class="col">
+          <div class="details-text"><strong>نام خانوادگی:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.lastName }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="selectedItem.customerAccount.type == 1">
+        <div class="col">
+          <div class="details-text"><strong>کد ملی:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.nationalNumber }}</span></div>
+        </div>
+        <div class="col">
+          <div class="details-text"><strong>جنسیت:</strong>&nbsp;<span>{{ transformGender(selectedItem.customerAccount.custPerson.gender) }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="selectedItem.customerAccount.type == 1">
+        <div class="col">
+          <div class="details-text"><strong>شماره موبایل:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.phoneNumber }}</span></div>
+        </div>
+        <div class="col">
+          <div class="details-text"><strong>ایمیل:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.email }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="selectedItem.customerAccount.type == 1 && selectedItem.customerAccount.custPerson.typeProf">
+        <div class="col-6">
+          <div class="details-text"><strong>کد پرسنلی:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.profPersonnelCode }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>گروه آموزشی:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.profEduGroup.name }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="selectedItem.customerAccount.type == 1 && selectedItem.customerAccount.custPerson.typeStdn">
+        <div class="col-6">
+          <div class="details-text"><strong>کد دانشجویی:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.stdnCode }}</span></div>
+        </div>
+        <div class="col-6">
+          <div class="details-text"><strong>رشته تحصیلی:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custPerson.stdnEduField.name }}</span></div>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="selectedItem.customerAccount.type == 1 && selectedItem.customerAccount.custPerson.typeStdn">
+        <div class="col-6">
+          <div class="details-text"><strong>مقطع تحصیلی:</strong>&nbsp;<span>{{ transformEduLevel(selectedItem.customerAccount.custPerson.stdnEduLevel) }}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2" *ngIf="this.selectedItem.customerAccount.type == 2">
+      <div class="col-6">
+        <div class="details-text"><strong>نام:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custOrganization.name }}</span></div>
+      </div>
+      <div class="col-6">
+        <div class="details-text"><strong>شناسه ملی:</strong>&nbsp;<span>{{ selectedItem.customerAccount.custOrganization.nationalId }}</span></div>
+      </div>
+    </div>
+    <div *ngIf="this.selectedItem.customerAccount.type == 2 && selectedItem.customerAccount.custOrganization.phoneNumbers.length > 0">
+      <div class="details-text mb-1"><strong>شماره‌های تماس شرکت</strong></div>
+      <app-data-table [data]="orgPhoneData" [config]="orgPhoneTable"></app-data-table>
+    </div>
+    <div class="mt-4" *ngIf="this.selectedItem.discounts.length > 0">
+      <div class="form-hr mb-3"><span>تخفیفات آزمون</span><div></div></div>
+      <div class="row mb-2">
+        <div class="col-6">
+          <div class="details-text"><strong>مجموع تخفیف:</strong>&nbsp;<span>{{ selectedItem.getTotalDiscount() + ' ٪' }}</span></div>
+        </div>
+      </div>
+      <app-data-table [data]="discountsData" [config]="discountsTable"></app-data-table>
+    </div>
+    <div class="me-2 mb-2 d-flex align-items-center" *ngIf="loadingDetails">
+      <app-loading-spinner-bars style="height: 25px;"></app-loading-spinner-bars>
+      <p class="message my-auto fst-italic ms-1 text-muted">در حال بارگذاری</p>
+    </div>
+    <div class="me-2 mb-2 text-danger" *ngIf="!loadingDetails && loadingDetailsFailed">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span class="message ms-1 font-weight-bold">خطا در برقراری ارتباط با سرور</span>
+    </div>
   </div>
 </div>

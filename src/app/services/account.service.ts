@@ -11,8 +11,8 @@ export class AccountService {
 
   constructor(private http: HttpClient) {}
 
-  get(options: Data<Account>):Observable<Data<Account>> {
-    return this.http.get<Data<Account>>(`${this.apiUrl}?queryParams=${JSON.stringify(options)}`);
+  get(options: Data<VAccount>):Observable<Data<VAccount>> {
+    return this.http.get<Data<VAccount>>(`${this.apiUrl}?queryParams=${JSON.stringify(options)}`);
   }
 
   getOptions(filter: string):Observable<Array<VAccount>> {

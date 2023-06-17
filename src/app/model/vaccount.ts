@@ -8,4 +8,22 @@ export default class VAccount {
   nationalNumber: string;
   personCustomerId: number;
   organizationCustomerId: number;
+
+  constructor(data?: VAccount) {
+    if (data) {
+    this.id = data.id;
+    this.type = data.type;
+    this.balance = data.balance;
+    this.customerName = data.customerName;
+    this.nationalNumber = data.nationalNumber;
+    this.personCustomerId = data.personCustomerId;
+    this.organizationCustomerId = data.organizationCustomerId;
+    }
+  }
+
+  public getStatus(): string {
+    if (this.balance > 0) return 'بدهکار';
+    if (this.balance < 0) return 'بستانکار';
+    return 'تسویه';
+  }
 }

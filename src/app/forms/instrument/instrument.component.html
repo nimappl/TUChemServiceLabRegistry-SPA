@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-header py-1">دستگاه</div>
+  <div class="card-header">دستگاه</div>
   <app-progress *ngIf="instrumentTableConfig.loading"></app-progress>
   <div class="card-body">
     <div class="mb-3">
@@ -23,7 +23,7 @@
   </div>
 </div>
 <div class="card" *ngIf="selectedInstrument != null">
-  <div class="card-header py-1">اطلاعات دستگاه</div>
+  <div class="card-header">اطلاعات دستگاه</div>
   <div class="card-body">
     <div class="row mb-2">
       <div class="col-6">
@@ -88,7 +88,7 @@
   </div>
 </div>
 <div class="card" *ngIf="selectedMaintenance !== null">
-  <div class="card-header py-1">جزئیات اقدام تعمیر و نگه‌داری {{ selectedInstrument.name }} مورخ {{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</div>
+  <div class="card-header">جزئیات اقدام تعمیر و نگه‌داری {{ selectedInstrument.name }} مورخ {{ maintenanceTableConfig.columns[1].transform(selectedMaintenance.date) }}</div>
   <div class="card-body">
     <div class="row mb-2">
       <div class="col-6">
@@ -103,7 +103,7 @@
         <div class="details-text"><strong>شماره فاکتور:</strong>&nbsp;<span>{{ selectedMaintenance.invoiceNo }}</span></div>
       </div>
       <div class="col-6">
-        <div class="details-text"><strong>هزینه اقدامات:</strong>&nbsp;<span>{{ selectedMaintenance.totalCost }}</span></div>
+        <div class="details-text"><strong>هزینه اقدامات:</strong>&nbsp;<span>{{ selectedMaintenance.totalCost + ' ریال' }}</span></div>
       </div>
     </div>
     <div class="row mb-3">

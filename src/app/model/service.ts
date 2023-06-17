@@ -56,7 +56,7 @@ export default class Service {
   }
 
   public normalizeTestTime(): void {
-    if (this.testTime) {
+    if (this.testTime && (this.testTime % this.testFee.step !== 0) ) {
       let frag = this.testFee.step - (this.testTime % this.testFee.step);
       this.testTime = this.testTime + frag;
     }
@@ -79,5 +79,17 @@ export default class Service {
       if (totalDiscount !== 0) cost -= Math.ceil(cost * totalDiscount / 100);
     }
     this.totalPrice = cost;
+  }
+
+  public getTotalDiscount(): number {
+    let total = 0;
+    this.discounts.forEach(discount => total += discount.percent);
+    return total;
+  }
+
+  public getSamplePrepTotal(): number {
+    let total = 0;
+    this.testPreps.forEach(prep => total += prep.price);
+    return total;
   }
 }

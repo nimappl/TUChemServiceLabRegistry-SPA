@@ -26,7 +26,7 @@ export class UsedMaterialComponent {
       {for: 'name', dbName: 'UMName', title: 'نام', sortable: true, hasSearch: true},
       {for: 'type', dbName: 'UMType', title: 'نوع', sortable: true, hasSearch: false, transform: e => IMUsedMaterial.getType(e)},
       {for: 'manufacturer', dbName: 'UMManufacturer', title: 'تولید کننده', sortable: true, hasSearch: true},
-      {for: 'price', dbName: 'UMPrice', title: 'قیمت هر واحد', sortable: true, hasSearch: true}
+      {for: 'price', dbName: 'UMPrice', title: 'قیمت هر واحد', sortable: true, hasSearch: true, transform: p => p + ' ریال'}
     ];
 
     this.fetch(true);
