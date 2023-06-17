@@ -4,22 +4,6 @@
   <form id="form" #f=ngForm (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-6">
-        <app-search-select
-                [data]="peopleOptions"
-                (onSearch)="getPeopleOptions($event)"
-                (onSelectionChange)="onPersonSelect()"
-                name="id"
-                [disabled]="mode == 1"
-                [(ngModel)]="data.id">
-        </app-search-select>
-        <app-jalali-date-picker [data]="issueDateField" name="grantIssueDate" [(ngModel)]="data.grantIssueDate" [disabled]="mode == 0 && data.id == null"></app-jalali-date-picker>
-      </div>
-      <div class="col-6">
-        <div class="input-field">
-          <input type="number" id="grantAmount" name="grantAmount" class="txt" placeholder="pox" [(ngModel)]="data.grantAmount" autocomplete="off"  [disabled]="mode == 0 && data.id == null">
-          <label for="grantAmount">مبلغ اعتبار</label>
-        </div>
-        <app-jalali-date-picker [data]="expiryDateField" name="grantCredibleUntil" [(ngModel)]="data.grantCredibleUntil" [disabled]="mode == 0 && data.id == null"></app-jalali-date-picker>
       </div>
     </div>
   </form>

@@ -20,6 +20,22 @@
           </app-select>
         </div>
       </div>
+      <div class="row my-1" *ngIf="data.testId != null">
+        <div class="col-5">
+          <div class="details-text"><strong>نام دستگاه:</strong>&nbsp;<span>{{ data.test.instrument.name }}</span></div>
+        </div>
+        <div class="col-5">
+          <div class="details-text"><strong>مدل دستگاه:</strong>&nbsp;<span>{{ data.test.instrument.model }}</span></div>
+        </div>
+      </div>
+      <div class="row my-1" *ngIf="data.testId != null">
+        <div class="col-5">
+          <div class="details-text"><strong>شرکت سازنده دستگاه:</strong>&nbsp;<span>{{ data.test.instrument.manufacturer }}</span></div>
+        </div>
+        <div class="col-5">
+          <div class="details-text"><strong>وضعیت سرویس‌دهی دستگاه:</strong>&nbsp;<span>{{ data.test.instrument.serviceable == 0 ? 'غیرقابل استفاده' : 'آماده سرویس‌دهی' }}</span></div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-3" style="margin-top: 18px"
              *ngIf="test.value != null && data.test.samplePreparations != null && data.test.samplePreparations.length > 0">
